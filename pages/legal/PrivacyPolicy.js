@@ -7,12 +7,12 @@ export default function PrivacyPolicy(props) {
     <div className="container">
       <Head>
         <link
-          href="http://audio.bforborum.com/css/sub.css"
+          href="https://cdn.jsdelivr.net/gh/Borumer/Flytrap@1cca457/css/sub.css"
           rel="stylesheet"
           type="text/css"
         />
         <link
-          href="http://audio.bforborum.com/pages/legal/legal.css"
+          href="https://cdn.jsdelivr.net/gh/Borumer/Flytrap@1cca457/legal/legal.css"
           rel="stylesheet"
           type="text/css"
         />
