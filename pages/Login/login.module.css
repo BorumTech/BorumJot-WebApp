@@ -1,0 +1,25 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid orange;
+    border-radius: 10px;
+    flex: 1;
+    align-items: top;
+    padding: 1em;
+    margin: 1em;
+    min-width: 500px;
+}
+
+.form h1 {
+    text-align: center;
+}
+
+.form fieldset {
+    border-radius: 10px;
+    margin-bottom: 3%;
+}
+
+.form fieldset input {
+    border: none;
+    outline: none;
+}

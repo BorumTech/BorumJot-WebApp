@@ -1,0 +1,39 @@
+form input {
+	display: block;
+	margin: 10px;
+	border-radius: 25px;
+	text-indent: 4px;
+	font-size: 1em;
+}
+
+div.grid {
+	grid-template-columns: 100%;
+	grid-template-rows: repeat(10, 10%);
+}
+
+.brand-name-container span {
+	visibility: hidden;
+}
+
+.account-form-container {
+	justify-self: center;
+	background-color: lightblue;
+	align-self: center;
+	grid-row: 1 / 10;
+	grid-column: 1;
+	padding: 1em;
+	border-radius: 25px;
+}
+
+.account-form-container > * {
+	font-size: 1.5em;
+}
+
+.login > button > img {
+	height: 30px;
+}
+
+.account-form-container button {
+	text-align: center;
+	width: 100%;
+}
