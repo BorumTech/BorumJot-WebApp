@@ -1,13 +1,12 @@
 .form {
     display: flex;
-    flex-direction: column;
+    width: min(500px, 90%);
+    flex-flow: column wrap;
     border: 1px solid orange;
     border-radius: 10px;
-    flex: 1;
     align-items: top;
     padding: 1em;
     margin: 1em;
-    min-width: 500px;
 }
 
 .form h1 {

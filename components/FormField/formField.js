@@ -1,8 +1,8 @@
-export default function FormField({autofocus="false", label, format="text"}) {
+export default function FormField({autofocus=false, label, format="text",required=false}) {
     return (
         <fieldset>
-            <legend><label for={label}>{label[0].toUpperCase() + label.substring(1).toLowerCase()}</label></legend>
-            <input autofocus={autofocus} type={format} id={label} name={label} />
+            <legend><label htmlFor={label}>{label[0].toUpperCase() + label.substring(1).toLowerCase()}</label></legend>
+            <input required={required} autoFocus={autofocus} type={format} id={label} name={label} />
         </fieldset>
     );
 }
