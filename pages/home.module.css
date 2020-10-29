@@ -1,5 +1,5 @@
 .main {
-  padding: 5rem 0;
+  padding-bottom: 5rem;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -49,7 +49,7 @@
   justify-content: center;
   flex-wrap: wrap;
   max-width: 800px;
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 .card {
@@ -91,4 +91,29 @@ button.card {
     width: 100%;
     flex-direction: column;
   }
+}
+
+.form {
+  display: flex;
+  width: min(500px, 90%);
+  flex-flow: column wrap;
+  border: 1px solid orange;
+  border-radius: 10px;
+  align-items: top;
+  padding: 1em;
+  margin: 1em;
+}
+
+.form h1 {
+  text-align: center;
+}
+
+.form fieldset {
+  border-radius: 10px;
+  margin-bottom: 3%;
+}
+
+.form fieldset input {
+  border: none;
+  outline: none;
 }
