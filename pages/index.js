@@ -5,35 +5,37 @@ import home from "./home.module.css";
 import PlatformButton from "../components/PlatformButton/platformButton";
 import FormField from "../components/FormField/formField";
 import Layout from "../components/Layout/layout";
-import { useLocalStorage } from "../lib/localstorage";
 import { useState } from "react";
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userApiKey, setUserApiKey] = useLocalStorage("userApiKey", "");
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
+  /**
+   * Make API request to login to obtain API key
+   * @param {Event} e The event object associated with the form submission 
+   */
   const onLogin = async (e) => {
     e.preventDefault();
+    
+    // Exit if not all credentials are given
+    if (!(email && password)) return 
 
-    fetch("https://api.jot.bforborum.com/api/v1/login", {
+    const response = await fetch("https://api.jot.bforborum.com/api/v1/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: `email=${email}&password=${password}`,
     })
-      .then((response) => {
-        if (response.status == 200) {
-          return response.json();
-        }
-      })
-      .then((response) => {
-        setUserApiKey(response.data.api_key);
-      });
+
+    if ((await response).status == 200) {
+      const jsonResponse = await response.json();
+      window.localStorage.setItem("userApiKey", jsonResponse.data.api_key);
+    }
   };
 
   return (
