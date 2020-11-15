@@ -5,13 +5,13 @@ import home from "./home.module.css";
 import PlatformButton from "../components/PlatformButton/platformButton";
 import FormField from "../components/FormField/formField";
 import Layout from "../components/Layout/layout";
-import localStorage from "../lib/localstorage";
+import { useLocalStorage } from "../lib/localstorage";
 import { useState } from "react";
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userApiKey, setUserApiKey] = localStorage.useLocalStorage("userApiKey", null);
+  const [userApiKey, setUserApiKey] = useLocalStorage("userApiKey", "");
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
@@ -44,7 +44,7 @@ export default function Home() {
 
       <main className={home.main}>
         <div className={home.grid}>
-          <Image width={70} height={70} src="/images/favicon/favicon.ico" />
+          <Image width={70} height={70} src="/images/favicon/icon.png" />
           <h1>Login to Borum Jot</h1>
           <form onSubmit={onLogin} method="post" className={home.form}>
             <FormField
