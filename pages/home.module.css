@@ -48,8 +48,14 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  max-width: 800px;
+  flex-direction: column;
   margin-top: 2rem;
+  width: 500px;
+}
+
+.grid h1 {
+  font-weight: normal;
+  font-size: 1.5rem;
 }
 
 .card {
@@ -64,8 +70,9 @@
   font-size: 1rem;
 }
 
-button.card {
-  width: 150px;
+.form button.card {
+  width: 100%;
+  cursor: pointer;
 }
 
 .card:hover,
@@ -89,31 +96,42 @@ button.card {
 @media (max-width: 600px) {
   .grid {
     width: 100%;
-    flex-direction: column;
+  }
+
+  .form {
+    padding: 0;
   }
 }
 
 .form {
   display: flex;
-  width: min(500px, 90%);
-  flex-flow: column wrap;
+  flex-direction: column;
+  align-items: center;
   border: 1px solid orange;
+  background-color: rgb(250, 249, 255);
   border-radius: 10px;
-  align-items: top;
   padding: 1em;
   margin: 1em;
-}
-
-.form h1 {
-  text-align: center;
+  width: 100%;
 }
 
 .form fieldset {
   border-radius: 10px;
   margin-bottom: 3%;
+  background-color: white;
+  width: 100%;
 }
 
 .form fieldset input {
   border: none;
   outline: none;
+  font-size: 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.register {
+  border: 1px solid gainsboro;
+  padding: 1em;
+  width: 100%;
+  text-align: center;
 }

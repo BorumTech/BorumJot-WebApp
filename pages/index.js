@@ -1,26 +1,30 @@
 import Head from "next/head";
 import Link from "next/link";
+import Image from 'next/image';
 import home from "./home.module.css";
 import PlatformButton from "../components/PlatformButton/platformButton";
 import FormField from "../components/FormField/formField";
 import Layout from "../components/Layout/layout";
+import localStorage from "../lib/localstorage";
+import { useState } from "react";
 
 export default function Home() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [userApiKey, setUserApiKey] = localStorage.useLocalStorage("userApiKey", null);
+
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+
   const onLogin = async (e) => {
     e.preventDefault();
-
-    const formEl = e.target.parentElement;
-
-    const email = formEl.elements["Email"].value;
-    const password = formEl.elements["Password"].value;
-    const body = "email=" + email + "&password=" + password;
 
     fetch("https://api.jot.bforborum.com/api/v1/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body,
+      body: `email=${email}&password=${password}`,
     })
       .then((response) => {
         if (response.status == 200) {
@@ -28,8 +32,7 @@ export default function Home() {
         }
       })
       .then((response) => {
-        localStorage.useLocalStorage("userApiKey", response.data.api_key);
-        Router.push("/");
+        setUserApiKey(response.data.api_key);
       });
   };
 
@@ -41,27 +44,34 @@ export default function Home() {
 
       <main className={home.main}>
         <div className={home.grid}>
-          <form method="post" action="" className={home.form}>
-            <h1>Login</h1>
-            <FormField required focus format="email" label="Email" />
-            <FormField required format="password" label="Password" />
+          <Image width={70} height={70} src="/images/favicon/favicon.ico" />
+          <h1>Login to Borum Jot</h1>
+          <form onSubmit={onLogin} method="post" className={home.form}>
+            <FormField
+              required
+              onChange={handleEmailChange}
+              value={email}
+              focus
+              format="email"
+              label="Email"
+            />
+            <FormField
+              required
+              onChange={handlePasswordChange}
+              value={password}
+              format="password"
+              label="Password"
+            />
             <Link href="">
               <a>Forgot password? Reset it</a>
             </Link>
-            <Link href="/Register">
-              <a>Don't have an account? Register</a>
-            </Link>
+            <button type="submit" className={home.card}>Login</button>
           </form>
-          <button className={home.card}>
-            <Link href="/Login">
-              <a>Login</a>
+          <div className={home.register}>
+            <Link href="http://bforborum.com/Register">
+              <a target="_blank">New to Borum? Create an Account</a>
             </Link>
-          </button>
-          <button className={home.card}>
-            <Link href="/Register">
-              <a>Register</a>
-            </Link>
-          </button>
+          </div>
         </div>
         <div className={home.grid}>
           <PlatformButton
