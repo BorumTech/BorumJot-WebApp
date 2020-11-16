@@ -1,28 +1,30 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import home from './home.module.css';
-import PlatformButton from '../components/PlatformButton/platformButton';
-import Layout from '../components/Layout/layout';
+import Head from "next/head";
+import Layout from "../components/Layout/layout";
+import Login from "./Login/login";
+import Home from "./Home/home";
+import {useState} from 'react';
+import index from './index.module.css';
 
-export default function Home() {
+export default function Index() {
+  const [loginFade, setLoginFade] = useState("");
+  const [homeFade, setHomeFade] = useState("invisible");
+
+  const handleLoginFadeOut = () => {
+    setLoginFade(index.fadeOut);
+  }
+  
+  const handleHomeFadeIn = () => {
+    setHomeFade(index.fadeIn);
+  };
+
   return (
     <Layout>
       <Head>
         <title>Borum Jot | Note and task management</title>
       </Head>
 
-      <main className={home.main}>
-        <div className={home.grid}>
-          <button className={home.card}><Link href="/Login"><a>Login</a></Link></button>
-          <button className={home.card}><Link href="/Register"><a>Register</a></Link></button>
-        </div>
-        <div className={home.grid}>
-          <PlatformButton 
-            downloadLink="https://play.google.com/store/apps/details?id=com.boruminc.borumjot.android"
-            imgSrc="/images/platforms/android-icon.png" 
-            label="Get for free on the Google Play Store" />
-        </div>
-      </main>
+      <Login onFadeOut={handleLoginFadeOut} fade={loginFade} onFadeInHome={handleHomeFadeIn} setFade={setLoginFade}/>
+      <Home fade={homeFade} />
     </Layout>
-  )
+  );
 }

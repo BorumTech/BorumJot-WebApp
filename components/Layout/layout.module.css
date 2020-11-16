@@ -1,9 +1,8 @@
 .container {
+  display: grid;
   min-height: 100vh;
   padding: 0 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: stretch;
   align-items: center;
 }
 
@@ -13,25 +12,35 @@
 }
 
 .footer {
+  grid-row: 3;
+  align-self: flex-end;
   width: 100%;
-  height: 100px;
   border-top: 1px solid #eaeaea;
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
-  flex-direction: column;
 }
 
 .footer img {
   margin-left: 0.5rem;
 }
 
-.footer a {
+.footer > a {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  flex-basis: 33%;
+  min-width: 200px;
 }
 
 .logo {
   height: 1em;
+}
+
+.footer .platformList {
+  display: flex;
+  flex-basis: 33%;
+  justify-content: flex-end;
+  flex-flow: row nowrap;
 }
