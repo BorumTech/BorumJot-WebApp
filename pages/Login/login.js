@@ -2,11 +2,13 @@ import Link from "next/link";
 import login from "./login.module.css";
 import LogoImage from "../../components/logoImage";
 import FormField from "../../components/FormField/formField";
+import ProgressSpinner from "../../components/CircularProgress/circularProgress";
 import { useState } from "react";
 
-export default function Login({onFadeOut, fade, onFadeInHome, setFade}) {
+export default function Login({ onFadeOut, fade, onFadeInHome, setFade }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
@@ -17,6 +19,8 @@ export default function Login({onFadeOut, fade, onFadeInHome, setFade}) {
    */
   const onLogin = async (e) => {
     e.preventDefault();
+
+    setShowSpinner(true);
 
     // Exit if not all credentials are given
     if (!(email && password)) return;
@@ -33,19 +37,26 @@ export default function Login({onFadeOut, fade, onFadeInHome, setFade}) {
       const jsonResponse = await response.json();
       window.localStorage.setItem("userApiKey", jsonResponse.data.api_key);
       onFadeOut();
-    } else if ((await response).status == 404 ||((await response).status == 500)) {
+    } else if (
+      (await response).status == 404 ||
+      (await response).status == 500
+    ) {
       const jsonResponse = await response.json();
       window.alert(jsonResponse.error.message);
     }
   };
 
-  const handleFadeOutEnd = e => {
+  const handleFadeOutEnd = (e) => {
+    setShowSpinner(false);
     setFade("invisible");
     onFadeInHome();
   };
 
   return (
-    <main onAnimationEnd={handleFadeOutEnd} className={fade == "invisible" ? fade : `${fade} ${login.main}`}>
+    <main
+      onAnimationEnd={handleFadeOutEnd}
+      className={fade == "invisible" ? fade : `${fade} ${login.main}`}
+    >
       <div className={login.grid}>
         <LogoImage />
         <h1>Login to Borum Jot</h1>
@@ -73,7 +84,7 @@ export default function Login({onFadeOut, fade, onFadeInHome, setFade}) {
             <a>Forgot password? Reset it</a>
           </Link>
           <button type="submit" className={login.card}>
-            Login
+            {showSpinner ? <ProgressSpinner /> : "Login"}
           </button>
         </form>
         <div className={login.register}>
@@ -85,3 +96,4 @@ export default function Login({onFadeOut, fade, onFadeInHome, setFade}) {
     </main>
   );
 }
+

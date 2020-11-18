@@ -2,7 +2,7 @@ import Head from "next/head";
 import Layout from "../components/Layout/layout";
 import Login from "./Login/login";
 import Home from "./Home/home";
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import index from './index.module.css';
 
 export default function Index() {
@@ -24,7 +24,7 @@ export default function Index() {
       </Head>
 
       <Login onFadeOut={handleLoginFadeOut} fade={loginFade} onFadeInHome={handleHomeFadeIn} setFade={setLoginFade}/>
-      <Home fade={homeFade} />
+      {homeFade != "invisible" ? <Home fade={homeFade} /> : ""}
     </Layout>
   );
 }

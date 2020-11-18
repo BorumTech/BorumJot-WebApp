@@ -1,14 +1,19 @@
 {
-  "name": "learn-starter",
+  "name": "borumjot-web",
+  "description": "Web app for managing both tasks and notes with encryption",
+  "author": {
+    "name": "Varun Singh"
+  },
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
   },
   "dependencies": {
-    "next": "^10.0.0",
+    "@material-ui/core": "^4.11.0",
+    "next": "^10.0.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "showdown": "^1.9.1"
