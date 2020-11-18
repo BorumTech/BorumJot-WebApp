@@ -1,0 +1,46 @@
+.container {
+    grid-row: 1;
+	grid-column: 2 / 3;
+	justify-self: stretch;
+	align-self: center;
+	padding-left: 15px;
+	padding-right: 15px;
+	border: none; /* For mobile phones */
+}
+
+.container * {
+	border: none;
+	background: none;
+	outline: none;
+}
+
+.container button {
+	cursor: pointer;
+}
+
+.container img {
+	padding: 5px;
+	width: 30px;
+	vertical-align: middle;
+}
+
+.greyCircle:hover {
+	background-color: lightgrey;
+	border-radius: 80%;
+}
+
+.searchBar {
+	display: none;
+	height: 40px;
+}
+
+@media only screen and (min-width: 511px) {
+	.container {
+		border: 1px solid lightgrey;
+		border-radius: 25px;
+	}
+
+	.searchBar {
+		display: inline-block;
+	}
+}
