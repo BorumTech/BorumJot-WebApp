@@ -4,8 +4,9 @@ import LogoImage from "../../components/logoImage";
 import FormField from "../../components/FormField/formField";
 import ProgressSpinner from "../../components/CircularProgress/circularProgress";
 import { useState } from "react";
+import { CONTENT_STATE } from "../../lib/view";
 
-export default function Login({ onFadeOut, fade, onFadeInHome, setFade }) {
+export default function Login({ fade, onFadeInHome, setFade }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showSpinner, setShowSpinner] = useState(false);
@@ -36,7 +37,7 @@ export default function Login({ onFadeOut, fade, onFadeInHome, setFade }) {
     if ((await response).status == 200) {
       const jsonResponse = await response.json();
       window.localStorage.setItem("userApiKey", jsonResponse.data.api_key);
-      onFadeOut();
+      setFade(CONTENT_STATE.FADE_OUT);
     } else if (
       (await response).status == 404 ||
       (await response).status == 500
@@ -46,16 +47,21 @@ export default function Login({ onFadeOut, fade, onFadeInHome, setFade }) {
     }
   };
 
-  const handleFadeOutEnd = (e) => {
-    setShowSpinner(false);
-    setFade("invisible");
-    onFadeInHome();
+  const handleOnAnimationEnd = e => {
+    console.log("LOGIN....loginFade: " + fade);
+    if (fade == CONTENT_STATE.FADE_OUT) {
+      setShowSpinner(false);
+      onFadeInHome();
+      setFade(CONTENT_STATE.INVISIBLE);
+    } else if (fade == CONTENT_STATE.FADE_IN) {
+      setFade(CONTENT_STATE.VISIBLE);
+    }
   };
 
   return (
     <main
-      onAnimationEnd={handleFadeOutEnd}
-      className={fade == "invisible" ? fade : `${fade} ${login.main}`}
+      onAnimationEnd={handleOnAnimationEnd}
+      className={fade == CONTENT_STATE.INVISIBLE ? fade : `${fade} ${login.main}`}
     >
       <div className={login.grid}>
         <LogoImage />

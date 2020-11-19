@@ -12,7 +12,6 @@ export default function SearchBar() {
       </button>
       <input
         className={searchBar.searchBar}
-        onkeyup="searchFlytrap(this.value)"
         type="text"
         placeholder="Search your Jottings"
       />
