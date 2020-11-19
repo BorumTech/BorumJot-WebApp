@@ -18,10 +18,13 @@ export default function Index() {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("userApiKey") && homeFade != CONTENT_STATE.FADE_IN) {
-      setHomeFade(CONTENT_STATE.VISIBLE);
-    } else {
-      if (loginFade != CONTENT_STATE.FADE_IN && homeFade != CONTENT_STATE.FADE_IN) {
+    // If the user is logged in
+    if (localStorage.getItem("userApiKey")) {
+      if (homeFade != CONTENT_STATE.FADE_IN && loginFade != CONTENT_STATE.FADE_OUT) {
+        setHomeFade(CONTENT_STATE.VISIBLE);
+      }
+    } else { // If the user is logged out
+      if (loginFade != CONTENT_STATE.FADE_IN && homeFade != CONTENT_STATE.FADE_IN && homeFade != CONTENT_STATE.FADE_OUT) {
         setLoginFade(CONTENT_STATE.VISIBLE);
       }
     }

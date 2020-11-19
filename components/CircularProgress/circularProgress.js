@@ -9,7 +9,7 @@ import circularProgress from "./circularProgress.module.css";
  */
 export default function ProgressSpinner() {
   return (
-    <div className={circularProgress.root}>
+    <div>
       <FacebookCircularProgress />
     </div>
   );

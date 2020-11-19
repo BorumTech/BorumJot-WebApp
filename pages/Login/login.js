@@ -42,13 +42,14 @@ export default function Login({ fade, onFadeInHome, setFade }) {
       (await response).status == 404 ||
       (await response).status == 500
     ) {
+      setShowSpinner(false);
+      setPassword("");
       const jsonResponse = await response.json();
       window.alert(jsonResponse.error.message);
     }
   };
 
   const handleOnAnimationEnd = e => {
-    console.log("LOGIN....loginFade: " + fade);
     if (fade == CONTENT_STATE.FADE_OUT) {
       setShowSpinner(false);
       onFadeInHome();
@@ -86,7 +87,7 @@ export default function Login({ fade, onFadeInHome, setFade }) {
             <input type="checkbox" id="remember" name="remember" />
             <label htmlFor="remember">Remember Me</label>
           </p>
-          <Link href="">
+          <Link href="http://www.bforborum.com/reset_password">
             <a>Forgot password? Reset it</a>
           </Link>
           <button type="submit" className={login.card}>
@@ -94,7 +95,7 @@ export default function Login({ fade, onFadeInHome, setFade }) {
           </button>
         </form>
         <div className={login.register}>
-          <Link href="http://bforborum.com/Register">
+          <Link href="http://www.bforborum.com/Register">
             <a target="_blank">New to Borum? Create an Account</a>
           </Link>
         </div>
