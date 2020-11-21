@@ -26,7 +26,7 @@ export default function Login({ fade, onFadeInHome, setFade }) {
     // Exit if not all credentials are given
     if (!(email && password)) return;
 
-    const response = await fetch("https://api.jot.bforborum.com/api/v1/login", {
+    const response = await fetch("https://api.bforborum.com/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -36,7 +36,13 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 
     if ((await response).status == 200) {
       const jsonResponse = await response.json();
+      
+      // Store user information + user's api key so requests aren't needed later
       window.localStorage.setItem("userApiKey", jsonResponse.data.api_key);
+      window.localStorage.setItem("firstName", jsonResponse.data.first_name);
+      window.localStorage.setItem("lastName", jsonResponse.data.last_name);
+      window.localStorage.setItem("email", jsonResponse.data.email);
+
       setFade(CONTENT_STATE.FADE_OUT);
     } else if (
       (await response).status == 404 ||

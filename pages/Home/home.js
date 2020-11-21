@@ -1,29 +1,29 @@
 import home from "./home.module.css";
 import LogoImage from "../../components/logoImage";
 import SearchBar from "../../components/SearchBar/searchBar";
-import NoteList from "../../components/NoteList/noteList";
+import NoteList from "../../components/JottingList/noteList";
+import TaskList from "../../components/JottingList/taskList";
 import { useState, useEffect } from "react";
 import ProgressSpinner from "../../components/CircularProgress/circularProgress";
 import { CONTENT_STATE } from "../../lib/view";
 
 export default function Home({ fade, onFadeInLogin, setFade }) {
   const [notes, setNotes] = useState(null);
+  const [tasks, setTasks] = useState(null);
 
   useEffect(() => {
-    getJottings().then(response => setNotes(response.notes));    
+    getJottings().then((response) => {
+      setNotes(response.notes);
+      setTasks(response.tasks);
+    });
   }, []);
-
-  const handleLogOut = e => {
-    localStorage.removeItem("userApiKey");
-    setFade(CONTENT_STATE.FADE_OUT);
-  }
 
   const transitionToLogin = () => {
     onFadeInLogin();
     setFade(CONTENT_STATE.INVISIBLE);
   };
 
-  const handleOnAnimationEnd = e => {
+  const handleOnAnimationEnd = (e) => {
     if (fade == CONTENT_STATE.FADE_OUT) {
       transitionToLogin();
     } else if (fade == CONTENT_STATE.FADE_IN) {
@@ -32,15 +32,21 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
   };
 
   return (
-    <main 
+    <main
       onAnimationEnd={handleOnAnimationEnd}
-      className={fade == CONTENT_STATE.INVISIBLE ? fade : `${fade} ${home.main}`}>
+      className={
+        fade == CONTENT_STATE.INVISIBLE ? fade : `${fade} ${home.main}`
+      }
+    >
       <BrandHeader />
       <SearchBar />
-      <div className={home.jottingsList}>
+      <div className={home.ownNoteList}>
         {notes ? <NoteList notes={notes} /> : <ProgressSpinner />}
       </div>
-      <button onClick={handleLogOut}>Log Out</button>
+      <div className={home.ownTaskList}>
+        {tasks ? <TaskList tasks={tasks} /> : <ProgressSpinner />}
+      </div>
+      <AccountBanner />
     </main>
   );
 }
@@ -56,22 +62,53 @@ function BrandHeader() {
   );
 }
 
+function AccountBanner() {
+  const [accountMenuClass, setAccountMenuClass] = useState("hidden");
+
+  const handleLogOut = (e) => {
+    localStorage.removeItem("userApiKey");
+    setFade(CONTENT_STATE.FADE_OUT);
+  };
+
+  const openAccountMenu = e => {
+    setAccountMenuClass(accountMenuClass == "hidden" ? home.accountMenu : "hidden");
+  };
+
+  const firstName = window ? localStorage.getItem("firstName") : "";
+  const lastName = window ? localStorage.getItem("lastName") : "";
+
+  return (
+    <div className={home.accountBanner}>
+      <div className={home.account}>
+        <button className={home.profileBtn} onClick={openAccountMenu}>{`${firstName} ${lastName}`}</button>
+      </div>
+      <div className={accountMenuClass}>
+          <button className={home.logOut} onClick={handleLogOut}>Log Out</button>
+      </div>
+    </div>
+  );
+}
+
 async function getJottings() {
   const userApiKey = window.localStorage.getItem("userApiKey");
 
-  const jottings = await fetch("https://api.jot.bforborum.com/api/v1/jottings", {
-    method: "GET",
-    headers: {
-      "authorization": "Basic " + userApiKey,
-      "content-type": "text/plain",
+  const jottings = await fetch(
+    "https://api.jot.bforborum.com/api/v1/jottings",
+    {
+      method: "GET",
+      headers: {
+        authorization: "Basic " + userApiKey,
+        "content-type": "text/plain",
+      },
     }
-  });
+  );
 
   if (jottings.status == 200) {
-    let {data} = await jottings.json();
-    
+    let { data } = await jottings.json();
+
     return {
-      notes: data.filter((item) => item.source == "note")
+      notes: data.filter((item) => item.source == "note"),
+      tasks: data.filter((item) => item.source == "task"),
     };
   }
 }
