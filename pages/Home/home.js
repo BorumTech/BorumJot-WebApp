@@ -69,10 +69,8 @@ function AccountBanner({ setFade }) {
 	const [dropdownSrc, setDropdownSrc] = useState("down");
 
 	const handleLogOut = (e) => {
-		if (window) {
-			localStorage.removeItem("userApiKey");
-			setFade(CONTENT_STATE.FADE_OUT);	
-		}
+		localStorage.removeItem("userApiKey");
+		(CONTENT_STATE.FADE_OUT);	
 	};
 
 	const openAccountMenu = (e) => {
@@ -84,8 +82,8 @@ function AccountBanner({ setFade }) {
 		);
 	};
 
-	const firstName = window ? localStorage.getItem("firstName") : "";
-	const lastName = window ? localStorage.getItem("lastName") : "";
+	const firstName = typeof window !== "undefined" ? localStorage.getItem("firstName") : "";
+	const lastName = typeof window !== "undefined" ? localStorage.getItem("lastName") : "";
 
 	return (
 		<div className={home.accountBanner}>
