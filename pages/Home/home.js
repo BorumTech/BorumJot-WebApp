@@ -72,8 +72,6 @@ function AccountBanner({ setFade }) {
 		if (window) {
 			localStorage.removeItem("userApiKey");
 			setFade(CONTENT_STATE.FADE_OUT);	
-		} else {
-			window.alert("You can't be logged out at this time. Please try again later");
 		}
 	};
 
