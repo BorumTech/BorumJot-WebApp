@@ -3,7 +3,7 @@
   min-height: 100vh;
   padding: 0 0.5rem;
   justify-content: stretch;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .container a {
