@@ -69,8 +69,12 @@ function AccountBanner({ setFade }) {
 	const [dropdownSrc, setDropdownSrc] = useState("down");
 
 	const handleLogOut = (e) => {
-		localStorage.removeItem("userApiKey");
-		setFade(CONTENT_STATE.FADE_OUT);
+		if (window) {
+			localStorage.removeItem("userApiKey");
+			setFade(CONTENT_STATE.FADE_OUT);	
+		} else {
+			window.alert("You can't be logged out at this time. Please try again later");
+		}
 	};
 
 	const openAccountMenu = (e) => {
@@ -103,25 +107,30 @@ function AccountBanner({ setFade }) {
 }
 
 async function getJottings() {
-	const userApiKey = window.localStorage.getItem("userApiKey");
+	if (window) {
+		const userApiKey = localStorage.getItem("userApiKey");
 
-	const jottings = await fetch(
-		"https://api.jot.bforborum.com/api/v1/jottings",
-		{
-			method: "GET",
-			headers: {
-				authorization: "Basic " + userApiKey,
-				"content-type": "text/plain",
-			},
+		const jottings = await fetch(
+			"https://api.jot.bforborum.com/api/v1/jottings",
+			{
+				method: "GET",
+				headers: {
+					authorization: "Basic " + userApiKey,
+					"content-type": "text/plain",
+				},
+			}
+		);
+	
+		if (jottings.status == 200) {
+			let { data } = await jottings.json();
+	
+			return {
+				notes: data.filter((item) => item.source == "note"),
+				tasks: data.filter((item) => item.source == "task"),
+			};
 		}
-	);
-
-	if (jottings.status == 200) {
-		let { data } = await jottings.json();
-
-		return {
-			notes: data.filter((item) => item.source == "note"),
-			tasks: data.filter((item) => item.source == "task"),
-		};
+	} else {
+		throw new Error("Window not loaded yet");
 	}
+
 }
