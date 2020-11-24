@@ -1,6 +1,8 @@
+import jotting from "./jotting.module.css";
+
 export default function Note(props) {
     return (
-        <data value={"note-"+props.id}>
+        <data className={jotting.jotting} value={"note-"+props.id}>
             {props.title}
         </data>
     );

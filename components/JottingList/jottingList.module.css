@@ -1,0 +1,19 @@
+.jottingList {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    border: 2px double indianred;
+    padding: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+ul.jottingList > li {
+    padding: 1em;
+    flex-basis: 50%;
+}
+
+ul.jottingList > li:hover {
+    background-color: lightgray;
+    cursor: pointer;
+}

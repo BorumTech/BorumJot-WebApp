@@ -43,12 +43,15 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 			<BrandHeader />
 			<SearchBar />
 			<div className={home.ownNoteList}>
+				<h1>Notes</h1>
 				{notes ? <NoteList notes={notes} /> : <ProgressSpinner />}
 			</div>
 			<div className={home.ownTaskList}>
+				<h1>Tasks</h1>
 				{tasks ? <TaskList tasks={tasks} /> : <ProgressSpinner />}
 			</div>
 			<AccountBanner setFade={setFade} />
+			<CreateJottingButton />
 		</main>
 	);
 }
@@ -64,7 +67,7 @@ function BrandHeader() {
 	);
 }
 
-function AccountBanner({ setFade }) {
+function AccountBanner() {
 	const [accountMenuClass, setAccountMenuClass] = useState("hidden");
 	const [dropdownSrc, setDropdownSrc] = useState("down");
 
@@ -99,6 +102,12 @@ function AccountBanner({ setFade }) {
 				<li><button className={home.logOut} onClick={handleLogOut}>Log Out</button></li>
 			</ul>
 		</div>
+	);
+}
+
+function CreateJottingButton() {
+	return (
+		<button className={home.createJottingBtn}>+</button>
 	);
 }
 
