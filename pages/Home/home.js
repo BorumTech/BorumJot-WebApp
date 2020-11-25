@@ -3,6 +3,8 @@ import LogoImage from "../../components/logoImage";
 import SearchBar from "../../components/SearchBar/searchBar";
 import NoteList from "../../components/JottingList/noteList";
 import TaskList from "../../components/JottingList/taskList";
+import CreateNoteButton from "../../components/CreateJottingButton/createNoteButton";
+import CreateTaskButton from "../../components/CreateJottingButton/createTaskButton";
 import { useState, useEffect } from "react";
 import ProgressSpinner from "../../components/CircularProgress/circularProgress";
 import { CONTENT_STATE } from "../../lib/view";
@@ -25,7 +27,7 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 		setFade(CONTENT_STATE.INVISIBLE);
 	};
 
-	const handleOnAnimationEnd = (e) => {
+	const handleOnAnimationEnd = () => {
 		if (fade == CONTENT_STATE.FADE_OUT) {
 			transitionToLogin();
 		} else if (fade == CONTENT_STATE.FADE_IN) {
@@ -45,20 +47,21 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 			<div className={home.ownNoteList}>
 				<h1>Notes</h1>
 				{notes ? <NoteList notes={notes} /> : <ProgressSpinner />}
+				<CreateNoteButton jots={notes} setJots={setNotes} />
 			</div>
 			<div className={home.ownTaskList}>
 				<h1>Tasks</h1>
 				{tasks ? <TaskList tasks={tasks} /> : <ProgressSpinner />}
+				<CreateTaskButton jots={tasks} setJots={setTasks} />
 			</div>
-			<AccountBanner setFade={setFade} />
-			<CreateJottingButton />
+			<AccountBanner />
 		</main>
 	);
 }
 
 function BrandHeader() {
 	return (
-		<div className="brandNameContainer">
+		<div className={home.brandNameContainer}>
 			<a href="/">
 				<LogoImage />
 				<span>Borum Jot</span>
@@ -71,22 +74,22 @@ function AccountBanner() {
 	const [accountMenuClass, setAccountMenuClass] = useState("hidden");
 	const [dropdownSrc, setDropdownSrc] = useState("down");
 
-	const handleLogOut = (e) => {
+	const handleLogOut = () => {
 		localStorage.removeItem("userApiKey");
-		(CONTENT_STATE.FADE_OUT);	
+		CONTENT_STATE.FADE_OUT;
 	};
 
-	const openAccountMenu = (e) => {
+	const openAccountMenu = () => {
 		setAccountMenuClass(
 			accountMenuClass == "hidden" ? home.accountMenu : "hidden"
 		);
-		setDropdownSrc(
-			dropdownSrc == "down" ? "up" : "down"
-		);
+		setDropdownSrc(dropdownSrc == "down" ? "up" : "down");
 	};
 
-	const firstName = typeof window !== "undefined" ? localStorage.getItem("firstName") : "";
-	const lastName = typeof window !== "undefined" ? localStorage.getItem("lastName") : "";
+	const firstName =
+		typeof window !== "undefined" ? localStorage.getItem("firstName") : "";
+	const lastName =
+		typeof window !== "undefined" ? localStorage.getItem("lastName") : "";
 
 	return (
 		<div className={home.accountBanner}>
@@ -94,20 +97,26 @@ function AccountBanner() {
 				<Image width={28} height={28} src="/images/profile.png" />
 				<span>{`${firstName} ${lastName}`}</span>
 				<div className={home.dropdownArrow}>
-					<img width={16} height={16} src={`/images/arrow-${dropdownSrc}.png`} />
+					<img
+						width={16}
+						height={16}
+						src={`/images/arrow-${dropdownSrc}.png`}
+					/>
 				</div>
 			</button>
 			<ul className={accountMenuClass}>
-				<li><Link href="/Settings"><a className={home.settings}>Settings</a></Link></li>
-				<li><button className={home.logOut} onClick={handleLogOut}>Log Out</button></li>
+				<li>
+					<Link href="/Settings">
+						<a className={home.settings}>Settings</a>
+					</Link>
+				</li>
+				<li>
+					<button className={home.logOut} onClick={handleLogOut}>
+						Log Out
+					</button>
+				</li>
 			</ul>
 		</div>
-	);
-}
-
-function CreateJottingButton() {
-	return (
-		<button className={home.createJottingBtn}>+</button>
 	);
 }
 
@@ -125,10 +134,10 @@ async function getJottings() {
 				},
 			}
 		);
-	
+
 		if (jottings.status == 200) {
 			let { data } = await jottings.json();
-	
+
 			return {
 				notes: data.filter((item) => item.source == "note"),
 				tasks: data.filter((item) => item.source == "task"),
@@ -137,5 +146,4 @@ async function getJottings() {
 	} else {
 		throw new Error("Window not loaded yet");
 	}
-
 }

@@ -1,0 +1,19 @@
+.createJottingBtn::before {
+	content: "+ ";
+}
+
+button.createJottingBtn {
+	font-size: 1em;
+	padding: 10px;
+	width: 100%;
+	text-align: left;
+}
+
+.newJottingName {
+	outline: 1px solid indianred;
+	border: none;
+	background: none;
+	font-size: 1em;
+	width: 100%;
+	padding: 0.5em 1em;
+}

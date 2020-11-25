@@ -1,8 +1,18 @@
 .main {
 	display: grid;
-	grid-template-rows: 20% 30% 100px 2fr 1fr;
+	grid-template-rows: auto auto auto auto auto;
 	grid-template-columns: 200px 300px 300px 20% 1fr 15%;
 	margin-top: 10px;
+}
+
+.brandNameContainer > a {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+
+.brandNameContainer span {
+	margin-left: 10px;
 }
 
 .ownNoteList {
@@ -62,15 +72,4 @@ ul.accountMenu {
 
 .dropdownArrow {
 	margin-left: 5px;
-}
-
-.createJottingBtn {
-	grid-row: 3;
-	grid-column: 5;
-	border: none;
-	background: none;
-	font-size: 5rem;
-	color: white;
-	background-color: #D62828;
-	border-radius: 100%;
 }
