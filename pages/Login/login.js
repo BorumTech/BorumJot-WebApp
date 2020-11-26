@@ -3,13 +3,15 @@ import login from "./login.module.css";
 import LogoImage from "../../components/logoImage";
 import FormField from "../../components/FormField/formField";
 import ProgressSpinner from "../../components/CircularProgress/circularProgress";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CONTENT_STATE } from "../../lib/view";
 
 export default function Login({ fade, onFadeInHome, setFade }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showSpinner, setShowSpinner] = useState(false);
+
+  const loginForm = useRef(null);
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
@@ -34,7 +36,7 @@ export default function Login({ fade, onFadeInHome, setFade }) {
       body: `email=${email}&password=${password}`,
     });
 
-    if ((await response).status == 200) {
+    if (response.status == 200) {
       const jsonResponse = await response.json();
       
       // Store user information + user's api key so requests aren't needed later
@@ -45,8 +47,8 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 
       setFade(CONTENT_STATE.FADE_OUT);
     } else if (
-      (await response).status == 404 ||
-      (await response).status == 500
+      response.status == 404 ||
+      response.status == 500
     ) {
       setShowSpinner(false);
       setPassword("");
@@ -60,6 +62,15 @@ export default function Login({ fade, onFadeInHome, setFade }) {
       setShowSpinner(false);
       onFadeInHome();
       setFade(CONTENT_STATE.INVISIBLE);
+      
+      // Reset email and password so they don't see their original input, unless they saved it in the browser
+      setEmail("");
+      setPassword("");
+
+      // Use timeout so the reset works, reset form so the red borders don't show up
+      setTimeout(() => {
+        loginForm.current.reset()
+      }, 100);
     } else if (fade == CONTENT_STATE.FADE_IN) {
       setFade(CONTENT_STATE.VISIBLE);
     }
@@ -73,7 +84,7 @@ export default function Login({ fade, onFadeInHome, setFade }) {
       <div className={login.grid}>
         <LogoImage />
         <h1>Login to Borum Jot</h1>
-        <form onSubmit={onLogin} method="post" className={login.form}>
+        <form ref={loginForm} onSubmit={onLogin} method="post" className={login.form}>
           <FormField
             required
             onChange={handleEmailChange}
@@ -94,7 +105,7 @@ export default function Login({ fade, onFadeInHome, setFade }) {
             <label htmlFor="remember">Remember Me</label>
           </p>
           <Link href="http://www.bforborum.com/reset_password">
-            <a>Forgot password? Reset it</a>
+            <a target="_blank">Forgot password? Reset it</a>
           </Link>
           <button type="submit" className={login.card}>
             {showSpinner ? <ProgressSpinner /> : "Login"}

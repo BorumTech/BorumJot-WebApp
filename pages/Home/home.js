@@ -54,7 +54,7 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 				{tasks ? <TaskList tasks={tasks} /> : <ProgressSpinner />}
 				<CreateTaskButton jots={tasks} setJots={setTasks} />
 			</div>
-			<AccountBanner />
+			<AccountBanner setFade={setFade} />
 		</main>
 	);
 }
@@ -70,13 +70,13 @@ function BrandHeader() {
 	);
 }
 
-function AccountBanner() {
+function AccountBanner({ setFade }) {
 	const [accountMenuClass, setAccountMenuClass] = useState("hidden");
 	const [dropdownSrc, setDropdownSrc] = useState("down");
 
 	const handleLogOut = () => {
-		localStorage.removeItem("userApiKey");
-		CONTENT_STATE.FADE_OUT;
+		setFade(CONTENT_STATE.FADE_OUT);
+		localStorage.clear();
 	};
 
 	const openAccountMenu = () => {
@@ -87,9 +87,9 @@ function AccountBanner() {
 	};
 
 	const firstName =
-		typeof window !== "undefined" ? localStorage.getItem("firstName") : "";
+		typeof window !== "undefined" && localStorage.getItem("firstName") != null ? localStorage.getItem("firstName") : "";
 	const lastName =
-		typeof window !== "undefined" ? localStorage.getItem("lastName") : "";
+		typeof window !== "undefined" && localStorage.getItem("lastName") != null ? localStorage.getItem("lastName") : "";
 
 	return (
 		<div className={home.accountBanner}>
