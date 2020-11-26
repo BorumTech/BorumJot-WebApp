@@ -1,10 +1,12 @@
 import Head from "next/head";
 import Link from "next/link";
+import Layout from "../../components/Layout/layout";
 import {getPrivacyPolicyContent} from '../../lib/legal';
+import privacyPolicy from "./privacyPolicy.module.css";
 
 export default function PrivacyPolicy(props) {
   return (
-    <div className="container">
+    <Layout>
       <Head>
         <link
           href="https://cdn.jsdelivr.net/gh/Borumer/Flytrap@1cca457/css/sub.css"
@@ -24,11 +26,11 @@ export default function PrivacyPolicy(props) {
       </Head>
 
       <main>
-        <div className="grid">
+        <div className={privacyPolicy.grid}>
           <div className="brand-name-container">
             <Link href="/">
               <a>
-                <img src="/images/icon.png" />
+                <img src="/images/favicon/icon.png" />
                 <span>Borum Jot</span>
               </a>
             </Link>
@@ -41,7 +43,7 @@ export default function PrivacyPolicy(props) {
           />
         </div>
       </main>
-    </div>
+    </Layout>
   );
 }
 
