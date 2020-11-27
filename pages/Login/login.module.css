@@ -50,7 +50,8 @@
   flex-wrap: wrap;
   flex-direction: column;
   margin-top: 2rem;
-  width: 500px;
+  max-width: 500px;
+  width: 80%;
 }
 
 .grid h1 {
@@ -100,10 +101,6 @@
 }
 
 @media (max-width: 600px) {
-  .grid {
-    width: 100%;
-  }
-
   .form {
     padding: 0;
   }
