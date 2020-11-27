@@ -47,10 +47,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
   flex-direction: column;
   margin-top: 2rem;
-  width: 500px;
+  max-width: 500px;
+  width: 90%;
 }
 
 .grid h1 {
@@ -97,16 +97,6 @@
   margin: 0;
   font-size: 1.25rem;
   line-height: 1.5;
-}
-
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-  }
-
-  .form {
-    padding: 0;
-  }
 }
 
 .form {
