@@ -19,6 +19,9 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 		getJottings().then((response) => {
 			setNotes(response.notes);
 			setTasks(response.tasks);
+		}).catch(response => {
+			setNotes(-1);
+			setTasks(-1);
 		});
 	}, []);
 

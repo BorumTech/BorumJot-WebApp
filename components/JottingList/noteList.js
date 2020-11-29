@@ -1,10 +1,16 @@
-import Note from "../Jotting/note";
+import FetchError from "../FetchError/fetchError";
+import NotePreview from "../Jotting/notePreview";
 import jottingList from "./jottingList.module.css";
 
 export default function NoteList({ notes }) {
-    return (
-        <ul className={jottingList.jottingList}>
-            {notes.map((item) => <li key={item.id}><Note {...item} /></li>)}
-        </ul>
-    );
+	let noteList = <FetchError itemName="notes" />
+	if (notes instanceof Array) {
+		noteList = notes.map((item) => (
+			<li key={item.id}>
+				<NotePreview {...item} />
+			</li>
+		));
+	}
+
+	return <ul className={jottingList.jottingList}>{noteList}</ul>;
 }
