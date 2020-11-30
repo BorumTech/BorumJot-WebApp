@@ -10,19 +10,26 @@ import ProgressSpinner from "../../components/CircularProgress/circularProgress"
 import { CONTENT_STATE } from "../../lib/view";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import Note from "../../components/Jotting/note";
+import Task from "../../components/Jotting/task";
 
 export default function Home({ fade, onFadeInLogin, setFade }) {
 	const [notes, setNotes] = useState(null);
 	const [tasks, setTasks] = useState(null);
 
+	const router = useRouter();
+
 	useEffect(() => {
-		getJottings().then((response) => {
-			setNotes(response.notes);
-			setTasks(response.tasks);
-		}).catch(response => {
-			setNotes(-1);
-			setTasks(-1);
-		});
+		getJottings()
+			.then((response) => {
+				setNotes(response.notes);
+				setTasks(response.tasks);
+			})
+			.catch((response) => {
+				setNotes(-1);
+				setTasks(-1);
+			});
 	}, []);
 
 	const transitionToLogin = () => {
@@ -58,6 +65,24 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 				<CreateTaskButton jots={tasks} setJots={setTasks} />
 			</div>
 			<AccountBanner setFade={setFade} />
+			{notes && router.query.type &&
+			router.query.type == "note" &&
+			router.query.id ? (
+				<div className={home.fullJotting}>
+					<Note {...router.query} title={notes.find(item => item.id == router.query.id).title} />
+				</div>
+			) : (
+				""
+			)}
+			{tasks && router.query.type &&
+			router.query.type == "task" &&
+			router.query.id ? (
+				<div className={home.fullJotting}>
+					<Task {...router.query} title={tasks.find(item => item.id == router.query.id).title} />
+				</div>
+			) : (
+				""
+			)}
 		</main>
 	);
 }
@@ -65,10 +90,12 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 function BrandHeader() {
 	return (
 		<div className={home.brandNameContainer}>
-			<a href="/">
-				<LogoImage />
-				<span>Borum Jot</span>
-			</a>
+			<Link href="/">
+				<a>
+					<LogoImage />
+					<span>Borum Jot</span>
+				</a>
+			</Link>
 		</div>
 	);
 }
@@ -90,9 +117,15 @@ function AccountBanner({ setFade }) {
 	};
 
 	const firstName =
-		typeof window !== "undefined" && localStorage.getItem("firstName") != null ? localStorage.getItem("firstName") : "";
+		typeof window !== "undefined" &&
+		localStorage.getItem("firstName") != null
+			? localStorage.getItem("firstName")
+			: "";
 	const lastName =
-		typeof window !== "undefined" && localStorage.getItem("lastName") != null ? localStorage.getItem("lastName") : "";
+		typeof window !== "undefined" &&
+		localStorage.getItem("lastName") != null
+			? localStorage.getItem("lastName")
+			: "";
 
 	return (
 		<div className={home.accountBanner}>

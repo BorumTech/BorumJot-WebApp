@@ -1,5 +1,5 @@
 import FetchError from "../FetchError/fetchError";
-import Task from "../Jotting/task";
+import Task from "../Jotting/taskPreview";
 import jottingList from "./jottingList.module.css";
 
 export default function TaskList({tasks}) {

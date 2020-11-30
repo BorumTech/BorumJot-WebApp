@@ -1,9 +1,12 @@
 import jotting from "./jotting.module.css";
+import JottingOptionsBar from "./JottingOptionsBar";
 
-export default function Task(props) {
+export default function Task(task) {
+    
     return (
-        <data className={jotting.jotting} value={"task-"+props.id}>
-            {props.title}
-        </data>
+        <div className={jotting.fullJotting}>
+            <JottingOptionsBar />
+            <p>{task.title}</p>
+        </div>
     );
 }

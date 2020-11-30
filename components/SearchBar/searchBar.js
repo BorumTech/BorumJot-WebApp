@@ -6,7 +6,7 @@ export default function SearchBar() {
       <button className={searchBar.searchBarIcon}>
         <img
           className={searchBar.greyCircle}
-          src="http://cdn.bforborum.com/images/search-bar-icon.png"
+          src="https://cdn.jsdelivr.net/gh/Borumer/Borum@v1.2.0/staticassets/images/search-bar-icon.png"
           id="search-bar-icon-img"
         />
       </button>

@@ -5,10 +5,16 @@
 	margin-top: 10px;
 }
 
+.brandNameContainer {
+	grid-row: 1;
+	grid-column: 1;
+}
+
 .brandNameContainer > a {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
+	outline: none;
 }
 
 .brandNameContainer span {
@@ -72,4 +78,10 @@ ul.accountMenu {
 
 .dropdownArrow {
 	margin-left: 5px;
+}
+
+.fullJotting {
+	grid-row: 2 / -2;
+	grid-column: 2 / -2;
+	justify-self: stretch;
 }
