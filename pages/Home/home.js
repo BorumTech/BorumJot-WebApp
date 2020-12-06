@@ -69,7 +69,7 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 			router.query.type == "note" &&
 			router.query.id ? (
 				<div className={home.fullJotting}>
-					<Note {...router.query} title={notes.find(item => item.id == router.query.id).title} />
+					<Note {...router.query} {...notes.find(item => item.id == router.query.id)} />
 				</div>
 			) : (
 				""
@@ -78,7 +78,7 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 			router.query.type == "task" &&
 			router.query.id ? (
 				<div className={home.fullJotting}>
-					<Task {...router.query} title={tasks.find(item => item.id == router.query.id).title} />
+					<Task {...router.query} {...tasks.find(item => item.id == router.query.id)} />
 				</div>
 			) : (
 				""
