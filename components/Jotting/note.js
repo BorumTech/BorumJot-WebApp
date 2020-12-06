@@ -7,10 +7,11 @@ import { unescapeSlashes } from "../../lib/requests";
 
 export default function Note(note) {
 	const [body, setBody] = useState(null);
+	const [title, setTitle] = useState(note.title);
 
-    let bodyEl = <FetchError itemName="note" />;
-    
-	const handleBodyUpdate = e => {
+	let bodyEl = <FetchError itemName="note" />;
+
+	const handleBodyUpdate = (e) => {
 		setBody(e.target.value);
 	};
 
@@ -18,7 +19,7 @@ export default function Note(note) {
 		bodyEl = (
 			<textarea
 				rows="10"
-				cols="100"
+				cols="60"
 				className={jotting.details}
 				value={body}
 				onChange={handleBodyUpdate}
@@ -30,11 +31,27 @@ export default function Note(note) {
 		getBody(note.id).then((response) => setBody(response));
 	}, []);
 
+	const handleTitleChange = (e) => {
+		setTitle(e.target.value);
+	};
+
+	const handleTitleInputKeyDown = e => {
+		if (e.key == "Enter") {
+			updateTitle(note.id, e.target.value);
+		}
+	};
+
 	return (
 		<div className={jotting.fullJotting}>
 			<JottingOptionsBar {...note} jotType="note" />
-			<h2 className={jotting.title}>{note.title}</h2>
-			{body ? bodyEl : <CircularProgress />}
+			<input
+				type="text"
+				className={jotting.title}
+				value={title}
+				onChange={handleTitleChange}
+				onKeyDown={handleTitleInputKeyDown}
+			/>
+			{body || body == "" ? bodyEl : <CircularProgress />}
 		</div>
 	);
 }
@@ -60,4 +77,25 @@ async function getBody(id) {
 		let { data } = await response.json();
 		return unescapeSlashes(await data.body);
 	}
+}
+
+/**
+ * Updates the note's title to a new title
+ * @param {number} noteId The id of the note whose title is getting updated
+ * @param {string} newTitle The new title of the note
+ */
+async function updateTitle(noteId, newTitle) {
+	const queryString = `id=${noteId}&name=${newTitle}`;
+	let response = await fetch(
+		"https://api.jot.bforborum.com/api/v1/note?" + queryString,
+		{
+			method: "PUT",
+			headers: {
+				authorization: "Basic " + localStorage.getItem("userApiKey"),
+				"content-type": "application/x-www-form-urlencoded",
+			},
+		}
+	);
+
+	return response.ok;
 }
