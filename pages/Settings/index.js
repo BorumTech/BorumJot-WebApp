@@ -9,7 +9,7 @@ export default function Settings(props) {
                 <title>Settings - Borum Jot</title>
             </Head>
 
-            
+            <button>Change Sign In</button>
         </Layout>
     );
 }

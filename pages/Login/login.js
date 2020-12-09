@@ -113,7 +113,7 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 						format="password"
 						label="Password"
 					/>
-					<Link href="http://www.bforborum.com/reset_password">
+					<Link href="http://forum.bforborum.com/reset_password">
 						<a target="_blank">Forgot password? Reset it</a>
 					</Link>
 					<button type="submit" className={login.card}>
@@ -121,7 +121,7 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 					</button>
 				</form>
 				<div className={login.register}>
-					<Link href="http://www.bforborum.com/Register">
+					<Link href="http://forum.bforborum.com/Register">
 						<a target="_blank">New to Borum? Create an Account</a>
 					</Link>
 				</div>

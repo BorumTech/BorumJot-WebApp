@@ -17,6 +17,7 @@ import Task from "../../components/Jotting/task";
 export default function Home({ fade, onFadeInLogin, setFade }) {
 	const [notes, setNotes] = useState(null);
 	const [tasks, setTasks] = useState(null);
+	const [currentJotting, setCurrentJotting] = useState(null); // id of currently displayed jotting
 
 	const router = useRouter();
 
@@ -45,6 +46,27 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 		}
 	};
 
+	/**
+	 * Checks whether the url is for displaying a single jotting
+	 * @description Uses a regular expression to find the component  
+	 * @param {string} jotType The type of jotting to check for in the url (singular)
+	 * @return {boolean} Whether the url matches a jotting to display
+	 */
+	const urlMatchesDisplayJotting = jotType => {
+		const urlRegEx = new RegExp("\/\?" + jotType + "s/([0-9]+)/([A-Za-z\s\-]+)");
+		const decodedUrl = decodeURIComponent(router.asPath);
+		
+		let query;
+		if ((query = urlRegEx.exec(decodedUrl)) != null) {
+			
+			router.query = {
+				type: jotType,
+				id: parseInt(query[1]),
+			};
+			return true;
+		}
+	};
+
 	return (
 		<main
 			onAnimationEnd={handleOnAnimationEnd}
@@ -65,20 +87,30 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 				<CreateTaskButton jots={tasks} setJots={setTasks} />
 			</div>
 			<AccountBanner setFade={setFade} />
-			{notes && router.query.type &&
-			router.query.type == "note" &&
-			router.query.id ? (
+			{notes &&
+			((router.query.type &&
+				router.query.type == "note" &&
+				router.query.id) ||
+				urlMatchesDisplayJotting("note")) ? (
 				<div className={home.fullJotting}>
-					<Note {...router.query} {...notes.find(item => item.id == router.query.id)} />
+					<Note
+						{...router.query}
+						{...notes.find((item) => item.id == router.query.id)}
+					/>
 				</div>
 			) : (
 				""
 			)}
-			{tasks && router.query.type &&
-			router.query.type == "task" &&
-			router.query.id ? (
+			{tasks &&
+			((router.query.type &&
+				router.query.type == "task" &&
+				router.query.id) ||
+				urlMatchesDisplayJotting("task")) ? (
 				<div className={home.fullJotting}>
-					<Task {...router.query} {...tasks.find(item => item.id == router.query.id)} />
+					<Task
+						{...router.query}
+						{...tasks.find((item) => item.id == router.query.id)}
+					/>
 				</div>
 			) : (
 				""
