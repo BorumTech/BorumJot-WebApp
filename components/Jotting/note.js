@@ -7,7 +7,7 @@ export default function Note(note) {
 	return (
 		<div className={jotting.fullJotting}>
 			<JottingOptionsBar {...note} jotType="note" />
-			<JottingTitle title={note.title} />
+			<JottingTitle id={note.id} originalTitle={note.title} jotType="note" />
 			<JottingDetails jottingInfo={note} jotType="note" />
 		</div>
 	);

@@ -6,7 +6,7 @@ export default function Task(task) {
     return (
         <div className={jotting.fullJotting}>
             <JottingOptionsBar {...task} jotType="task" />
-            <JottingTitle title={task.title} />
+            <JottingTitle id={task.id} originalTitle={task.title} jotType="task" />
         </div>
     );
 }

@@ -3,7 +3,7 @@ import Layout from "../components/Layout/layout";
 import Login from "./Login/login";
 import Home from "./Home/home";
 import {useEffect, useState} from 'react';
-import { CONTENT_STATE } from "../lib/view";
+import { CONTENT_STATE } from "../libs/view";
 
 export default function Index() {
   const [loginFade, setLoginFade] = useState(CONTENT_STATE.INVISIBLE);

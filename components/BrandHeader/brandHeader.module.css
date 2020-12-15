@@ -1,0 +1,15 @@
+.brandNameContainer {
+	grid-row: 1;
+	grid-column: 1;
+}
+
+.brandNameContainer > a {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	outline: none;
+}
+
+.brandNameContainer span {
+	margin-left: 10px;
+}
