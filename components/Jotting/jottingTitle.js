@@ -1,16 +1,31 @@
 import jottingStyleMod from "./jotting.module.css";
 import { useState } from "react";
+import { updateJottingTitle } from "../../libs/Datastore/requests";
 
-export default function JottingTitle(props) {
-	const [title, setTitle] = useState(props.title);
+/**
+ * @param { {id : number, originalTitle : string } } props
+ * @param props.id The id of the jotting
+ * @param props.originalTitle The title passed as a prop to this component
+ */
+export default function JottingTitle({ id, originalTitle, jotType }) {
+	const [title, setTitle] = useState(originalTitle);
 
 	const handleTitleChange = (e) => {
 		setTitle(e.target.value);
 	};
 
+	/**
+	 * Updates the jotting's title to a new title
+	 */
+	const updateTitle = async () => {
+		let response = await updateJottingTitle(id, jotType, title);
+
+		return response.ok;
+	};
+
 	const handleTitleInputKeyDown = (e) => {
 		if (e.key == "Enter") {
-			updateTitle(note.id, e.target.value);
+			updateTitle(id, e.target.value);
 		}
 	};
 
