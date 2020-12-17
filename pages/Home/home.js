@@ -17,10 +17,11 @@ import { getJottings } from "../../libs/Datastore/requests";
 export default function Home({ fade, onFadeInLogin, setFade }) {
 	const [notes, setNotes] = useState(null);
 	const [tasks, setTasks] = useState(null);
-	const [currentJotting, setCurrentJotting] = useState(null); // id of currently displayed jotting
+	const [currentJotting, setCurrentJotting] = useState(null); // Currently displayed jotting object
 
 	const router = useRouter();
 
+	// componentDidMount() - Initally load the jottings to the screen with a request
 	useEffect(() => {
 		const jottingsRequest = getJottings();
 		jottingsRequest
@@ -28,11 +29,16 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 				setNotes(response.notes);
 				setTasks(response.tasks);
 			})
-			.catch(response => {
+			.catch((response) => {
 				setNotes(-1);
 				setTasks(-1);
 			});
 	}, []);
+
+	// componentDidUpdate() Update current jotting every time url changes
+	useEffect(() => {
+		setCurrentJotting(notes?.find((item) => item.id == router.query.id));
+	}, [router.query]);
 
 	const transitionToLogin = () => {
 		onFadeInLogin();
@@ -55,7 +61,7 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 	 */
 	const urlMatchesDisplayJotting = (jotType) => {
 		const urlRegEx = new RegExp(
-			"/?" + jotType + "s/([0-9]+)/([A-Za-zs-]+)"
+			"/?" + jotType + "s/([0-9]+)/([A-Za-z\s-]+)"
 		);
 		const decodedUrl = decodeURIComponent(router.asPath);
 
@@ -64,6 +70,14 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 			router.query = {
 				type: jotType,
 				id: parseInt(query[1]),
+				title: (() => {
+					if (jotType == "note") 
+						return notes.find(item => item.id == query[1]).title
+					else if (jotType == "task")
+						return tasks.find(item => item.id == query[1]).title
+					
+					return null
+				})()
 			};
 			return true;
 		}
@@ -79,10 +93,10 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 			<BrandHeader />
 			<SearchBar />
 			<AccountBanner setFade={setFade} />
-			
+
 			<NoteControl notesState={[notes, setNotes]} />
 			<TaskControl tasksState={[tasks, setTasks]} />
-			
+
 			{notes &&
 			((router.query.type &&
 				router.query.type == "note" &&
@@ -91,7 +105,7 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 				<div className={home.fullJotting}>
 					<Note
 						{...router.query}
-						{...notes.find((item) => item.id == router.query.id)}
+						{...notes.find(item => item.id == currentJotting)}
 					/>
 				</div>
 			) : (
@@ -115,15 +129,15 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 	);
 }
 /**
- * Control for Notes heading, 
- * list for view user notes, and 
+ * Control for Notes heading,
+ * list for view user notes, and
  * button to create note
- * @param { { notesState: [notes, setNotes] } } props 
+ * @param { { notesState: [notes, setNotes] } } props
  * @param props.notesState The array returned from useState for the notes state
  * @param props.notesState[0] The value of notes
  * @param props.notesState[1] The Dispatch to set a new value to the notes state
  */
-function NoteControl({notesState}) {
+function NoteControl({ notesState }) {
 	const [notes, setNotes] = notesState;
 
 	return (
@@ -136,14 +150,14 @@ function NoteControl({notesState}) {
 }
 
 /**
- * Control for Tasks heading, 
- * list for view user tasks, and 
+ * Control for Tasks heading,
+ * list for view user tasks, and
  * button to create task
- * @param { { tasksState: [tasks, setTasks] } } props 
+ * @param { { tasksState: [tasks, setTasks] } } props
  * @param { [tasks, setTasks] } props.tasksState
- * @param { {id: number}[] } props.tasksState[0] 
+ * @param { {id: number}[] } props.tasksState[0]
  */
-function TaskControl({tasksState}) {
+function TaskControl({ tasksState }) {
 	const [tasks, setTasks] = tasksState;
 
 	return (

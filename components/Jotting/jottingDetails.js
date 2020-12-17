@@ -10,16 +10,20 @@ import { useEffect, useState } from "react";
  * @param { {id: number} } props.jottingInfo The object representation of the jotting
  * @param {string} props.jotType The type of the jotting
  */
-export default function JottingDetails({jottingInfo, jotType}) {
-    const [body, setBody] = useState(null);
+export default function JottingDetails({ jottingInfo, jotType }) {
+	const [body, setBody] = useState(null);
 
-    let bodyEl = <FetchError itemName={jotType} />;
-    
-    const handleBodyUpdate = (e) => {
+	let bodyEl = <FetchError itemName={jotType} />;
+
+	const handleBodyUpdate = (e) => {
 		setBody(e.target.value);
 	};
-    
-    if (typeof body == "string") {
+
+	useEffect(() => {
+		getBody(jottingInfo.id, jotType).then((response) => setBody(response));
+	}, [jottingInfo]);
+
+	if (typeof body == "string") {
 		bodyEl = (
 			<textarea
 				rows="10"
@@ -29,11 +33,11 @@ export default function JottingDetails({jottingInfo, jotType}) {
 				onChange={handleBodyUpdate}
 			/>
 		);
-    }
+	}
 
-    useEffect(() => {
+	useEffect(() => {
 		getBody(jottingInfo.id, jotType).then((response) => setBody(response));
 	}, []);
-    
+
 	return body || body == "" ? bodyEl : <CircularProgress />;
 }

@@ -1,5 +1,5 @@
 import jottingStyleMod from "./jotting.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateJottingTitle } from "../../libs/Datastore/requests";
 
 /**
@@ -13,6 +13,10 @@ export default function JottingTitle({ id, originalTitle, jotType }) {
 	const handleTitleChange = (e) => {
 		setTitle(e.target.value);
 	};
+
+	useEffect(() => {
+		setTitle(originalTitle);
+	}, [originalTitle]);
 
 	/**
 	 * Updates the jotting's title to a new title

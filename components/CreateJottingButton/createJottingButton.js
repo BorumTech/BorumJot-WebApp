@@ -44,7 +44,7 @@ export default function CreateJottingButton({ jotType, jots, setJots }) {
 
 		if (e.key == "Enter") {
 			const jotName = e.target.value;
-			const response = await createJot(jotName, jotType);
+			const response = await createJot(jotType, jotName);
 			clearInput();
 			setJots([...jots, response]);
 			showBtn();
