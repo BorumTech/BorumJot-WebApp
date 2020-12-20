@@ -21,4 +21,12 @@ export default class Jotting {
 
 		router.replace(url, decoratedUrl, options);
 	}
+
+	/**
+	 * Closes the jotting by removing it from the url
+	 * @param {{asPath : string, replace}} router 
+	 */
+	static closeJotting(router) {
+		router.replace(router.asPath, router.asPath.split("?")[0]);
+	}
 }

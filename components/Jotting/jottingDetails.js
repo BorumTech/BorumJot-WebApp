@@ -19,9 +19,11 @@ export default function JottingDetails({ jottingInfo, jotType }) {
 		setBody(e.target.value);
 	};
 
+	// componentDidMount(), componentDidUpdate() - getBody
 	useEffect(() => {
+		console.log("Fetching body...");
 		getBody(jottingInfo.id, jotType).then((response) => setBody(response));
-	}, [jottingInfo]);
+	}, [jottingInfo.id]);
 
 	if (typeof body == "string") {
 		bodyEl = (
@@ -34,10 +36,6 @@ export default function JottingDetails({ jottingInfo, jotType }) {
 			/>
 		);
 	}
-
-	useEffect(() => {
-		getBody(jottingInfo.id, jotType).then((response) => setBody(response));
-	}, []);
 
 	return body || body == "" ? bodyEl : <CircularProgress />;
 }

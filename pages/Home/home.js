@@ -13,11 +13,11 @@ import { useRouter } from "next/router";
 import Note from "../../components/Jotting/note";
 import Task from "../../components/Jotting/task";
 import { getJottings } from "../../libs/Datastore/requests";
+import Jotting from "../../libs/Jotting";
 
 export default function Home({ fade, onFadeInLogin, setFade }) {
 	const [notes, setNotes] = useState(null);
 	const [tasks, setTasks] = useState(null);
-	const [currentJotting, setCurrentJotting] = useState(null); // Currently displayed jotting object
 
 	const router = useRouter();
 
@@ -35,10 +35,18 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 			});
 	}, []);
 
-	// componentDidUpdate() Update current jotting every time url changes
+	// Escape the jot popup when Escape is pressed
 	useEffect(() => {
-		setCurrentJotting(notes?.find((item) => item.id == router.query.id));
-	}, [router.query]);
+		const handleKeyUp = (e) => {
+			if (router.query.id && e.key == "Escape") {
+				Jotting.closeJotting(router);
+			}
+		};
+
+		document.addEventListener("keyup", handleKeyUp);
+
+		return () => document.removeEventListener("keyup", handleKeyUp);
+	});
 
 	const transitionToLogin = () => {
 		onFadeInLogin();
@@ -61,7 +69,7 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 	 */
 	const urlMatchesDisplayJotting = (jotType) => {
 		const urlRegEx = new RegExp(
-			"/?" + jotType + "s/([0-9]+)/([A-Za-z\s-]+)"
+			"/?" + jotType + "s/([0-9]+)/([A-Za-zs-]+)"
 		);
 		const decodedUrl = decodeURIComponent(router.asPath);
 
@@ -71,16 +79,18 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 				type: jotType,
 				id: parseInt(query[1]),
 				title: (() => {
-					if (jotType == "note") 
-						return notes.find(item => item.id == query[1]).title
+					if (jotType == "note")
+						return notes.find((item) => item.id == query[1]).title;
 					else if (jotType == "task")
-						return tasks.find(item => item.id == query[1]).title
-					
-					return null
-				})()
+						return tasks.find((item) => item.id == query[1]).title;
+
+					return query[2];
+				})(),
 			};
 			return true;
 		}
+
+		return false;
 	};
 
 	return (
@@ -105,7 +115,6 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 				<div className={home.fullJotting}>
 					<Note
 						{...router.query}
-						{...notes.find(item => item.id == currentJotting)}
 					/>
 				</div>
 			) : (
@@ -117,10 +126,7 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 				router.query.id) ||
 				urlMatchesDisplayJotting("task")) ? (
 				<div className={home.fullJotting}>
-					<Task
-						{...router.query}
-						{...tasks.find((item) => item.id == router.query.id)}
-					/>
+					<Task {...router.query} />
 				</div>
 			) : (
 				""
