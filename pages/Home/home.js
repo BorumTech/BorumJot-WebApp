@@ -126,7 +126,7 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 				router.query.id) ||
 				urlMatchesDisplayJotting("task")) ? (
 				<div className={home.fullJotting}>
-					<Task {...router.query} />
+					<Task {...tasks.find(item => item.id == router.query.id)} />
 				</div>
 			) : (
 				""

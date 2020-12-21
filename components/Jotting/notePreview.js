@@ -5,15 +5,13 @@ import { useRouter } from "next/router";
 export default function NotePreview(props) {
 	const router = useRouter();
 
-	const handleNoteBtnClick = e => {
+	const handleNoteBtnClick = (e) => {
 		Jotting.openJotting(router, "note", props);
 	};
-	
+
 	return (
 		<data className={jotting.jotting} value={"N" + props.id}>
-			<button onClick={handleNoteBtnClick}>
-				{props.title}
-			</button>
+			<button onClick={handleNoteBtnClick}>{props.title}</button>
 		</data>
 	);
 }

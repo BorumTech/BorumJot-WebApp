@@ -1,14 +1,10 @@
-import jotting from "./jotting.module.css";
-import JottingOptionsBar from "./JottingOptionsBar";
-import JottingTitle from "./jottingTitle";
 import JottingDetails from "./jottingDetails";
+import Jotting from "./Jotting";
 
 export default function Note(note) {
 	return (
-		<div className={jotting.fullJotting}>
-			<JottingOptionsBar {...note} jotType="note" />
-			<JottingTitle id={note.id} originalTitle={note.title} jotType="note" />
+		<Jotting jotType="note" {...note}>
 			<JottingDetails jottingInfo={note} jotType="note" />
-		</div>
+		</Jotting>
 	);
 }

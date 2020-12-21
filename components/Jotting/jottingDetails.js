@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 /**
  * The component for the body or details of a jotting
  * @param { {jotType: string, jottingInfo: any } } props The component props object
- * @param { {id: number} } props.jottingInfo The object representation of the jotting
+ * @param { {id: number, body?: string} } props.jottingInfo The object representation of the jotting
  * @param {string} props.jotType The type of the jotting
  */
 export default function JottingDetails({ jottingInfo, jotType }) {
@@ -21,8 +21,11 @@ export default function JottingDetails({ jottingInfo, jotType }) {
 
 	// componentDidMount(), componentDidUpdate() - getBody
 	useEffect(() => {
-		console.log("Fetching body...");
-		getBody(jottingInfo.id, jotType).then((response) => setBody(response));
+		if (jottingInfo.body != null) {
+			setBody(jottingInfo.body);
+		} else {
+			getBody(jottingInfo.id, jotType).then((response) => setBody(response));
+		}
 	}, [jottingInfo.id]);
 
 	if (typeof body == "string") {
@@ -37,5 +40,5 @@ export default function JottingDetails({ jottingInfo, jotType }) {
 		);
 	}
 
-	return body || body == "" ? bodyEl : <CircularProgress />;
+	return body != null ? bodyEl : <CircularProgress />;
 }
