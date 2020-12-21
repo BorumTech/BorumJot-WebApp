@@ -29,7 +29,7 @@ export default function AccountBanner({ setFade }) {
 	const getParamFromLocalStorage = name => {
 		
 		// The window has loaded and the value is set in local storage
-		if (typeof window !== undefined && localStorage.getItem(name) != null) {
+		if (typeof window !== undefined && localStorage && localStorage.getItem(name) != null) {
 			return localStorage.getItem(name);
 		}
 		
