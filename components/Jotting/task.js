@@ -1,4 +1,4 @@
-import Jotting from "./Jotting";
+import Jotting from "./jotting";
 import JottingDetails from "./jottingDetails";
 
 export default function Task(task) {

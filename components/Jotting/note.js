@@ -1,5 +1,5 @@
 import JottingDetails from "./jottingDetails";
-import Jotting from "./Jotting";
+import Jotting from "./jotting";
 
 export default function Note(note) {
 	return (
