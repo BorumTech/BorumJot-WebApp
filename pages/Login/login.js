@@ -4,7 +4,8 @@ import LogoImage from "../../components/logoImage";
 import FormField from "../../components/FormField/formField";
 import ProgressSpinner from "../../components/CircularProgress/circularProgress";
 import { useRef, useState } from "react";
-import { CONTENT_STATE } from "../../lib/view";
+import { CONTENT_STATE } from "../../libs/view";
+import { submitLogin } from "../../libs/Datastore/requests";
 
 export default function Login({ fade, onFadeInHome, setFade }) {
 	const [email, setEmail] = useState("");
@@ -13,8 +14,8 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 
 	const loginForm = useRef(null);
 
-	const handleEmailChange = e => setEmail(e.target.value);
-  const handlePasswordChange = e => setPassword(e.target.value);
+	const handleEmailChange = (e) => setEmail(e.target.value);
+	const handlePasswordChange = (e) => setPassword(e.target.value);
 
 	/**
 	 * Make API request to login to obtain API key
@@ -28,18 +29,9 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 		// Exit if not all credentials are given
 		if (!(email && password)) return;
 
-		const response = await fetch("https://api.bforborum.com/api/login", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/x-www-form-urlencoded",
-			},
-			body: `email=${email}&password=${password}`,
-		});
-
-		if (response.status == 200) {
-			const jsonResponse = await response.json();
-
-      // Store user information + user's api key so requests aren't needed later
+		const jsonResponse = await submitLogin(email, password);
+		try {
+			// Store user information + user's api key so requests aren't needed later
 			window.localStorage.setItem(
 				"userApiKey",
 				jsonResponse.data.api_key
@@ -55,10 +47,9 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 			window.localStorage.setItem("email", jsonResponse.data.email);
 
 			setFade(CONTENT_STATE.FADE_OUT);
-		} else if (response.status == 404 || response.status == 500) {
+		} catch {
 			setShowSpinner(false);
 			setPassword("");
-			const jsonResponse = await response.json();
 			window.alert(jsonResponse.error.message);
 		}
 	};
@@ -113,7 +104,7 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 						format="password"
 						label="Password"
 					/>
-					<Link href="http://www.bforborum.com/reset_password">
+					<Link href="http://forum.bforborum.com/reset_password">
 						<a target="_blank">Forgot password? Reset it</a>
 					</Link>
 					<button type="submit" className={login.card}>
@@ -121,7 +112,7 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 					</button>
 				</form>
 				<div className={login.register}>
-					<Link href="http://www.bforborum.com/Register">
+					<Link href="http://forum.bforborum.com/Register">
 						<a target="_blank">New to Borum? Create an Account</a>
 					</Link>
 				</div>

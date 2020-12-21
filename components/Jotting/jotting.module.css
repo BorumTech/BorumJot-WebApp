@@ -1,0 +1,63 @@
+.jotting button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    outline: none;
+    text-align: left;
+    padding: 1em;
+    width: 100%;
+    height: 100%;
+}
+
+.fullJotting {
+    display: grid;
+    grid-template-columns: 40% 1fr 300px;
+    grid-template-rows: repeat(2, auto);
+    background-color: rgba(124, 252, 252, 0.993);
+    height: 400px;
+}
+
+.details {
+    place-self: center;
+    grid-row: 2;
+    grid-column: 1 / 3;
+    font-family: sans-serif;
+    background: none;
+    border: none;
+    resize: none;
+    padding: 1em;
+}
+
+.title {
+    grid-row: 1;
+    grid-column: 1 / 3;
+    justify-self: stretch;
+    align-self: center;
+    border: none;
+    background: none;
+    font-size: 2em;
+    max-width: 100%;
+    text-align: center;
+}
+
+.jottingOptionsBar {
+    grid-row: 1;
+    grid-column: 3 / 4;
+    justify-self: flex-end;
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.jottingOptionsBar button {
+    background: none;
+    outline: none;
+    border: none;
+}
+
+.jottingOptionsBar button:hover {
+    scale: 1.2;
+}

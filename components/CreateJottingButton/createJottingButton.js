@@ -1,5 +1,6 @@
 import createJottingBtn from "./createJottingBtn.module.css";
-import { useState, useRef } from 'react';
+import { useState, useRef } from "react";
+import { createJotting as createJot } from "../../libs/Datastore/requests";
 
 export default function CreateJottingButton({ jotType, jots, setJots }) {
 	const [newJotInputCls, setNewJotInputCls] = useState("invisible");
@@ -43,7 +44,7 @@ export default function CreateJottingButton({ jotType, jots, setJots }) {
 
 		if (e.key == "Enter") {
 			const jotName = e.target.value;
-			const response = await createJot(jotName, jotType);
+			const response = await createJot(jotType, jotName);
 			clearInput();
 			setJots([...jots, response]);
 			showBtn();
@@ -70,34 +71,9 @@ export default function CreateJottingButton({ jotType, jots, setJots }) {
 					onChange={handleNewJotInputChange}
 				/>
 			</div>
-			<button
-				className={createJotBtnCls}
-				onClick={handleNewJotBtnClick}
-			>
+			<button className={createJotBtnCls} onClick={handleNewJotBtnClick}>
 				Add {jotType}
 			</button>
 		</div>
 	);
-}
-
-async function createJot(jotName, jotType) {
-	return fetch(`https://api.jot.bforborum.com/api/v1/${jotType.toLowerCase()}`, {
-		method: "POST",
-		body: `name=${jotName}`,
-		headers: {
-			authorization: "Basic " + localStorage.getItem("userApiKey"),
-			"content-type": "application/x-www-form-urlencoded",
-		},
-	})
-		.then((response) => {
-			if (response.status >= 200 && response.status < 300) {
-				return response.json();
-			}
-		})
-		.then((response) => {
-			return {
-				id: response.data.id,
-				title: jotName,
-			};
-		});
 }

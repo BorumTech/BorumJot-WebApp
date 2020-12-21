@@ -1,0 +1,28 @@
+.fetchError {
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.fetchError p {
+    text-align: center;
+}
+
+.fetchError button {
+    border: none;
+    outline: none;
+    background: none;
+    padding: 1em;
+}
+
+.rotateRetry {
+    animation: rotate-retry 1s ease;
+}
+
+@keyframes rotate-retry {
+    to {
+        transform: rotateZ(360deg);
+    }
+}
