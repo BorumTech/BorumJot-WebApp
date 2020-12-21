@@ -1,6 +1,15 @@
 import searchBar from "./searchBar.module.css";
+import { useRouter } from "next/router";
+import UrlService from "../../libs/UrlService";
 
 export default function SearchBar() {
+  const router = useRouter();
+  const urlService = new UrlService(router);
+
+  const handleSearch = e => {
+    urlService.changeQuery({q: e.target.value});
+  };
+
   return (
     <div className={searchBar.container}>
       <button className={searchBar.searchBarIcon}>
@@ -13,6 +22,7 @@ export default function SearchBar() {
       <input
         className={searchBar.searchBar}
         type="text"
+        onChange={handleSearch}
         placeholder="Search your Jottings"
       />
     </div>
