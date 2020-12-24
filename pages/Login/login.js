@@ -29,8 +29,8 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 		// Exit if not all credentials are given
 		if (!(email && password)) return;
 
-		const jsonResponse = await submitLogin(email, password);
 		try {
+			const jsonResponse = await submitLogin(email, password);
 			// Store user information + user's api key so requests aren't needed later
 			window.localStorage.setItem(
 				"userApiKey",
@@ -44,13 +44,13 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 				"lastName",
 				jsonResponse.data.last_name
 			);
-			window.localStorage.setItem("email", jsonResponse.data.email);
+			window.localStorage.setItem("email", email);
 
 			setFade(CONTENT_STATE.FADE_OUT);
-		} catch {
+		} catch (error) {
 			setShowSpinner(false);
 			setPassword("");
-			window.alert(jsonResponse.error.message);
+			window.alert(error);
 		}
 	};
 

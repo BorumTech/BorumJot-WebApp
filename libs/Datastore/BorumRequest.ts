@@ -85,7 +85,11 @@ export default class BorumRequest extends Request {
 
         const response = await fetch(this.url, this.init);
         if (response.status >= 200 && response.status < 300) {
-            return response.json();
+            return await response.json();
         }
+
+        let {error} = await response.json();
+
+        throw new Error(error.message);
     }
 }

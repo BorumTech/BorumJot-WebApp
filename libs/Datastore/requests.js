@@ -1,9 +1,8 @@
-import BorumRequest from "./BorumRequest";
 import BorumJotRequest from "./BorumJotRequest";
 import { unescapeSlashes } from "./responseHelpers";
 
 export async function submitLogin(email, password) {
-	return await BorumRequest.initialize(`login`)
+	return await BorumJotRequest.initialize(`login`)
 		.post(`email=${email}&password=${password}`)
 		.makeRequest();
 }
@@ -17,9 +16,12 @@ export async function getJottings() {
 			.authorize()
 			.makeRequest();
 
+		const tasks = data.filter(item => item.source == "task");
+		tasks.forEach(item => item.body = unescapeSlashes(item.body));
+
 		return {
 			notes: data.filter((item) => item.source == "note"),
-			tasks: data.filter((item) => item.source == "task"),
+			tasks,
 		};
 	}
 
@@ -37,6 +39,14 @@ export async function getBody(id, jotType) {
 		.authorize()
 		.makeRequest();
 	return unescapeSlashes(await data.body);
+}
+
+export async function updateBody(id, jotType, newBody) {
+	const queryString = `id=${id}`;
+	return BorumJotRequest.initialize(`${jotType}?${queryString}`)
+		.authorize()
+		.put(`body=${unescapeSlashes(newBody)}`)
+		.makeRequest();
 }
 
 /**
@@ -99,4 +109,13 @@ export async function createJotting(jotType, jotName) {
 		id: data.id,
 		title: jotName,
 	};
+}
+
+export async function getSubtasks(id) {
+	const queryString = `id=${id}`;
+	const { data } = await BorumJotRequest.initialize(`subtasks?${queryString}`)
+		.authorize()
+		.makeRequest();
+
+	return data;
 }
