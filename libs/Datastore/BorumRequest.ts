@@ -57,38 +57,22 @@ export default class BorumRequest extends Request {
         return this;
     }
 
-    makeCancelable(promise: Promise<any>) {
-        let hasCanceled_ = false;
-
-        const wrappedPromise = new Promise((resolve, reject) => {
-            promise.then(
-                (val) =>
-                    hasCanceled_ ? reject({ isCanceled: true }) : resolve(val),
-                (error) =>
-                    hasCanceled_ ? reject({ isCanceled: true }) : reject(error)
-            );
-        });
-
-        return {
-            promise: wrappedPromise,
-            cancel() {
-                hasCanceled_ = true;
-            },
-        };
-    };
-
-    async makeRequest(): Promise<Response> {
+    async makeRequest(abortController: AbortController = new AbortController()): Promise<Response> {
         this.init = {
             ...this.init,
-            headers: this.commonHeaders
+            headers: this.commonHeaders,
+            signal: abortController.signal
         };
+
+        // Abort the request if it takes too long to give a response
+        setTimeout(() => abortController.abort(), 5000)
 
         const response = await fetch(this.url, this.init);
         if (response.status >= 200 && response.status < 300) {
             return await response.json();
         }
 
-        let {error} = await response.json();
+        let { error } = await response.json();
 
         throw new Error(error.message);
     }
