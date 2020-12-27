@@ -1,8 +1,9 @@
 import jotting from "./jotting.module.css";
 import FetchError from "../FetchError/fetchError";
 import CircularProgress from "../CircularProgress/circularProgress";
-import { getBody } from "../../libs/Datastore/requests";
+import { getBody, updateBody } from "../../libs/Datastore/requests";
 import { useEffect, useState } from "react";
+import { useCancelableRequest, catchRequestError } from "../../libs/Datastore/responseHelpers";
 
 /**
  * The component for the body or details of a jotting
@@ -11,23 +12,25 @@ import { useEffect, useState } from "react";
  * @param {string} props.jotType The type of the jotting
  */
 export default function JottingDetails({ jottingInfo, jotType }) {
-	const [body, setBody] = useState(null);
+	const [body, setBody] = useState(jottingInfo.body ?? null);
 
 	let bodyEl = <FetchError itemName={jotType} />;
 
-	const handleBodyUpdate = (e) => {
+	const handleBodyChange = (e) => {
 		setBody(e.target.value);
 	};
 
-	// componentDidMount(), componentDidUpdate() - getBody
-	useEffect(() => {
-		if (jottingInfo.body != null) {
-			setBody(jottingInfo.body);
-		} else {
-			getBody(jottingInfo.id, jotType).then((response) => setBody(response));
-		}
-	}, [jottingInfo.id]);
+	// Request the body if not passed by parent component
+	if (jottingInfo.body == null) {
+		useCancelableRequest(
+			getBody, // Request function
+			setBody, // State dispatcher
+			[jottingInfo.id, jotType], // Parameters of request function
+			[jottingInfo.id] // Dependency list
+		);
+	}
 
+	// Display body if the body was successfully received
 	if (typeof body == "string") {
 		bodyEl = (
 			<textarea
@@ -35,10 +38,26 @@ export default function JottingDetails({ jottingInfo, jotType }) {
 				cols="60"
 				className={jotting.details}
 				value={body}
-				onChange={handleBodyUpdate}
+				onChange={handleBodyChange}
 			/>
 		);
 	}
+
+	// Request every time the user changes something after a secondx
+	useEffect(() => {
+		const abortController = new AbortController();
+
+		const scheduleUpdate = setTimeout(function () {
+			if (body != null) {
+				updateBody(jottingInfo.id, jotType, body, abortController).catch(catchRequestError);
+			}
+		}, 1000);
+
+		return () => {
+			abortController.abort();
+			clearTimeout(scheduleUpdate);
+		};
+	}, [body]);
 
 	return body != null ? bodyEl : <CircularProgress />;
 }

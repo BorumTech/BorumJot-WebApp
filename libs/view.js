@@ -29,9 +29,9 @@ export function useOutsideAlerter(ref, router) {
 		};
 
 		// Bind the event listener
-		document.addEventListener("mousedown", handleClickOutside);
+		document.addEventListener("mouseup", handleClickOutside);
 
 		// Unbind the event listener on clean up
-		return () => document.removeEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mouseup", handleClickOutside);
 	}, [ref]);
 }

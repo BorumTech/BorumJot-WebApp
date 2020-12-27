@@ -16,9 +16,11 @@ export default class Jotting {
 		const params = `?type=${jotType}&id=${id}&title=${title}`; // Store the query string
 		
 		const url = path + params,
-			decoratedUrl = `/?${jotType}s/${id}/${title ?? ""}`,
+			queryIndicator = "/?",
+			decoratedUrl = `${queryIndicator}${jotType}s/${id}/${title ?? ""}`,
 			options = { shallow: true };
 
+		const currentUrl = queryIndicator + Object.keys(router.query)[0];
 		router.replace(url, decoratedUrl, options);
 	}
 
