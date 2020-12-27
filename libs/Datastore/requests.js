@@ -1,6 +1,12 @@
 import BorumJotRequest from "./BorumJotRequest";
 import { unescapeSlashes } from "./responseHelpers";
 
+class Datastore {
+	constructor(abortController) {
+		this.abortController = abortController;
+	}
+}
+
 export async function submitLogin(email, password) {
 	return await BorumJotRequest.initialize(`login`)
 		.post(`email=${email}&password=${password}`)
@@ -33,20 +39,23 @@ export async function getJottings() {
  * @param {number} id The id of the note whose body is getting fetched
  * @return {Promise<string>} The body of the note
  */
-export async function getBody(id, jotType) {
+export async function getBody(id, jotType, abortController) {
 	const queryString = `id=${id}`;
-	let { data } = await BorumJotRequest.initialize(`${jotType}?${queryString}`)
+	let response = await BorumJotRequest.initialize(`${jotType}?${queryString}`)
 		.authorize()
-		.makeRequest();
-	return unescapeSlashes(await data.body);
+		.makeRequest(abortController);
+	
+	return unescapeSlashes(await response.data.body);
 }
 
-export async function updateBody(id, jotType, newBody) {
+export async function updateBody(id, jotType, newBody, abortController) {
 	const queryString = `id=${id}`;
+	const unescapedBody = newBody ? unescapeSlashes(newBody) : "";
+
 	return BorumJotRequest.initialize(`${jotType}?${queryString}`)
 		.authorize()
-		.put(`body=${unescapeSlashes(newBody)}`)
-		.makeRequest();
+		.put(`body=${unescapedBody}`)
+		.makeRequest(abortController);
 }
 
 /**
