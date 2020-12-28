@@ -24,6 +24,7 @@ export default function JottingOptionsBar(props) {
 			<button onClick={handlePinClick}>
 				<Image height={32} width={32} src="/images/pin.png" />
 			</button>
+			{props.children}
 		</div>
 	);
 }

@@ -16,8 +16,8 @@ export async function getJottings() {
 			.authorize()
 			.makeRequest();
 
-		const tasks = data.filter(item => item.source == "task");
-		tasks.forEach(item => item.body = unescapeSlashes(item.body));
+		const tasks = data.filter((item) => item.source == "task");
+		tasks.forEach((item) => (item.body = unescapeSlashes(item.body)));
 
 		return {
 			notes: data.filter((item) => item.source == "note"),
@@ -118,4 +118,16 @@ export async function getSubtasks(id) {
 		.makeRequest();
 
 	return data;
+}
+
+/**
+ *
+ * @param {number} id Id of the note
+ * @param {string} recipientEmail Email of the specified recipient
+ */
+export async function shareNote(id, recipientEmail) {
+	BorumJotRequest.initialize(`note/share`)
+		.authorize()
+		.post(`id=${id}&email=${recipientEmail}`)
+		.makeRequest();
 }

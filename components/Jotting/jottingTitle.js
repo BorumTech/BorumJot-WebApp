@@ -1,5 +1,5 @@
 import jottingStyleMod from "./jotting.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { updateJottingTitle } from "../../libs/Datastore/requests";
 
 /**
@@ -9,6 +9,8 @@ import { updateJottingTitle } from "../../libs/Datastore/requests";
  */
 export default function JottingTitle({ id, originalTitle, jotType }) {
 	const [title, setTitle] = useState(originalTitle);
+	
+	const ref = useRef(null);
 
 	const handleTitleChange = (e) => {
 		setTitle(e.target.value);
@@ -30,11 +32,13 @@ export default function JottingTitle({ id, originalTitle, jotType }) {
 	const handleTitleInputKeyDown = (e) => {
 		if (e.key == "Enter") {
 			updateTitle(id, e.target.value);
+			ref.current.blur();
 		}
 	};
 
 	return (
 		<input
+			ref={ref}
 			type="text"
 			className={jottingStyleMod.title}
 			value={title}

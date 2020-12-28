@@ -1,10 +1,12 @@
 import JottingDetails from "./jottingDetails";
 import Jotting from "./jotting";
+import NoteOptionsBar from "./noteOptionsBar";
 
-export default function Note(note) {
+export default function Note(props) {
 	return (
-		<Jotting jotType="note" {...note}>
-			<JottingDetails jottingInfo={note} jotType="note" />
+		<Jotting jotType="note" {...props.note}>
+			<NoteOptionsBar showShareMenuState={props.showShareMenuState} />
+			<JottingDetails jottingInfo={props.note} jotType="note" />
 		</Jotting>
 	);
 }
