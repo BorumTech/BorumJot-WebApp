@@ -1,0 +1,13 @@
+.shareeList {
+    display: flex;
+    height: 100%;
+    padding: 1em;
+    align-content: stretch;
+    align-items: center;
+    justify-content: flex-start;
+    flex-flow: column nowrap;
+}
+
+.item {
+    line-height: 2em;
+}
