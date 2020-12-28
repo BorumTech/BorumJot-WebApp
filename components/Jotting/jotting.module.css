@@ -3,7 +3,6 @@
     font-size: 1rem;
     background: none;
     border: none;
-    outline: none;
     text-align: left;
     padding: 1em;
     width: 100%;
@@ -48,7 +47,6 @@
 
 .jottingOptionsBar button {
     background: none;
-    outline: none;
     border: none;
     margin: 0 1em;
 }
