@@ -24,7 +24,7 @@ export function useOutsideAlerter(ref, router) {
 	useEffect(() => {
 		const handleClickOutside = (e) => {
 			if (ref.current && !ref.current.contains(e.target)) {
-        Jotting.closeJotting(router);
+        		Jotting.closeJotting(router);
 			}
 		};
 

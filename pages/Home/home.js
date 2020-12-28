@@ -7,13 +7,14 @@ import CreateTaskButton from "../../components/CreateJottingButton/createTaskBut
 import BrandHeader from "../../components/BrandHeader/brandHeader";
 import ProgressSpinner from "../../components/CircularProgress/circularProgress";
 import AccountBanner from "../../components/AccountBanner/accountBanner";
-import { useState, useEffect } from "react";
-import { CONTENT_STATE } from "../../libs/view";
+import { useState, useEffect, useRef, forwardRef } from "react";
+import { CONTENT_STATE, useOutsideAlerter } from "../../libs/view";
 import { useRouter } from "next/router";
 import Note from "../../components/Jotting/note";
 import Task from "../../components/Jotting/task";
 import { getJottings } from "../../libs/Datastore/requests";
 import Jotting from "../../libs/Jotting";
+import UrlService from "../../libs/UrlService";
 
 export default function Home({ fade, onFadeInLogin, setFade }) {
 	const [notes, setNotes] = useState(null);
@@ -61,38 +62,6 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 		}
 	};
 
-	/**
-	 * Checks whether the url is for displaying a single jotting
-	 * @description Uses a regular expression to find the component
-	 * @param {string} jotType The type of jotting to check for in the url (singular)
-	 * @return {boolean} Whether the url matches a jotting to display
-	 */
-	const urlMatchesDisplayJotting = (jotType) => {
-		const urlRegEx = new RegExp(
-			"/?" + jotType + "s/([0-9]+)/([A-Za-zs-]+)"
-		);
-		const decodedUrl = decodeURIComponent(router.asPath);
-
-		let query;
-		if ((query = urlRegEx.exec(decodedUrl)) != null) {
-			router.query = {
-				type: jotType,
-				id: parseInt(query[1]),
-				title: (() => {
-					if (jotType == "note")
-						return notes.find((item) => item.id == query[1]).title;
-					else if (jotType == "task")
-						return tasks.find((item) => item.id == query[1]).title;
-
-					return query[2];
-				})(),
-			};
-			return true;
-		}
-
-		return false;
-	};
-
 	return (
 		<main
 			onAnimationEnd={handleOnAnimationEnd}
@@ -104,36 +73,15 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 			<SearchBar />
 			<AccountBanner setFade={setFade} />
 
-			<NoteControl notesState={[notes, setNotes]} />
-			<TaskControl tasksState={[tasks, setTasks]} />
+			<NotesControl notesState={[notes, setNotes]} />
+			<TasksControl tasksState={[tasks, setTasks]} />
 
-			{notes &&
-			((router.query.type &&
-				router.query.type == "note" &&
-				router.query.id) ||
-				urlMatchesDisplayJotting("note")) ? (
-				<div className={home.fullJotting}>
-					<Note
-						{...router.query}
-					/>
-				</div>
-			) : (
-				""
-			)}
-			{tasks &&
-			((router.query.type &&
-				router.query.type == "task" &&
-				router.query.id) ||
-				urlMatchesDisplayJotting("task")) ? (
-				<div className={home.fullJotting}>
-					<Task {...tasks.find(item => item.id == router.query.id)} />
-				</div>
-			) : (
-				""
-			)}
+			<NoteControl notes={notes} />
+			<TaskControl tasks={tasks} />
 		</main>
 	);
 }
+
 /**
  * Control for Notes heading,
  * list for view user notes, and
@@ -143,7 +91,7 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
  * @param props.notesState[0] The value of notes
  * @param props.notesState[1] The Dispatch to set a new value to the notes state
  */
-function NoteControl({ notesState }) {
+function NotesControl({ notesState }) {
 	const [notes, setNotes] = notesState;
 
 	return (
@@ -163,7 +111,7 @@ function NoteControl({ notesState }) {
  * @param { [tasks, setTasks] } props.tasksState
  * @param { {id: number}[] } props.tasksState[0]
  */
-function TaskControl({ tasksState }) {
+function TasksControl({ tasksState }) {
 	const [tasks, setTasks] = tasksState;
 
 	return (
@@ -171,6 +119,81 @@ function TaskControl({ tasksState }) {
 			<h1>Tasks</h1>
 			{tasks ? <TaskList tasks={tasks} /> : <ProgressSpinner />}
 			<CreateTaskButton jots={tasks} setJots={setTasks} />
+		</div>
+	);
+}
+
+function TaskControl({ tasks }) {
+	const router = useRouter();
+	const urlService = new UrlService(router);
+	const ref = useRef(null);
+
+	useOutsideAlerter(ref, router);
+	urlService.setQueryToJottingInfo("task");
+
+	return tasks &&
+		((router.query.type &&
+			router.query.type == "task" &&
+			router.query.id) ||
+			urlService.queryHasJottingInfo("task")) ? (
+		<div ref={ref} className={home.fullJotting}>
+			<Task {...tasks.find((item) => item.id == router.query.id)} />
+		</div>
+	) : (
+		""
+	);
+}
+
+function NoteControl({ notes }) {
+	const router = useRouter();
+	const [showShareMenu, setShowShareMenu] = useState(false);
+
+	const ref = useRef(null);
+
+	useOutsideAlerter(ref, router);
+
+	const urlService = new UrlService(router);
+	const showNote =
+		notes &&
+		((router.query.type &&
+			router.query.type == "note" &&
+			router.query.id) ||
+			urlService.queryHasJottingInfo("note"));
+	urlService.setQueryToJottingInfo("note");
+
+	if (showNote) {
+		return (
+			<div ref={ref} className={home.noteControl}>
+				<div className={home.jottingContent}>
+					<Note
+						note={router.query}
+						showShareMenuState={[showShareMenu, setShowShareMenu]}
+					/>
+				</div>
+
+				<ShareMenu router={router} showShareMenu={showShareMenu} />
+			</div>
+		);
+	}
+
+	return null;
+}
+
+function ShareMenu({ router, showShareMenu }) {
+	const shareMenuVisibility =
+		showShareMenu && router.query.type == "note" ? "visible" : "hidden";
+
+	return (
+		<div
+			style={{ visibility: shareMenuVisibility }}
+			className={home.shareMenu}
+		>
+			<h1>Share</h1>
+			<ul className={home.shareList}>
+				<li></li>
+			</ul>
+			<input type="text" />
+			<button>Share</button>
 		</div>
 	);
 }
