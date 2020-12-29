@@ -1,6 +1,6 @@
 .accountBanner {
 	grid-row: 1 / 3;
-	grid-column-end: 7;
+	grid-column-end: -1;
 	align-self: stretch;
 	margin-left: 10px;
 }

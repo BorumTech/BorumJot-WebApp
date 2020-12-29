@@ -24,7 +24,7 @@ export function useOutsideAlerter(ref, router) {
 	useEffect(() => {
 		const handleClickOutside = (e) => {
 			if (ref.current && !ref.current.contains(e.target)) {
-        		Jotting.closeJotting(router);
+				Jotting.closeJotting(router);
 			}
 		};
 
@@ -32,6 +32,19 @@ export function useOutsideAlerter(ref, router) {
 		document.addEventListener("mouseup", handleClickOutside);
 
 		// Unbind the event listener on clean up
-		return () => document.removeEventListener("mouseup", handleClickOutside);
+		return () =>
+			document.removeEventListener("mouseup", handleClickOutside);
 	}, [ref]);
+}
+
+export function useEscapeAlerter(router) {
+	const handleKeyUp = (e) => {
+		if (router.query.id && e.key == "Escape") {
+			Jotting.closeJotting(router);
+		}
+	};
+
+	document.addEventListener("keyup", handleKeyUp);
+
+	return () => document.removeEventListener("keyup", handleKeyUp);
 }

@@ -44,7 +44,7 @@ export async function getBody(id, jotType, abortController) {
 	let response = await BorumJotRequest.initialize(`${jotType}?${queryString}`)
 		.authorize()
 		.makeRequest(abortController);
-	
+
 	return unescapeSlashes(await response.data.body);
 }
 
@@ -131,12 +131,36 @@ export async function getSubtasks(id) {
 
 /**
  *
- * @param {number} id Id of the note
+ * @param {number} id id of the note
  * @param {string} recipientEmail Email of the specified recipient
  */
-export async function shareNote(id, recipientEmail) {
-	BorumJotRequest.initialize(`note/share`)
+export async function shareNote(id, recipientEmail, abortController) {
+	return BorumJotRequest.initialize(`note/share`)
 		.authorize()
 		.post(`id=${id}&email=${recipientEmail}`)
-		.makeRequest();
+		.makeRequest(abortController);
+}
+
+/**
+ * Gets the sharees for a note
+ * @param {number} id id of the note
+ * @param {AbortController} abortController The abort controller to pass to
+ * BorumJotRequest.prototype.makeRequest()
+ */
+export async function getNoteSharees(id, abortController) {
+	const queryString = `id=${id}`;
+	const response = await BorumJotRequest.initialize(
+		`note/share?${queryString}`
+	)
+		.authorize()
+		.makeRequest(abortController);
+
+	return response.data ?? response;
+}
+
+export async function removeSharee(id, shareeEmail, abortController) {
+	return await BorumJotRequest.initialize(`note/share`)
+		.authorize()
+		.delete(`id=${id}&email=${shareeEmail}`)
+		.makeRequest(abortController);
 }

@@ -11,7 +11,7 @@ export default function TaskList({ tasks }) {
 				const urlParser = new URLSearchParams(location.search);
 				return (
 					!urlParser.has("q") ||
-					item.title.includes(urlParser.get("q"))
+					item.title.toLocaleLowerCase().includes(urlParser.get("q").toLocaleLowerCase())
 				);
 			})
 			.map((item) => (

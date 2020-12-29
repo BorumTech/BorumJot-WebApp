@@ -7,7 +7,7 @@ import { updateJottingTitle } from "../../libs/Datastore/requests";
  * @param props.id The id of the jotting
  * @param props.originalTitle The title passed as a prop to this component
  */
-export default function JottingTitle({ id, originalTitle, jotType }) {
+export default function JottingTitle({ id, originalTitle = "", jotType }) {
 	const [title, setTitle] = useState(originalTitle);
 	
 	const ref = useRef(null);
@@ -40,6 +40,7 @@ export default function JottingTitle({ id, originalTitle, jotType }) {
 		<input
 			ref={ref}
 			type="text"
+			name="title"
 			className={jottingStyleMod.title}
 			value={title}
 			onChange={handleTitleChange}

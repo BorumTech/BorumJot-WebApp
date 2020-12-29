@@ -1,26 +1,30 @@
-import home from "./home.module.css";
-import SearchBar from "../../components/SearchBar/searchBar";
-import NoteList from "../../components/JottingList/noteList";
-import TaskList from "../../components/JottingList/taskList";
-import CreateNoteButton from "../../components/CreateJottingButton/createNoteButton";
-import CreateTaskButton from "../../components/CreateJottingButton/createTaskButton";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
+import AccountBanner from "../../components/AccountBanner/accountBanner";
 import BrandHeader from "../../components/BrandHeader/brandHeader";
 import ProgressSpinner from "../../components/CircularProgress/circularProgress";
-import AccountBanner from "../../components/AccountBanner/accountBanner";
-import { useState, useEffect, useRef, forwardRef } from "react";
-import { CONTENT_STATE, useOutsideAlerter } from "../../libs/view";
-import { useRouter } from "next/router";
+import CreateNoteButton from "../../components/CreateJottingButton/createNoteButton";
+import CreateTaskButton from "../../components/CreateJottingButton/createTaskButton";
 import Note from "../../components/Jotting/note";
 import Task from "../../components/Jotting/task";
-import { getJottings } from "../../libs/Datastore/requests";
-import Jotting from "../../libs/Jotting";
+import NoteList from "../../components/JottingList/noteList";
+import TaskList from "../../components/JottingList/taskList";
+import SearchBar from "../../components/SearchBar/searchBar";
+import ShareMenu from "../../components/ShareMenu/shareMenu";
+import {
+	getJottings
+} from "../../libs/Datastore/requests";
 import UrlService from "../../libs/UrlService";
+import {
+	CONTENT_STATE,
+	useEscapeAlerter,
+	useOutsideAlerter
+} from "../../libs/view";
+import home from "./home.module.css";
 
 export default function Home({ fade, onFadeInLogin, setFade }) {
 	const [notes, setNotes] = useState(null);
 	const [tasks, setTasks] = useState(null);
-
-	const router = useRouter();
 
 	// componentDidMount() - Initally load the jottings to the screen with a request
 	useEffect(() => {
@@ -35,19 +39,6 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 				setTasks(-1);
 			});
 	}, []);
-
-	// Escape the jot popup when Escape is pressed
-	useEffect(() => {
-		const handleKeyUp = (e) => {
-			if (router.query.id && e.key == "Escape") {
-				Jotting.closeJotting(router);
-			}
-		};
-
-		document.addEventListener("keyup", handleKeyUp);
-
-		return () => document.removeEventListener("keyup", handleKeyUp);
-	});
 
 	const transitionToLogin = () => {
 		onFadeInLogin();
@@ -129,6 +120,10 @@ function TaskControl({ tasks }) {
 	const ref = useRef(null);
 
 	useOutsideAlerter(ref, router);
+
+	// Escape the jot popup when Escape is pressed
+	useEscapeAlerter(router);
+
 	urlService.setQueryToJottingInfo("task");
 
 	return tasks &&
@@ -150,7 +145,9 @@ function NoteControl({ notes }) {
 
 	const ref = useRef(null);
 
+	// Escape the jot popup when Escape is pressed or the user clicks outside this component
 	useOutsideAlerter(ref, router);
+	useEscapeAlerter(router);
 
 	const urlService = new UrlService(router);
 	const showNote =
@@ -159,19 +156,29 @@ function NoteControl({ notes }) {
 			router.query.type == "note" &&
 			router.query.id) ||
 			urlService.queryHasJottingInfo("note"));
-	urlService.setQueryToJottingInfo("note");
 
-	if (showNote) {
+	useEffect(() => {
+		urlService.setQueryToJottingInfo("note");
+	}, [notes]);
+
+	if (showNote && router.query.type == "note") {
 		return (
-			<div ref={ref} className={home.noteControl}>
-				<div className={home.jottingContent}>
+			<div ref={showShareMenu ? ref : null} className={home.noteControl}>
+				<div
+					ref={showShareMenu ? null : ref}
+					className={home.jottingContent}
+				>
 					<Note
 						note={router.query}
 						showShareMenuState={[showShareMenu, setShowShareMenu]}
 					/>
 				</div>
 
-				<ShareMenu router={router} showShareMenu={showShareMenu} />
+				{showShareMenu && router.query.type == "note" ? (
+					<ShareMenu />
+				) : (
+					""
+				)}
 			</div>
 		);
 	}
@@ -179,21 +186,5 @@ function NoteControl({ notes }) {
 	return null;
 }
 
-function ShareMenu({ router, showShareMenu }) {
-	const shareMenuVisibility =
-		showShareMenu && router.query.type == "note" ? "visible" : "hidden";
 
-	return (
-		<div
-			style={{ visibility: shareMenuVisibility }}
-			className={home.shareMenu}
-		>
-			<h1>Share</h1>
-			<ul className={home.shareList}>
-				<li></li>
-			</ul>
-			<input type="text" />
-			<button>Share</button>
-		</div>
-	);
-}
+

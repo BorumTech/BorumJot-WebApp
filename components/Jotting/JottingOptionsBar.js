@@ -19,10 +19,10 @@ export default function JottingOptionsBar(props) {
 	return (
 		<div className={jotting.jottingOptionsBar}>
 			<button onClick={handleDeleteClick}>
-				<Image height={32} width={32} src="/images/trash.png" />
+				<Image height={32} width={32} src="/images/trash.png" alt="Delete icon" title="Delete jotting" />
 			</button>
 			<button onClick={handlePinClick}>
-				<Image height={32} width={32} src="/images/pin.png" />
+				<Image height={32} width={32} src="/images/pin.png" alt="Pin icon" title="Pin jotting" />
 			</button>
 			{props.children}
 		</div>
