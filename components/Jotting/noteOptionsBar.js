@@ -14,7 +14,7 @@ export default function NoteOptionsBar(props) {
     return (
         <JottingOptionsBar {...props}>
             <button onClick={handleShareClick}>
-                <Image height={35} width={55} src="/images/share.png" />
+                <Image height={35} width={55} src="/images/share.png" alt="share icon" title="Share jotting" />
             </button>
         </JottingOptionsBar>
     );

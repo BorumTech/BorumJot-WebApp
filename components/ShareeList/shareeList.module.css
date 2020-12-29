@@ -1,13 +1,26 @@
 .shareeList {
-    display: flex;
+    width: 100%;
+    line-height: 2em;
+}
+
+.shareeList, .nonList {
+    padding: 0 20px;
     height: 100%;
-    padding: 1em;
-    align-content: stretch;
-    align-items: center;
-    justify-content: flex-start;
-    flex-flow: column nowrap;
 }
 
 .item {
-    line-height: 2em;
+    width: 100%;
+}
+
+.item > span {
+    display: inline-block;
+    width: 80%;
+}
+
+.removeItemButton {
+    margin: 1em;
+    background: none;
+    border: none;
+    color: red;
+    text-align: right;
 }

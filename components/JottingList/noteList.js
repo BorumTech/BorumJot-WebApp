@@ -9,7 +9,10 @@ export default function NoteList({ notes }) {
 		noteList = notes
 			.filter((item) => {
 				const urlParser = new URLSearchParams(location.search);
-				return !urlParser.has("q") || item.title.includes(urlParser.get("q"));
+				return (
+					!urlParser.has("q") ||
+					item.title.toLocaleLowerCase().includes(urlParser.get("q").toLocaleLowerCase())
+				);
 			})
 			.map((item) => (
 				<li key={item.id}>
