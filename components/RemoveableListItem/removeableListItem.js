@@ -1,4 +1,4 @@
-import removeableListItem from "./removeableListitem.module.css";
+import removeableListItem from "./removeableListItem.module.css";
 
 /**
  * A list item that has a remove button
