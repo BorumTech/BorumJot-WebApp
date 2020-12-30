@@ -1,0 +1,17 @@
+.item {
+	width: 100%;
+}
+
+.item > span {
+	display: inline-block;
+	width: 80%;
+}
+
+.removeItemButton {
+	margin: 1em;
+	background: none;
+	border: none;
+	color: red;
+	text-align: right;
+	width: calc(20% - 2em);
+}

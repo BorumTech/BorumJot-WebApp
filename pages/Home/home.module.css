@@ -21,8 +21,7 @@
 .fullJotting {
 	grid-row: 2 / -1;
 	grid-column: 2 / -2;
-	justify-self: center;
-	width: 700px;
+	justify-self: stretch;
 }
 
 .noteControl {

@@ -38,13 +38,16 @@ export function useOutsideAlerter(ref, router) {
 }
 
 export function useEscapeAlerter(router) {
-	const handleKeyUp = (e) => {
-		if (router.query.id && e.key == "Escape") {
-			Jotting.closeJotting(router);
-		}
-	};
+	useEffect(() => {
+		const handleKeyUp = (e) => {
+			if (router.query.id && e.key == "Escape") {
+				Jotting.closeJotting(router);
+			}
+		};
+	
+		document.addEventListener("keyup", handleKeyUp);
+	
+		return () => document.removeEventListener("keyup", handleKeyUp);
+	});
 
-	document.addEventListener("keyup", handleKeyUp);
-
-	return () => document.removeEventListener("keyup", handleKeyUp);
 }
