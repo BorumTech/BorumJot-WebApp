@@ -10,14 +10,13 @@
 }
 
 .fullJotting {
-    padding: 10px 0;
     display: grid;
-    grid-template-rows: auto 100px 1fr;
+    grid-template-rows: 50px 100px 300px;
     grid-template-columns: repeat(4, 1fr);
     background-color: rgb(124, 252, 252);
     padding: 2% 5%;
     width: 100%;
-    height: 100%;
+    height: 500px;
     column-gap: 1em;
 }
 
@@ -79,11 +78,11 @@
     flex-direction: column;
 }
 
-.subtasks {
-    padding-left: 0;
-    height: 100%;
+.subtaskHeading {
+    margin: 0 0 3px 0;
 }
 
-.subtasksControl:last-child {
-    margin-bottom: 11%;
+.subtasks {
+    padding-left: 0;
+    overflow: auto;
 }

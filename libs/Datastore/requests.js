@@ -34,6 +34,26 @@ export async function getJottings() {
 	throw new Error("Window not loaded yet");
 }
 
+export async function getSharedJottings() {
+	const response = await BorumJotRequest.initialize(`sharednotes`)
+		.authorize()
+		.makeRequest();
+	
+	if (response.data) {
+		return response.data.map(data => ({
+			id: data.note_id,
+			title: data.title,
+			user_id: data.recipient_id,
+			completed: data.completed,
+			time_updated: data.time_updated,
+			parent_id: 0,
+			due_date: data.due_date
+		}));
+	} else {
+		return response;
+	}
+}
+
 /**
  * Makes GET request to API to get body of the note
  * @param {number} id The id of the note whose body is getting fetched
@@ -129,7 +149,7 @@ export async function createSubtask(id, jotName) {
 		.authorize()
 		.post(`id=${id}&name=${jotName}`)
 		.makeRequest();
-	
+
 	return response.data ?? response;
 }
 

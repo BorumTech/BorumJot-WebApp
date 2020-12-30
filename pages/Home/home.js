@@ -11,14 +11,12 @@ import NoteList from "../../components/JottingList/noteList";
 import TaskList from "../../components/JottingList/taskList";
 import SearchBar from "../../components/SearchBar/searchBar";
 import ShareMenu from "../../components/ShareMenu/shareMenu";
-import {
-	getJottings
-} from "../../libs/Datastore/requests";
+import { getJottings, getSharedJottings } from "../../libs/Datastore/requests";
 import UrlService from "../../libs/UrlService";
 import {
 	CONTENT_STATE,
 	useEscapeAlerter,
-	useOutsideAlerter
+	useOutsideAlerter,
 } from "../../libs/view";
 import home from "./home.module.css";
 
@@ -28,11 +26,10 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 
 	// componentDidMount() - Initally load the jottings to the screen with a request
 	useEffect(() => {
-		const jottingsRequest = getJottings();
-		jottingsRequest
+		Promise.all([getJottings(), getSharedJottings()])
 			.then((response) => {
-				setNotes(response.notes);
-				setTasks(response.tasks);
+				setNotes([...response[0].notes, ...response[1]]);
+				setTasks(response[0].tasks);
 			})
 			.catch((response) => {
 				setNotes(-1);
@@ -185,6 +182,3 @@ function NoteControl({ notes }) {
 
 	return null;
 }
-
-
-

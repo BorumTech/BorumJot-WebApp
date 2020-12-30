@@ -3,7 +3,10 @@ import FetchError from "../FetchError/fetchError";
 import CircularProgress from "../CircularProgress/circularProgress";
 import { getBody, updateBody } from "../../libs/Datastore/requests";
 import { useEffect, useState } from "react";
-import { useCancelableRequest, catchRequestError } from "../../libs/Datastore/responseHelpers";
+import {
+	useCancelableRequest,
+	catchRequestError,
+} from "../../libs/Datastore/responseHelpers";
 
 /**
  * The component for the body or details of a jotting
@@ -49,7 +52,12 @@ export default function JottingDetails({ jottingInfo, jotType }) {
 
 		const scheduleUpdate = setTimeout(function () {
 			if (body != null) {
-				updateBody(jottingInfo.id, jotType, body, abortController).catch(catchRequestError);
+				updateBody(
+					jottingInfo.id,
+					jotType,
+					body,
+					abortController
+				).catch(catchRequestError);
 			}
 		}, 1000);
 

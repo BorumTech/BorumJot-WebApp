@@ -20,7 +20,7 @@ function SubtasksControl({task}) {
 	const [subtasks, setSubtasks] = useState(null);
 	return (
 		<div className={jotting.subtasksControl}>
-			<h3>Subtasks</h3>
+			<h3 className={jotting.subtaskHeading}>Subtasks</h3>
 			<SubtaskList id={task.id} subtasksState={[subtasks, setSubtasks]}/>
 			<CreateJottingButton
 				requestFunc="createSubtask"
