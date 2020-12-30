@@ -88,6 +88,10 @@ export async function deleteJotting({ id, jotType }) {
 		.makeRequest();
 }
 
+export async function deleteTask(id) {
+	return deleteJotting({ id, jotType: "task" });
+}
+
 /**
  * Updates the title of a jotting
  * @param {number} id The id of the jotting
@@ -118,6 +122,15 @@ export async function createJotting(jotType, jotName) {
 		id: data.id,
 		title: jotName,
 	};
+}
+
+export async function createSubtask(id, jotName) {
+	const response = await BorumJotRequest.initialize(`subtask`)
+		.authorize()
+		.post(`id=${id}&name=${jotName}`)
+		.makeRequest();
+	
+	return response.data ?? response;
 }
 
 export async function getSubtasks(id) {

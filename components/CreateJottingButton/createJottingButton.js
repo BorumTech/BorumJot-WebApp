@@ -1,8 +1,8 @@
 import createJottingBtn from "./createJottingBtn.module.css";
 import { useState, useRef } from "react";
-import { createJotting as createJot } from "../../libs/Datastore/requests";
+import * as Requests from "../../libs/Datastore/requests";
 
-export default function CreateJottingButton({ jotType, jots, setJots }) {
+export default function CreateJottingButton({ jotType, jots, setJots, requestFunc="createJotting", requestArg1=jotType }) {
 	const [newJotInputCls, setNewJotInputCls] = useState("invisible");
 	const [createJotBtnCls, setCreateJotBtnCls] = useState(
 		createJottingBtn.createJottingBtn
@@ -44,10 +44,16 @@ export default function CreateJottingButton({ jotType, jots, setJots }) {
 
 		if (e.key == "Enter") {
 			const jotName = e.target.value;
-			const response = await createJot(jotType, jotName);
-			clearInput();
-			setJots([...jots, response]);
-			showBtn();
+			try {
+				const response = await Requests[requestFunc](requestArg1, jotName);
+				setJots([...jots, {...response, title: jotName}]);
+			} catch (e) {
+				console.error(e);
+				window.alert(e);
+			} finally {
+				clearInput();
+				showBtn();
+			}
 		} else if (e.key == "Escape") {
 			clearInput();
 			toggleJotEl();

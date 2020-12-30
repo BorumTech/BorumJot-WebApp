@@ -3,7 +3,7 @@ import JottingTitle from "./jottingTitle";
 
 export default function Jotting(props) {
 	return (
-		<div className={jotting.fullJotting}>
+		<div className={`${jotting.fullJotting} ${jotting[props.jotType]}`}>
 			<JottingTitle
 				id={props.id}
 				originalTitle={props.title}

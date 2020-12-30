@@ -3,6 +3,7 @@ import { removeSharee } from "../../libs/Datastore/requests";
 import ProgressSpinner from "../CircularProgress/circularProgress";
 import FetchError from "../FetchError/fetchError";
 import shareeList from "./shareeList.module.css";
+import RemoveableListItem from "../RemoveableListItem/removeableListItem";
 
 /**
  *
@@ -27,7 +28,7 @@ export default function ShareeList({ noteSharees, setNoteSharees }) {
 				{noteSharees.map((item) => (
 					<ShareeListItem
 						removeShareeById={removeShareeById}
-						key={"U" + item.user_id}
+						key={item.user_id}
 						{...item}
 					/>
 				))}
@@ -57,15 +58,5 @@ function ShareeListItem({ user_id, email, removeShareeById }) {
 		);
 	};
 
-	return (
-		<li className={shareeList.item}>
-			<span>{email}</span>
-			<button
-				onClick={handleRemoveClick}
-				className={shareeList.removeItemButton}
-			>
-				Remove
-			</button>
-		</li>
-	);
+	return <RemoveableListItem handleRemoveClick={handleRemoveClick} content={email} />
 }
