@@ -1,8 +1,10 @@
 .container {
-    grid-row: 1;
+	display: grid;
+    grid-row: 1 / 3;
 	grid-column: 2 / 4;
+	grid-template-rows: subgrid;
 	justify-self: stretch;
-	align-self: center;
+	align-self: flex-start;
 	padding-left: 15px;
 	padding-right: 15px;
 	border: none; /* For mobile phones */
@@ -14,6 +16,8 @@
 }
 
 .container button {
+	grid-row: 1;
+	justify-self: flex-start;
 	cursor: pointer;
 }
 
@@ -29,16 +33,33 @@
 }
 
 .searchBar {
+	grid-row: 2;
 	display: none;
 	height: 40px;
 	width: 90%;
 	outline: none;
 }
 
-@media only screen and (min-width: 511px) {
+.searchBar.active {
+	display: inline-block;
+	border: 1px solid lightgrey;
+	border-radius: 25px;
+	padding: 0 1em;
+}
+
+@media only screen and (min-width: 700px) {
 	.container {
+		grid-row: 1;
+		grid-column: 2 / 4;
 		border: 1px solid lightgrey;
+		align-self: center;
 		border-radius: 25px;
+		display: block;
+	}
+
+	.searchBar.active {
+		border: none;
+		padding: 0;
 	}
 
 	.searchBar {

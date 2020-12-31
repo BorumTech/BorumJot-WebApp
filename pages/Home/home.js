@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import AccountBanner from "../../components/AccountBanner/accountBanner";
 import BrandHeader from "../../components/BrandHeader/brandHeader";
+import BrowserCompatibilityInfo from "../../components/BrowserCompatibilityInfo/browserCompatibilityInfo";
 import ProgressSpinner from "../../components/CircularProgress/circularProgress";
 import CreateNoteButton from "../../components/CreateJottingButton/createNoteButton";
 import CreateTaskButton from "../../components/CreateJottingButton/createTaskButton";
@@ -23,6 +24,7 @@ import home from "./home.module.css";
 export default function Home({ fade, onFadeInLogin, setFade }) {
 	const [notes, setNotes] = useState(null);
 	const [tasks, setTasks] = useState(null);
+	
 
 	// componentDidMount() - Initally load the jottings to the screen with a request
 	useEffect(() => {
@@ -59,6 +61,9 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 		>
 			<BrandHeader />
 			<SearchBar />
+
+			<BrowserCompatibilityInfo />
+
 			<AccountBanner setFade={setFade} />
 
 			<NotesControl notesState={[notes, setNotes]} />
@@ -128,7 +133,7 @@ function TaskControl({ tasks }) {
 			router.query.type == "task" &&
 			router.query.id) ||
 			urlService.queryHasJottingInfo("task")) ? (
-		<div ref={ref} className={home.fullJotting}>
+		<div ref={ref} className={`${home.fullJotting} ${home.taskControl}`}>
 			<Task {...tasks.find((item) => item.id == router.query.id)} />
 		</div>
 	) : (
