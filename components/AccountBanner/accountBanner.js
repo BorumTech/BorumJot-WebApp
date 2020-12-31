@@ -5,7 +5,7 @@ import Image from "next/image";
 import { CONTENT_STATE } from "../../libs/view";
 
 export default function AccountBanner({ setFade }) {
-	const [accountMenuClass, setAccountMenuClass] = useState("hidden");
+	const [accountMenuClass, setAccountMenuClass] = useState(accountBanner.inactive);
 	const [dropdownSrc, setDropdownSrc] = useState("down");
 
 	const handleLogOut = () => {
@@ -15,7 +15,7 @@ export default function AccountBanner({ setFade }) {
 
 	const openAccountMenu = () => {
 		setAccountMenuClass(
-			accountMenuClass == "hidden" ? accountBanner.accountMenu : "hidden"
+			accountMenuClass == accountBanner.inactive ? accountBanner.accountMenu : accountBanner.inactive
 		);
 		setDropdownSrc(dropdownSrc == "down" ? "up" : "down");
 	};
@@ -40,7 +40,7 @@ export default function AccountBanner({ setFade }) {
 		<div className={accountBanner.accountBanner}>
 			<button className={accountBanner.accountProfile} onClick={openAccountMenu}>
 				<Image width={28} height={28} src="/images/profile.png" />
-				<span>{`${firstName} ${lastName}`}</span>
+				<span className={accountBanner.fullName}>{`${firstName} ${lastName}`}</span>
 				<div className={accountBanner.dropdownArrow}>
 					<img
 						width={16}
