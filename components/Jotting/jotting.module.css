@@ -29,6 +29,18 @@
     text-align: center;
 }
 
+.previewButton {
+    display: flex;
+    align-items: center;
+}
+
+.previewTitle {
+    display: inline-block;
+    width: 170px;
+}
+
+.previewPin {
+}
 
 .jottingOptionsBar {
     grid-row: 2;

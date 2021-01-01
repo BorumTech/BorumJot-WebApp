@@ -5,7 +5,7 @@ import NoteOptionsBar from "./noteOptionsBar";
 export default function Note(props) {
 	return (
 		<Jotting jotType="note" {...props.note}>
-			<NoteOptionsBar showShareMenuState={props.showShareMenuState} />
+			<NoteOptionsBar {...props.note} showShareMenuState={props.showShareMenuState} />
 			<JottingDetails jottingInfo={props.note} jotType="note" />
 		</Jotting>
 	);

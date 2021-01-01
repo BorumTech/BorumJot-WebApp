@@ -177,7 +177,7 @@ function NoteControl({ notes }) {
 				</div>
 
 				{showShareMenu && router.query.type == "note" ? (
-					<ShareMenu />
+					<ShareMenu setShowShareMenu={setShowShareMenu} />
 				) : (
 					""
 				)}
