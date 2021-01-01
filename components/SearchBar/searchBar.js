@@ -33,7 +33,7 @@ export default function SearchBar() {
 	 */
 	const handleSearchBtnClick = e => {
 		e.stopPropagation();
-		const searchQuery = e.target.parentElement.nextElementSibling.value;
+		const searchQuery = e.target.parentElement.nextElementSibling.value || "";
 		if (searchQuery.length > 0 && active) urlService.changeQuery({q : searchQuery});
 		else if (active) setActive(false);
 		else setActive(true);
