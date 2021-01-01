@@ -1,7 +1,7 @@
 .container {
   display: grid;
   min-height: 100vh;
-  padding: 0 0.5rem;
+  padding: 10px 0.5rem 0 0.5rem;
   justify-content: stretch;
   align-items: flex-start;
 }
