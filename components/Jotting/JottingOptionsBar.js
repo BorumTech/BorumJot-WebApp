@@ -12,7 +12,7 @@ export default function JottingOptionsBar(props) {
 			await deleteJotting(props);
 			Jotting.closeJotting(router);
 		} catch {
-			alert("The note was not deleted due to a system error");
+			alert("The jotting was not deleted due to a system error");
 		}
 	};
 
