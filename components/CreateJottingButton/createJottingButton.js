@@ -2,7 +2,13 @@ import createJottingBtn from "./createJottingBtn.module.css";
 import { useState, useRef } from "react";
 import * as Requests from "../../libs/Datastore/requests";
 
-export default function CreateJottingButton({ jotType, jots, setJots, requestFunc="createJotting", requestArg1=jotType }) {
+export default function CreateJottingButton({
+	jotType,
+	jots,
+	setJots,
+	requestFunc = "createJotting",
+	requestArg1 = jotType,
+}) {
 	const [newJotInputCls, setNewJotInputCls] = useState("invisible");
 	const [createJotBtnCls, setCreateJotBtnCls] = useState(
 		createJottingBtn.createJottingBtn
@@ -45,8 +51,11 @@ export default function CreateJottingButton({ jotType, jots, setJots, requestFun
 		if (e.key == "Enter") {
 			const jotName = e.target.value;
 			try {
-				const response = await Requests[requestFunc](requestArg1, jotName);
-				setJots([...jots, {...response, title: jotName}]);
+				const response = await Requests[requestFunc](
+					requestArg1,
+					jotName
+				);
+				setJots([...jots, { ...response, title: jotName }]);
 			} catch (e) {
 				console.error(e);
 				window.alert(e);
