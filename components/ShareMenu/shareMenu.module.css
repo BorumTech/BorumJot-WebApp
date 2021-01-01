@@ -6,6 +6,7 @@
 	background-color: white;
 	flex-direction: column;
 	align-items: center;
+	position: relative;
 }
 
 @media only screen and (min-width: 831px) {
@@ -14,10 +15,20 @@
 	}
 }
 
-.shareMenu > button {
+.shareButton {
 	font-size: 2em;
 	width: 200px;
 	margin-bottom: 10px;
+}
+
+.exit {
+	background: none;
+	border: none;
+	color: red;
+	position: absolute;
+	right: 0;
+	margin: 1em;
+	padding: 0.5em;
 }
 
 .shareMenu input[type="text"] {

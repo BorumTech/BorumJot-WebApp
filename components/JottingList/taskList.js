@@ -1,5 +1,5 @@
 import FetchError from "../FetchError/fetchError";
-import Task from "../Jotting/taskPreview";
+import TaskPreview from "../Jotting/taskPreview";
 import jottingList from "./jottingList.module.css";
 
 export default function TaskList({ tasks }) {
@@ -16,7 +16,7 @@ export default function TaskList({ tasks }) {
 			})
 			.map((item) => (
 				<li key={item.id}>
-					<Task {...item} />
+					<TaskPreview {...item} />
 				</li>
 			));
 	}

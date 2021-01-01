@@ -5,7 +5,7 @@ import { shareNote, getNoteSharees } from "../../libs/Datastore/requests";
 import ShareeList from "../ShareeList/shareeList";
 import { useCancelableRequest } from "../../libs/Datastore/responseHelpers";
 
-export default function ShareMenu() {
+export default function ShareMenu(props) {
 	const [noteSharees, setNoteSharees] = useState(null);
 	const [recipientEmail, setRecipientEmail] = useState("");
 
@@ -29,6 +29,12 @@ export default function ShareMenu() {
 	};
 
 	const handleRecipientEmailChange = (e) => setRecipientEmail(e.target.value);
+	
+	const handleExitClick = e => {
+		if (props.setShowShareMenu) {
+			props.setShowShareMenu(false);
+		}
+	};
 
 	useEffect(() => {
 		ref.current.focus();
@@ -39,6 +45,7 @@ export default function ShareMenu() {
 	return (
 		<div className={shareMenu.shareMenu}>
 			<h1>Share</h1>
+			<button className={shareMenu.exit} onClick={handleExitClick}>X</button>
 			<ShareeList
 				noteSharees={noteSharees}
 				setNoteSharees={setNoteSharees}
@@ -51,7 +58,7 @@ export default function ShareMenu() {
 				placeholder="Recipient's email"
 				aria-placeholder="Recipient's email"
 			/>
-			<button onClick={handleShareClick}>Share</button>
+			<button className={shareMenu.shareButton} onClick={handleShareClick}>Share</button>
 		</div>
 	);
 }
