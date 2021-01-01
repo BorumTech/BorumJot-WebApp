@@ -13,14 +13,20 @@ export async function submitLogin(email, password) {
 		.makeRequest();
 }
 
+export async function getJottingsRaw() {
+	const response = await BorumJotRequest.initialize("jottings")
+		.authorize()
+		.makeRequest();
+
+	return response ?? response.data;
+}
+
 /**
  * Makes GET request
  */
 export async function getJottings() {
 	if (window) {
-		let { data } = await BorumJotRequest.initialize("jottings")
-			.authorize()
-			.makeRequest();
+		let { data } = await getJottingsRaw();
 
 		const tasks = data.filter((item) => item.source == "task");
 		tasks.forEach((item) => (item.body = unescapeSlashes(item.body)));
