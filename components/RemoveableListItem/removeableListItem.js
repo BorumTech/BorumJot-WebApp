@@ -10,10 +10,12 @@ export default function RemoveableListItem({
 	handleRemoveClick,
 	content,
 	removeText = "Remove",
-	id
+	id,
+	children
 }) {
 	return (
 		<li id={id} className={removeableListItem.item}>
+			{children}
 			<span>{content}</span>
 			<button
 				onClick={handleRemoveClick}

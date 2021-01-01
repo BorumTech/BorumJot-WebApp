@@ -3,6 +3,7 @@ import { deleteTask, getSubtasks } from "../../libs/Datastore/requests";
 import CircularProgress from "../CircularProgress/circularProgress";
 import FetchError from "../FetchError/fetchError";
 import RemoveableListItem from "../RemoveableListItem/removeableListItem";
+import StyledCheckbox from "../StyledCheckbox/styledCheckbox";
 import jotting from "./jotting.module.css";
 
 /**
@@ -28,7 +29,7 @@ export default function SubtaskList({ id, subtasksState }) {
 			.then(() => {
 				for (let i = 0; i < subtasks.length; i++) {
 					if (subtasks[i].id == itemId) {
-						const newList = subtasks; // Temporarily store list to prevent state mutation 
+						const newList = subtasks; // Temporarily store list to prevent state mutation
 						newList.splice(i, 1); // Remove the element at the current index
 						setSubtasks(null); // Needed for state to actually update
 						setSubtasks(newList);
@@ -42,15 +43,23 @@ export default function SubtaskList({ id, subtasksState }) {
 	if (subtasks instanceof Array)
 		return (
 			<ul className={jotting.subtasks}>
-				{subtasks.map((item) => (
-					<RemoveableListItem
-						key={item.id}
-						handleRemoveClick={handleRemoveClick}
-						removeText="X"
-						id={"s-" + item.id}
-						content={item.title}
-					/>
-				))}
+				{subtasks.map((item) => {
+					return (
+						<RemoveableListItem
+							key={item.id}
+							handleRemoveClick={handleRemoveClick}
+							removeText="X"
+							id={"s-" + item.id}
+							content={item.title}
+						>
+							<StyledCheckbox
+								id={item.id}
+								prefix="subtask-completion-box-"
+								completed={item.completed == 1}
+							/>
+						</RemoveableListItem>
+					);
+				})}
 			</ul>
 		);
 	else if (subtasks != null) return <FetchError itemName="subtasks" />;

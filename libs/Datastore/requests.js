@@ -38,16 +38,16 @@ export async function getSharedJottings() {
 	const response = await BorumJotRequest.initialize(`sharednotes`)
 		.authorize()
 		.makeRequest();
-	
+
 	if (response.data) {
-		return response.data.map(data => ({
+		return response.data.map((data) => ({
 			id: data.note_id,
 			title: data.title,
 			user_id: data.recipient_id,
 			completed: data.completed,
 			time_updated: data.time_updated,
 			parent_id: 0,
-			due_date: data.due_date
+			due_date: data.due_date,
 		}));
 	} else {
 		return response;
@@ -121,6 +121,19 @@ export async function deleteTask(id) {
 export async function updateJottingTitle(id, jotType, title) {
 	const queryString = `id=${id}&name=${title}`;
 	return BorumJotRequest.initialize(`${jotType}?${queryString}`)
+		.authorize()
+		.put()
+		.makeRequest();
+}
+
+/**
+ * Marks a task (or a subtask) as complete or incomplete
+ * @param {number} id
+ * @param {boolean} completed
+ */
+export async function updateTaskStatus(id, completed) {
+	const queryString = `id=${id}&completed=${completed ? 1 : 0}`;
+	return await BorumJotRequest.initialize(`task?${queryString}`)
 		.authorize()
 		.put()
 		.makeRequest();
