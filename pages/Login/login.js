@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import login from "./login.module.css";
 import LogoImage from "../../components/logoImage";
 import FormField from "../../components/FormField/formField";
@@ -6,6 +7,7 @@ import ProgressSpinner from "../../components/CircularProgress/circularProgress"
 import { useRef, useState } from "react";
 import { CONTENT_STATE } from "../../libs/view";
 import { submitLogin } from "../../libs/Datastore/requests";
+import FeatureListItem from "../../components/FeatureListItem/featureListItem";
 
 export default function Login({ fade, onFadeInHome, setFade }) {
 	const [email, setEmail] = useState("");
@@ -80,7 +82,7 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 				fade == CONTENT_STATE.INVISIBLE ? fade : `${fade} ${login.main}`
 			}
 		>
-			<div className={login.grid}>
+			<div className={login.login}>
 				<LogoImage />
 				<h1>Login to Borum Jot</h1>
 				<form
@@ -116,6 +118,47 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 						<a target="_blank">New to Borum? Create an Account</a>
 					</Link>
 				</div>
+			</div>
+			<div className={login.whyBorumJotContainer}>
+				<h2>Achieve More with Borum Jot</h2>
+				<p>
+					Borum Jot stores your notes and tasks so you can access them
+					on the web or with the Android app
+				</p>
+				<ul className={login.featureList}>
+					<FeatureListItem
+						imgSrc="/images/no-money.png"
+						heading="Modern experience"
+						description="No ads or hidden prices"
+					/>
+					<FeatureListItem
+						imgSrc="/images/cloud-sync.png"
+						heading="Always within reach"
+						description="Accessible on an Android device or the web, syncing automatically"
+					/>
+					<FeatureListItem
+						imgSrc="/images/padlock.png"
+						heading="Privacy"
+						description="Your notes and tasks are securely encrypted"
+					/>
+					<FeatureListItem
+						imgSrc="/images/share.png"
+						imgWidth={35}
+						imgHeight={55}
+						heading="Collaboration"
+						description="Share notes and collaborate with others"
+					/>
+					<FeatureListItem 
+						imgSrc="/images/pin.png"
+						heading="Prioritize"
+						description="Pin your notes and tasks to the top of the lists"
+					/>
+					<FeatureListItem
+						imgSrc="/images/to-do-list.png"
+						heading="Stay organized"
+						description="Make subtasks for your tasks and check them off when finished"
+					/>
+				</ul>
 			</div>
 		</main>
 	);

@@ -1,5 +1,4 @@
 .main {
-  padding-bottom: 5rem;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -43,19 +42,42 @@
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
-.grid {
+.login {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-top: 2rem;
   max-width: 500px;
   width: 90%;
 }
 
-.grid h1 {
+.login h1 {
   font-weight: normal;
   font-size: 1.5rem;
+}
+
+.login, .whyBorumJotContainer {
+  margin-top: 2rem;
+}
+
+.whyBorumJotContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgb(250, 249, 255);
+  padding: 0 5%;
+  margin-left: -8px;
+  margin-right: -8px;
+}
+
+.whyBorumJotContainer ul {
+  padding-inline-start: 0;
+  width: 100%;
+}
+
+.featureList {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .card {

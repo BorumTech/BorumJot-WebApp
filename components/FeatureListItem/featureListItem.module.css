@@ -1,0 +1,14 @@
+.featureListItem {
+	flex: 1 1 400px;
+	padding: 0.5em;
+}
+
+.firstRow {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.featureListItem h3 {
+	margin: 10px;
+}
