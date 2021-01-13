@@ -114,7 +114,7 @@ export default function Login({ fade, onFadeInHome, setFade }) {
 					</button>
 				</form>
 				<div className={login.register}>
-					<Link href="http://forum.bforborum.com/Register">
+					<Link href="https://accounts.bforborum.com">
 						<a target="_blank">New to Borum? Create an Account</a>
 					</Link>
 				</div>
