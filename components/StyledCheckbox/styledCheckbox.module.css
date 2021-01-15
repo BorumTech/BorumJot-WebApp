@@ -15,7 +15,7 @@ input.taskCompletionCheckbox + .taskCompletionCheckbox {
 	vertical-align: middle;
 	cursor: pointer;
 	margin-right: 10px;
-	background-image: url(http://csscheckbox.com/checkboxes/vlad.png);
+	background-image: url(/images/checkbox.png);
 }
 
 input.taskCompletionCheckbox {
