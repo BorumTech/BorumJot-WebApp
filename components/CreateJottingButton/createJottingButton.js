@@ -2,6 +2,11 @@ import createJottingBtn from "./createJottingBtn.module.css";
 import { useState, useRef } from "react";
 import * as Requests from "../../libs/Datastore/requests";
 
+/**
+ * 
+ * @param {object} props
+ * @param {object[]} props.jots 
+ */
 export default function CreateJottingButton({
 	jotType,
 	jots,
@@ -55,7 +60,10 @@ export default function CreateJottingButton({
 					requestArg1,
 					jotName
 				);
-				setJots([...jots, { ...response, title: jotName }]);
+				
+				const jotsCopy = jots.slice();
+				jotsCopy.push({ ...response, title: jotName, body: ""});
+				setJots(jotsCopy);
 			} catch (e) {
 				console.error(e);
 				window.alert(e);
