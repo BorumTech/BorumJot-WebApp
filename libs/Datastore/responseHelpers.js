@@ -9,6 +9,7 @@ export function unescapeSlashes(str) {
 	// Adds another escaped slash if the string ends with an odd number of escaped slashes
 	// because an odd number crashes the JSON.parse
 	let parsedStr = str.replace(/(^|[^\\])(\\\\)*\\$/, "$&\\");
+	parsedStr = str.replace(/(\\)(\')+/, /\'/);
 
 	try {
 		parsedStr = JSON.parse(`"${parsedStr}"`);
