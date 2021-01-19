@@ -32,7 +32,7 @@ export default class UrlService {
 	 */
 	getQueryJottingInfo(jotType) {
 		const urlRegEx = new RegExp(
-			"/?" + jotType + "s/([0-9]+)/([A-Za-z -]+)"
+			"/?" + jotType + "s/([0-9]+)/([A-Za-z -\(\)]+)"
 		);
 		const decodedUrl = decodeURIComponent(this.router.asPath);
 
