@@ -24,19 +24,26 @@ import home from "./home.module.css";
 export default function Home({ fade, onFadeInLogin, setFade }) {
 	const [notes, setNotes] = useState(null);
 	const [tasks, setTasks] = useState(null);
-	
 
-	// componentDidMount() - Initally load the jottings to the screen with a request
+	// componentDidMount() - Load the jottings and recurringly update them with requests
 	useEffect(() => {
-		Promise.all([getJottings(), getSharedJottings()])
-			.then((response) => {
-				setNotes([...response[0].notes, ...response[1]]);
-				setTasks(response[0].tasks);
-			})
-			.catch((response) => {
-				setNotes(-1);
-				setTasks(-1);
-			});
+		const makeJottingsRequests = () => {
+			Promise.all([getJottings(), getSharedJottings()])
+				.then((response) => {
+					const notesToShow = [...response[0].notes, ...response[1]];
+					const tasksToShow = response[0].tasks;
+
+					if (notesToShow != notes) setNotes(notesToShow);
+					if (tasksToShow != tasks) setTasks(tasksToShow);
+				})
+				.catch((response) => {
+					setNotes(-1);
+					setTasks(-1);
+				});
+		};
+		const updateData = setInterval(makeJottingsRequests, 3000);
+
+		return () => clearInterval(updateData);
 	}, []);
 
 	const transitionToLogin = () => {
