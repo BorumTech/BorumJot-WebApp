@@ -16,8 +16,8 @@ export default function ShareMenu(props) {
 
 	const handleShareClick = (e) => {
 		setRecipientEmail("");
-		shareNote(router.query.id, recipientEmail, abortController).then(
-			(response) =>
+		shareNote(router.query.id, recipientEmail, abortController)
+			.then((response) =>
 				setNoteSharees([
 					...noteSharees,
 					{
@@ -25,12 +25,13 @@ export default function ShareMenu(props) {
 						user_id: response.data.recipient_id,
 					},
 				])
-		);
+			)
+			.catch(alert);
 	};
 
 	const handleRecipientEmailChange = (e) => setRecipientEmail(e.target.value);
-	
-	const handleExitClick = e => {
+
+	const handleExitClick = (e) => {
 		if (props.setShowShareMenu) {
 			props.setShowShareMenu(false);
 		}
@@ -45,7 +46,9 @@ export default function ShareMenu(props) {
 	return (
 		<div className={shareMenu.shareMenu}>
 			<h1>Share</h1>
-			<button className={shareMenu.exit} onClick={handleExitClick}>X</button>
+			<button className={shareMenu.exit} onClick={handleExitClick}>
+				X
+			</button>
 			<ShareeList
 				noteSharees={noteSharees}
 				setNoteSharees={setNoteSharees}
@@ -58,7 +61,12 @@ export default function ShareMenu(props) {
 				placeholder="Recipient's email"
 				aria-placeholder="Recipient's email"
 			/>
-			<button className={shareMenu.shareButton} onClick={handleShareClick}>Share</button>
+			<button
+				className={shareMenu.shareButton}
+				onClick={handleShareClick}
+			>
+				Share
+			</button>
 		</div>
 	);
 }
