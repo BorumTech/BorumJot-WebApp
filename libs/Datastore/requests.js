@@ -71,7 +71,10 @@ export async function getBody(id, jotType, abortController) {
 		.authorize()
 		.makeRequest(abortController);
 
-	return unescapeSlashes(await response.data.body);
+	const body = await response.data.body;
+	const unescapedSlashes = unescapeSlashes(body);
+
+	return unescapedSlashes;
 }
 
 export async function updateBody(id, jotType, newBody, abortController) {
