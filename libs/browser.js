@@ -44,7 +44,6 @@ export default class Browser {
     }
 
     browserSupported() {
-        console.log(this.browser);
         if (["Firefox", "Edge", "Edge or Chrome"].includes(this.browser)) return true;
 
         return false;
