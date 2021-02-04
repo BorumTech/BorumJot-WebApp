@@ -155,15 +155,12 @@ export async function updateTaskStatus(id, completed) {
  */
 export async function createJotting(jotType, jotName) {
 	const queryString = `${jotType.toLowerCase()}`;
-	const { data } = await BorumJotRequest.initialize(queryString)
+	const response = await BorumJotRequest.initialize(queryString)
 		.authorize()
 		.post(`name=${jotName}`)
 		.makeRequest();
 
-	return {
-		id: data.id,
-		title: jotName,
-	};
+	return response.data ?? response;
 }
 
 export async function createSubtask(id, jotName) {

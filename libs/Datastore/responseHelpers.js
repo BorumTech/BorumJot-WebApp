@@ -10,6 +10,7 @@ export function unescapeSlashes(str) {
 	// because an odd number crashes the JSON.parse
 	let parsedStr = str.replace(/\\'/gm, `'`);
 	parsedStr = parsedStr.replace(/\\n/gm, `\n`);
+	parsedStr = parsedStr.replace(/\\"/gm, `"`);
 
 	return parsedStr;
 }

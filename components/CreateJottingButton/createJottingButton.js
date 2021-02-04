@@ -56,17 +56,13 @@ export default function CreateJottingButton({
 		if (e.key == "Enter") {
 			const jotName = e.target.value;
 			try {
-				const response = await Requests[requestFunc](
+				await Requests[requestFunc](
 					requestArg1,
 					jotName
 				);
-				
-				const jotsCopy = jots.slice();
-				jotsCopy.push({ ...response, title: jotName, body: ""});
-				setJots(jotsCopy);
 			} catch (e) {
 				console.error(e);
-				window.alert(e);
+				window.alert("A system error occurred");
 			} finally {
 				clearInput();
 				showBtn();
