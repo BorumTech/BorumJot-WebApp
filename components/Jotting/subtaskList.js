@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRecurringRequest } from "../../libs/Datastore/RequestHelpers";
 import { deleteTask, getSubtasks } from "../../libs/Datastore/requests";
 import CircularProgress from "../CircularProgress/circularProgress";
 import FetchError from "../FetchError/fetchError";
@@ -13,15 +14,16 @@ import jotting from "./jotting.module.css";
 export default function SubtaskList({ id, subtasksState }) {
 	const [subtasks, setSubtasks] = subtasksState;
 
-	// componentDidMount() - initally request subtasks
-	useEffect(() => {
-		(async function () {
-			try {
-				const initialSubtasks = await getSubtasks(id);
-				setSubtasks(initialSubtasks);
-			} catch {}
-		})();
-	}, []);
+	// componentDidUpdate() - recur subtasks
+	useRecurringRequest(() => {
+		getSubtasks(id)
+			.then((response) => {
+				if (response != subtasks) {
+					setSubtasks(response);
+				}
+			})
+			.catch(() => {});
+	});
 
 	const handleRemoveClick = (e) => {
 		const itemId = e.target.parentElement.id.substring(2);
