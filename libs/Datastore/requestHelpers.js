@@ -3,7 +3,7 @@ import { useEffect } from "react";
 /**
  * Custom hook for firing the same request every 3 seconds
  */
-export function useRecurringRequest(makeRequest, interval = 3000) {
+function useRecurringRequest(makeRequest, interval = 3000) {
     useEffect(() => {
         const updateData = setInterval(() => {
             makeRequest();
@@ -12,3 +12,5 @@ export function useRecurringRequest(makeRequest, interval = 3000) {
         return () => clearInterval(updateData);
     }, []);
 }
+
+export { useRecurringRequest }
