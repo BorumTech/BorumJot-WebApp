@@ -59,8 +59,8 @@ export default function Settings(props) {
 
 					<p>
 						To update your Borum Account, go to{" "}
-						<a href="https://accounts.bforborum.com">
-							accounts.bforborum.com
+						<a href="https://accounts.borumtech.com">
+							accounts.borumtech.com
 						</a>
 					</p>
 				</section>

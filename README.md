@@ -14,7 +14,7 @@ You can also set up a task within your IDE to run steps 2 and 3 automatically.
 
 ## Usage
 
-To use it, go to https://jot.bforborum.com to log in. If you do not already have a Borum account, go to https://accounts.bforborum.com to make one. 
+To use it, go to https://jot.borumtech.com to log in. If you do not already have a Borum account, go to https://accounts.borumtech.com to make one. 
 
 ## Contributors
 

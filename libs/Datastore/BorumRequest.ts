@@ -10,7 +10,7 @@ export default class BorumRequest extends Request {
     }
 
     static initialize(input: RequestInfo, init?: RequestInit) {
-        return new BorumRequest(`https://api.bforborum.com/api/${input}`, init);
+        return new BorumRequest(`https://api.borumtech.com/api/${input}`, init);
     }
 
     authorize(): BorumRequest {
