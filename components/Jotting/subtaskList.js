@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecurringRequest } from "../../libs/Datastore/RequestHelpers";
+import { useRecurringRequest } from "../../libs/Datastore/requestHelpers";
 import { deleteTask, getSubtasks } from "../../libs/Datastore/requests";
 import CircularProgress from "../CircularProgress/circularProgress";
 import FetchError from "../FetchError/fetchError";
@@ -18,9 +18,8 @@ export default function SubtaskList({ id, subtasksState }) {
 	useRecurringRequest(() => {
 		getSubtasks(id)
 			.then((response) => {
-				if (response != subtasks) {
+				if (response != subtasks)
 					setSubtasks(response);
-				}
 			})
 			.catch(() => {});
 	});
