@@ -1,6 +1,6 @@
 import jotting from "./jotting.module.css";
 import FetchError from "../FetchError/fetchError";
-import CircularProgress from "../CircularProgress/circularProgress";
+import ProgressSpinner from "../ProgressSpinner/progressSpinner";
 import { getBody, updateBody } from "../../libs/Datastore/requests";
 import { useEffect, useState } from "react";
 import {
@@ -67,5 +67,5 @@ export default function JottingDetails({ jottingInfo, jotType }) {
 		};
 	}, [body]);
 
-	return body != null ? bodyEl : <CircularProgress />;
+	return body != null ? bodyEl : <ProgressSpinner />;
 }

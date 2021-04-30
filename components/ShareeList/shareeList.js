@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { removeSharee } from "../../libs/Datastore/requests";
-import ProgressSpinner from "../CircularProgress/circularProgress";
+import ProgressSpinner from "../ProgressSpinner/progressSpinner";
 import FetchError from "../FetchError/fetchError";
 import shareeList from "./shareeList.module.css";
 import RemoveableListItem from "../RemoveableListItem/removeableListItem";
