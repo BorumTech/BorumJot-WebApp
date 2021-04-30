@@ -43,7 +43,7 @@ export default function PrivacyPolicy(props) {
 export async function getStaticProps() {
 	return {
 		props: {
-			content: await getPrivacyPolicyContent(),
+			content: getPrivacyPolicyContent(),
 		},
 	};
 }

@@ -17,7 +17,7 @@ export default function ShareeList({ noteSharees, setNoteSharees }) {
 				noteSharees.splice(i, 1); // Remove the sharee element
 				setNoteSharees(null); // Needed in order for next update to work
 				setNoteSharees(noteSharees); // Update component to reflect removed element
-				return;
+				break;
 			}
 		}
 	};

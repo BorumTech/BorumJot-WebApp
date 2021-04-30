@@ -34,7 +34,7 @@ export default function SubtaskList({ id, subtasksState }) {
 						newList.splice(i, 1); // Remove the element at the current index
 						setSubtasks(null); // Needed for state to actually update
 						setSubtasks(newList);
-						return;
+						break;
 					}
 				}
 			})

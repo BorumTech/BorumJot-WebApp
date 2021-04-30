@@ -25,25 +25,72 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 	const [notes, setNotes] = useState(null);
 	const [tasks, setTasks] = useState(null);
 
+	const ownAbortController = new AbortController();
+	const sharedAbortController = new AbortController();
+
+	const getNotesToShow = (response) => {
+		if (
+			response[1].status === "rejected" &&
+			response[0].status === "fulfilled"
+		)
+			return response[0].value.notes;
+		else if (
+			response[1].status === "fulfilled" &&
+			response[0].status === "fulfilled"
+		)
+			return [...response[0].value.notes, ...response[1].value];
+		else if (
+			response[0].status === "rejected" &&
+			response[1].status === "fulfilled"
+		)
+			return response[1].value;
+
+		return -1;
+	};
+
+	const getTasksToShow = (response) => {
+		if (response[0].status === "fulfilled") return response[0].value.tasks;
+		else return -1;
+	};
+
 	// componentDidMount() - Load the jottings and recurringly update them with requests
 	useEffect(() => {
-		const makeJottingsRequests = () => {
-			Promise.all([getJottings(), getSharedJottings()])
-				.then((response) => {
-					const notesToShow = [...response[0].notes, ...response[1]];
-					const tasksToShow = response[0].tasks;
+		const makeJottingsRequests = async (interval) => {
+			// if (notes === -1 || tasks === -1) clearInterval(interval);
 
-					if (notesToShow != notes) setNotes(notesToShow);
-					if (tasksToShow != tasks) setTasks(tasksToShow);
-				})
-				.catch((response) => {
-					setNotes(-1);
-					setTasks(-1);
-				});
+			const response = Promise.allSettled([
+				getJottings(ownAbortController),
+				getSharedJottings(sharedAbortController),
+			]);
+
+			try {
+				const notesToShow = getNotesToShow(await response);
+				const tasksToShow = getTasksToShow(await response);
+
+				const notesHasNewValidData =
+					notesToShow != notes &&
+					notesToShow !== -1 &&
+					(notes instanceof Array || notes == null);
+
+				const tasksHasNewValidData = tasksToShow != tasks;
+
+				if (notesHasNewValidData) setNotes(notesToShow);
+				if (tasksHasNewValidData) setTasks(tasksToShow);
+			} catch (e) {
+				console.error(e);
+				// setNotes(-1);
+				// setTasks(-1);
+			}
 		};
-		const updateData = setInterval(makeJottingsRequests, 3000);
 
-		return () => clearInterval(updateData);
+		// const updateData = setInterval(() => {
+		makeJottingsRequests(/* updateData */);
+		// }, 3000);
+
+		return () => {
+			ownAbortController.abort();
+			sharedAbortController.abort();
+		}
 	}, []);
 
 	const transitionToLogin = () => {
