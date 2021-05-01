@@ -83,7 +83,7 @@ export default function JottingsControl(props) {
 		makeJottingsRequests(updateData).then(() =>
 			console.groupEnd("Interval Cycle")
 		);
-	}, 3000);
+	}, 10000);
 
 	return (
 		<>

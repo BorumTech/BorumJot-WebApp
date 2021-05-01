@@ -7,8 +7,13 @@ import React, { useState, useEffect, useRef } from "react";
  * @param {number} delay The amount of time the interval cycle lasts
  *                       before executing the callback again
  */
-export function useInterval(callback, delay) {
+export function useInterval(callback, delay, callInitially = true) {
 	const savedCallback = useRef();
+
+	// Call function in beginning without waiting interval
+	useEffect(() => {
+		if (callInitially) callback();
+	}, []);
 
 	// Remember the latest callback.
 	useEffect(() => {
