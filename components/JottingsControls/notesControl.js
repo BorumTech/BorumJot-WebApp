@@ -19,7 +19,7 @@ export default function NotesControl({notesState}) {
 		<article className={jottingsControl.ownNoteList}>
 			<h1>Notes</h1>
 			{notes ? <NoteList notes={notes} /> : <ProgressSpinner />}
-			<CreateNoteButton jots={notes} setJots={setNotes} />
+			<CreateNoteButton jots={notes} />
 		</article>
 	);
 }

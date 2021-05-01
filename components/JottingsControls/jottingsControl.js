@@ -4,6 +4,8 @@ import NotesControl from "./notesControl";
 import TasksControl from "./tasksControl";
 import { useEffect, useState } from "react";
 import { getJottings, getSharedJottings } from "../../libs/Datastore/requests";
+import { useInterval } from "../../libs/delay";
+import { compareArrays } from "../../libs/arrayExtensions";
 
 export default function JottingsControl(props) {
 	const [notes, setNotes] = useState(null);
@@ -38,7 +40,10 @@ export default function JottingsControl(props) {
 	};
 
 	const makeJottingsRequests = async (interval) => {
-		// if (notes === -1 || tasks === -1) clearInterval(interval);
+		if (notes === -1 || tasks === -1) {
+			console.info("Interval cleared due to errors");
+			clearInterval(interval);
+		}
 
 		try {
 			const response = Promise.allSettled([
@@ -46,27 +51,39 @@ export default function JottingsControl(props) {
 				getSharedJottings(sharedAbortController),
 			]);
 
+			console.info("Requests to owned and shared jottings started");
+
 			const notesToShow = getNotesToShow(await response);
 			const tasksToShow = getTasksToShow(await response);
 
-			if (notesToShow != notes) setNotes(notesToShow);
-			if (tasksToShow != tasks) setTasks(tasksToShow);
+			console.info("Response received, data computed");
+			console.debug("notesToShow", notesToShow);
+			console.debug("tasksToShow", tasksToShow);
+
+			console.debug("notes", notes);
+
+			const notesToShowIsNewData =
+				notes == null || compareArrays(notes, notesToShow);
+
+			if (notesToShowIsNewData) {
+				setNotes(notesToShow);
+				console.info("UI updated");
+			}
+			if (tasksToShow != tasks) {
+				setTasks(tasksToShow);
+			}
 		} catch (e) {
-			console.error(e);
+			console.error("Request Error", e);
 		}
 	};
 
 	// componentDidMount() - Load the jottings and recurringly update them with requests
-	useEffect(() => {
-		// const updateData = setInterval(() => {
-		makeJottingsRequests(/* updateData */);
-		// }, 3000);
-
-		return () => {
-			ownAbortController.abort();
-			sharedAbortController.abort();
-		};
-	}, []);
+	const updateData = useInterval(() => {
+		console.group("Interval Cycle");
+		makeJottingsRequests(updateData).then(() =>
+			console.groupEnd("Interval Cycle")
+		);
+	}, 3000);
 
 	return (
 		<>

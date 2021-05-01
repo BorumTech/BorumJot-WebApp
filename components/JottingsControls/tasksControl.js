@@ -18,7 +18,7 @@ export default function TasksControl({ tasksState }) {
 		<article className={jottingsControl.ownTaskList}>
 			<h1>Tasks</h1>
 			{tasks ? <TaskList tasks={tasks} /> : <ProgressSpinner />}
-			<CreateTaskButton jots={tasks} setJots={setTasks} />
+			<CreateTaskButton jots={tasks} />
 		</article>
 	);
 }
