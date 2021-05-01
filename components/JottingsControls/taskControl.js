@@ -39,7 +39,7 @@ export default function TaskControl({ tasks }) {
 			</div>
 
 			{showShareMenu && router.query.type == "task" ? (
-				<ShareMenu setShowShareMenu={setShowShareMenu} />
+				<ShareMenu jotType="task" setShowShareMenu={setShowShareMenu} />
 			) : (
 				""
 			)}

@@ -42,7 +42,7 @@ export default function NoteControl({ notes }) {
 				</div>
 
 				{showShareMenu && router.query.type == "note" ? (
-					<ShareMenu setShowShareMenu={setShowShareMenu} />
+					<ShareMenu jotType="note" setShowShareMenu={setShowShareMenu} />
 				) : (
 					""
 				)}

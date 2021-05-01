@@ -28,7 +28,7 @@ export default class Browser {
     } 
     
     get isBlink() {
-        return (isChrome || isOpera) && !!window.CSS
+        return (this.isChrome || this.isOpera) && !!window.CSS
     }
 
     get browser() {

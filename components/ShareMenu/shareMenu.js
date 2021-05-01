@@ -1,12 +1,12 @@
 import shareMenu from "./shareMenu.module.css";
 import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { shareNote, getNoteSharees } from "../../libs/Datastore/requests";
+import { shareJot, getJotSharees } from "../../libs/Datastore/requests";
 import ShareeList from "../ShareeList/shareeList";
 import { useCancelableRequest } from "../../libs/Datastore/responseHelpers";
 
 export default function ShareMenu(props) {
-	const [noteSharees, setNoteSharees] = useState(null);
+	const [jotSharees, setJotSharees] = useState(null);
 	const [recipientEmail, setRecipientEmail] = useState("");
 
 	const ref = useRef(null);
@@ -16,10 +16,15 @@ export default function ShareMenu(props) {
 
 	const handleShareClick = (e) => {
 		setRecipientEmail("");
-		shareNote(router.query.id, recipientEmail, abortController)
+		shareJot(
+			router.query.id,
+			recipientEmail,
+			props.jotType,
+			abortController
+		)
 			.then((response) =>
-				setNoteSharees([
-					...noteSharees,
+				setJotSharees([
+					...jotSharees,
 					{
 						email: recipientEmail,
 						user_id: response.data.recipient_id,
@@ -41,7 +46,12 @@ export default function ShareMenu(props) {
 		ref.current.focus();
 	}, []);
 
-	useCancelableRequest(getNoteSharees, setNoteSharees, [router.query.id], []);
+	useCancelableRequest(
+		getJotSharees,
+		setJotSharees,
+		[router.query.id, props.jotType, abortController],
+		[]
+	);
 
 	return (
 		<div className={shareMenu.shareMenu}>
@@ -50,8 +60,8 @@ export default function ShareMenu(props) {
 				X
 			</button>
 			<ShareeList
-				noteSharees={noteSharees}
-				setNoteSharees={setNoteSharees}
+				noteSharees={jotSharees}
+				setNoteSharees={setJotSharees}
 			/>
 			<input
 				type="text"

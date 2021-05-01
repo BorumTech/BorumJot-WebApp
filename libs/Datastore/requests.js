@@ -179,24 +179,25 @@ export async function getSubtasks(id) {
  *
  * @param {number} id id of the note
  * @param {string} recipientEmail Email of the specified recipient
+ * @param {string} jotType The type of jotting: note or task; singular and lowercase
  */
-export async function shareNote(id, recipientEmail, abortController) {
-	return await BorumJotRequest.initialize(`note/share`)
+export async function shareJot(id, recipientEmail, jotType, abortController) {
+	return await BorumJotRequest.initialize(`${jotType}/share`)
 		.authorize()
 		.post(`id=${id}&email=${recipientEmail}`)
 		.makeRequest(abortController);
 }
 
 /**
- * Gets the sharees for a note
- * @param {number} id id of the note
+ * Gets the sharees for a jotting
+ * @param {number} id id of the jotting
  * @param {AbortController} abortController The abort controller to pass to
  * BorumJotRequest.prototype.makeRequest()
  */
-export async function getNoteSharees(id, abortController) {
+export async function getJotSharees(id, jotType, abortController) {
 	const queryString = `id=${id}`;
 	const response = await BorumJotRequest.initialize(
-		`note/share?${queryString}`
+		`${jotType}/share?${queryString}`
 	)
 		.authorize()
 		.makeRequest(abortController);
