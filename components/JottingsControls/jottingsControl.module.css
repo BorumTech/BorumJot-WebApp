@@ -12,17 +12,20 @@
 }
 
 .fullJotting {
+	display: grid;
 	grid-row: 2 / 5;
-	grid-column: 2 / -2;
+	grid-column-end: -1;
 	justify-self: flex-start;
 	overflow: auto;
+	grid-template-columns: subgrid;
+}
+
+.taskControl {
+	grid-column-start: 1;
 }
 
 .noteControl {
-	display: grid;
-	grid-row: 2 / 5;
-	grid-column: 2 / -1;
-	grid-template-columns: subgrid;
+	grid-column-start: 2;
 }
 
 .jottingContent {

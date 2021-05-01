@@ -41,20 +41,14 @@ export async function getJottings(abortController = null) {
 }
 
 export async function getSharedJottings(abortController = null) {
-	const response = BorumJotRequest.initialize(`sharedjottings`)
+	const response = await BorumJotRequest.initialize(`sharedjottings`)
 		.authorize()
 		.makeRequest(abortController);
 
 	if (response.data) {
-		return response.data.map((data) => ({
-			id: data.note_id,
-			title: data.title,
-			user_id: data.recipient_id,
-			completed: data.completed,
-			time_updated: data.time_updated,
-			parent_id: 0,
-			due_date: data.due_date,
-		}));
+		response.data.tasks.forEach((item) => (item.body = unescapeSlashes(item.body)));
+
+		return response.data;
 	}
 
 	return response;

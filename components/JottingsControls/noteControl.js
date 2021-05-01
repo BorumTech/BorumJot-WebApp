@@ -30,7 +30,7 @@ export default function NoteControl({ notes }) {
 
 	if (showNote && router.query.type == "note") {
 		return (
-			<article ref={showShareMenu ? ref : null} className={jottingsControl.noteControl}>
+			<article ref={showShareMenu ? ref : null} className={`${jottingsControl.fullJotting} ${jottingsControl.noteControl}`}>
 				<div
 					ref={showShareMenu ? null : ref}
 					className={jottingsControl.jottingContent}

@@ -14,29 +14,24 @@ export default function JottingsControl(props) {
 	const ownAbortController = new AbortController();
 	const sharedAbortController = new AbortController();
 
-	const getNotesToShow = (response) => {
+	const getJotsToShow = (response, jotType) => {
 		if (
 			response[1].status === "rejected" &&
 			response[0].status === "fulfilled"
 		)
-			return response[0].value.notes;
+			return response[0].value[jotType];
 		else if (
 			response[1].status === "fulfilled" &&
 			response[0].status === "fulfilled"
 		)
-			return [...response[0].value.notes, ...response[1].value];
+			return [...response[0].value[jotType], ...response[1].value[jotType]];
 		else if (
 			response[0].status === "rejected" &&
 			response[1].status === "fulfilled"
 		)
-			return response[1].value;
+			return response[1].value[jotType];
 
 		return -1;
-	};
-
-	const getTasksToShow = (response) => {
-		if (response[0].status === "fulfilled") return response[0].value.tasks;
-		else return -1;
 	};
 
 	const makeJottingsRequests = async (interval) => {
@@ -52,15 +47,14 @@ export default function JottingsControl(props) {
 			]);
 
 			console.info("Requests to owned and shared jottings started");
+			console.debug("Response", await response);
 
-			const notesToShow = getNotesToShow(await response);
-			const tasksToShow = getTasksToShow(await response);
+			const notesToShow = getJotsToShow(await response, "notes");
+			const tasksToShow = getJotsToShow(await response, "tasks");
 
 			console.info("Response received, data computed");
 			console.debug("notesToShow", notesToShow);
 			console.debug("tasksToShow", tasksToShow);
-
-			console.debug("notes", notes);
 
 			const notesToShowIsNewData =
 				notes == null || compareArrays(notes, notesToShow);
@@ -73,7 +67,7 @@ export default function JottingsControl(props) {
 				setTasks(tasksToShow);
 			}
 		} catch (e) {
-			console.error("Request Error", e);
+			console.error("Request Error:", e);
 		}
 	};
 
