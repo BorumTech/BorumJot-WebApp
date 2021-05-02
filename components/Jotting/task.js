@@ -6,11 +6,13 @@ import SubtaskList from "./subtaskList";
 import CreateJottingButton from "../CreateJottingButton/createJottingButton";
 import { useState } from "react";
 import StyledCheckbox from "../StyledCheckbox/styledCheckbox";
+import ShareButton from "../ShareButton/shareButton";
 
 export default function Task(task) {
 	return (
 		<Jotting jotType="task" {...task}>
 			<JottingOptionsBar jotType="task" {...task}>
+				<ShareButton showShareMenuState={task.showShareMenuState} />
 				<div>
 					<StyledCheckbox
 						id={task.id}

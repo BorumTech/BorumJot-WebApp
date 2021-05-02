@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRecurringRequest } from "../../libs/Datastore/requestHelpers";
 import { deleteTask, getSubtasks } from "../../libs/Datastore/requests";
-import CircularProgress from "../CircularProgress/circularProgress";
+import ProgressSpinner from "../ProgressSpinner/progressSpinner";
 import FetchError from "../FetchError/fetchError";
 import RemoveableListItem from "../RemoveableListItem/removeableListItem";
 import StyledCheckbox from "../StyledCheckbox/styledCheckbox";
@@ -34,7 +34,7 @@ export default function SubtaskList({ id, subtasksState }) {
 						newList.splice(i, 1); // Remove the element at the current index
 						setSubtasks(null); // Needed for state to actually update
 						setSubtasks(newList);
-						return;
+						break;
 					}
 				}
 			})
@@ -64,5 +64,5 @@ export default function SubtaskList({ id, subtasksState }) {
 			</ul>
 		);
 	else if (subtasks != null) return <FetchError itemName="subtasks" />;
-	else return <CircularProgress />;
+	else return <ProgressSpinner />;
 }

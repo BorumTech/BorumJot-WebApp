@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { removeSharee } from "../../libs/Datastore/requests";
-import ProgressSpinner from "../CircularProgress/circularProgress";
+import ProgressSpinner from "../ProgressSpinner/progressSpinner";
 import FetchError from "../FetchError/fetchError";
 import shareeList from "./shareeList.module.css";
 import RemoveableListItem from "../RemoveableListItem/removeableListItem";
@@ -17,7 +17,7 @@ export default function ShareeList({ noteSharees, setNoteSharees }) {
 				noteSharees.splice(i, 1); // Remove the sharee element
 				setNoteSharees(null); // Needed in order for next update to work
 				setNoteSharees(noteSharees); // Update component to reflect removed element
-				return;
+				break;
 			}
 		}
 	};

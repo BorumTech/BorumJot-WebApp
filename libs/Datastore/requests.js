@@ -13,10 +13,10 @@ export async function submitLogin(email, password) {
 		.makeRequest();
 }
 
-export async function getJottingsRaw() {
+export async function getJottingsRaw(abortController = null) {
 	const response = await BorumJotRequest.initialize("jottings")
 		.authorize()
-		.makeRequest();
+		.makeRequest(abortController);
 
 	return response ?? response.data;
 }
@@ -24,9 +24,9 @@ export async function getJottingsRaw() {
 /**
  * Makes GET request
  */
-export async function getJottings() {
+export async function getJottings(abortController = null) {
 	if (window) {
-		let { data } = await getJottingsRaw();
+		let { data } = await getJottingsRaw(abortController);
 
 		const tasks = data.filter((item) => item.source == "task");
 		tasks.forEach((item) => (item.body = unescapeSlashes(item.body)));
@@ -40,13 +40,15 @@ export async function getJottings() {
 	throw new Error("Window not loaded yet");
 }
 
-export async function getSharedJottings() {
-	const response = await BorumJotRequest.initialize(`sharednotes`)
+export async function getSharedJottings(abortController = null) {
+	const response = await BorumJotRequest.initialize(`sharedjottings`)
 		.authorize()
-		.makeRequest();
+		.makeRequest(abortController);
+
+		
 
 	if (response.data) {
-		return response.data.map((data) => ({
+		response.data.notes = response.data.notes.map((data) => ({
 			id: data.note_id,
 			title: data.title,
 			user_id: data.recipient_id,
@@ -55,9 +57,13 @@ export async function getSharedJottings() {
 			parent_id: 0,
 			due_date: data.due_date,
 		}));
-	} else {
-		return response;
+
+		response.data.tasks.forEach((item) => (item.body = unescapeSlashes(item.body)));
+
+		return response.data;
 	}
+
+	return response;
 }
 
 /**
@@ -142,7 +148,7 @@ export async function updateJottingTitle(id, jotType, title) {
  */
 export async function updateTaskStatus(id, completed) {
 	const queryString = `id=${id}&completed=${completed ? 1 : 0}`;
-	return await BorumJotRequest.initialize(`task?${queryString}`)
+	return BorumJotRequest.initialize(`task?${queryString}`)
 		.authorize()
 		.put()
 		.makeRequest();
@@ -155,7 +161,7 @@ export async function updateTaskStatus(id, completed) {
  */
 export async function createJotting(jotType, jotName) {
 	const queryString = `${jotType.toLowerCase()}`;
-	const response = await BorumJotRequest.initialize(queryString)
+	const response = BorumJotRequest.initialize(queryString)
 		.authorize()
 		.post(`name=${jotName}`)
 		.makeRequest();
@@ -185,24 +191,25 @@ export async function getSubtasks(id) {
  *
  * @param {number} id id of the note
  * @param {string} recipientEmail Email of the specified recipient
+ * @param {string} jotType The type of jotting: note or task; singular and lowercase
  */
-export async function shareNote(id, recipientEmail, abortController) {
-	return BorumJotRequest.initialize(`note/share`)
+export async function shareJot(id, recipientEmail, jotType, abortController) {
+	return await BorumJotRequest.initialize(`${jotType}/share`)
 		.authorize()
 		.post(`id=${id}&email=${recipientEmail}`)
 		.makeRequest(abortController);
 }
 
 /**
- * Gets the sharees for a note
- * @param {number} id id of the note
+ * Gets the sharees for a jotting
+ * @param {number} id id of the jotting
  * @param {AbortController} abortController The abort controller to pass to
  * BorumJotRequest.prototype.makeRequest()
  */
-export async function getNoteSharees(id, abortController) {
+export async function getJotSharees(id, jotType, abortController) {
 	const queryString = `id=${id}`;
 	const response = await BorumJotRequest.initialize(
-		`note/share?${queryString}`
+		`${jotType}/share?${queryString}`
 	)
 		.authorize()
 		.makeRequest(abortController);

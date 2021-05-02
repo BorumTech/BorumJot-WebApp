@@ -3,7 +3,7 @@ import Image from "next/image";
 import login from "./login.module.css";
 import LogoImage from "../../components/logoImage";
 import FormField from "../../components/FormField/formField";
-import ProgressSpinner from "../../components/CircularProgress/circularProgress";
+import ProgressSpinner from "../../components/ProgressSpinner/progressSpinner";
 import { useRef, useState } from "react";
 import { CONTENT_STATE } from "../../libs/view";
 import { submitLogin } from "../../libs/Datastore/requests";

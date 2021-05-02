@@ -9,8 +9,6 @@ import * as Requests from "../../libs/Datastore/requests";
  */
 export default function CreateJottingButton({
 	jotType,
-	jots,
-	setJots,
 	requestFunc = "createJotting",
 	requestArg1 = jotType,
 }) {
