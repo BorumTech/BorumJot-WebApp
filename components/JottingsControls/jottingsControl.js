@@ -10,18 +10,15 @@ import { compareArrays } from "../../libs/arrayExtensions";
 export default function JottingsControl(props) {
 	const [notes, setNotes] = useState(null);
 	const [tasks, setTasks] = useState(null);
-
-	const ownAbortController = new window.AbortController();
-	const sharedAbortController = new window.AbortController();
-
+	
 	const getJotsToShow = (response, jotType) => {
 		if (
 			response[1].status === "rejected" &&
 			response[0].status === "fulfilled"
-		)
+			)
 			return response[0].value[jotType];
-		else if (
-			response[1].status === "fulfilled" &&
+			else if (
+				response[1].status === "fulfilled" &&
 			response[0].status === "fulfilled"
 		)
 			return [...response[0].value[jotType], ...response[1].value[jotType]];
@@ -35,6 +32,9 @@ export default function JottingsControl(props) {
 	};
 
 	const makeJottingsRequests = async (interval) => {
+		const ownAbortController = new AbortController();
+		const sharedAbortController = new AbortController();
+
 		if (notes === -1 || tasks === -1) {
 			console.info("Interval cleared due to errors");
 			clearInterval(interval);
