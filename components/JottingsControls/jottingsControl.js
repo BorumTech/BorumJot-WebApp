@@ -11,8 +11,8 @@ export default function JottingsControl(props) {
 	const [notes, setNotes] = useState(null);
 	const [tasks, setTasks] = useState(null);
 
-	const ownAbortController = new AbortController();
-	const sharedAbortController = new AbortController();
+	const ownAbortController = new window.AbortController();
+	const sharedAbortController = new window.AbortController();
 
 	const getJotsToShow = (response, jotType) => {
 		if (
