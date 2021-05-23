@@ -24,9 +24,6 @@ jobs:
         TWEETREL_TEMPLATE: |
           We are proud to announce the {tag_name} release of Borum Jot for Web!
           
-          For more, see: {html_url}. 
-          
-          Here are the details:
           {body}
       run: |
         pip install -Uq tweetrel
