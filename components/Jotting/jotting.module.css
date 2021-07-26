@@ -79,8 +79,12 @@
 	grid-column-end: 4;
 }
 
-.task .details {
+.details {
 	grid-column-end: 3;
+}
+
+.jotting .completed {
+	text-decoration-line: line-through;
 }
 
 .subtasksControl {
