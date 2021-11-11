@@ -16,8 +16,6 @@ export default function JottingsControl(props) {
 	const [tasks, setTasks] = useState(null);
 	const [labels, setLabels] = useState(null);
 
-	const urlParser = new URLSearchParams(location.search);
-
 	const getJotsToShow = (response, jotType) => {
 		if (
 			response[1].status === "rejected" &&
