@@ -5,7 +5,7 @@ export default class BorumJotRequest extends BorumRequest {
         if (window.location.hostname === "localhost") {
             return new BorumJotRequest(`http://localhost:8200/v1/${input}`, init);
         } else {
-            return new BorumJotRequest(`https://api.jot.borumtech.com/api/v1/${input}`, init);
+            return new BorumJotRequest(`https://api.jot.borumtech.com/v1/${input}`, init);
         }
     }
 }

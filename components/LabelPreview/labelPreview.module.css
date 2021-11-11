@@ -1,0 +1,19 @@
+button.previewButton {
+	display: flex;
+	align-items: center;
+    border: none;
+    background: none;
+    padding: 1em;
+    font-size: 1rem;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    text-align: left;
+}
+
+button.previewButton:hover {
+    background-color: lightgrey;
+}
+
+.title {
+	display: inline-block;
+	width: 170px;
+}

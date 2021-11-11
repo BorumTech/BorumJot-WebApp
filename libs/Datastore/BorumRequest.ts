@@ -65,7 +65,7 @@ export default class BorumRequest extends Request {
         };
 
         // Abort the request if it takes too long to give a response
-        setTimeout(() => abortController.abort(), 5000)
+        setTimeout(() => abortController.abort(), 10000)
 
         const response = await fetch(this.url, this.init);
         if (response.status >= 200 && response.status < 300) {

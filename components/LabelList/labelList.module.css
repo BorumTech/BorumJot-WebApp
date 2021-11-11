@@ -1,0 +1,9 @@
+.dataList {
+    display: flex;
+	flex-direction: column;
+    align-content: flex-start;
+    border: 2px double indianred;
+    padding: 0;
+    height: 350px;
+    overflow-y: auto;
+}

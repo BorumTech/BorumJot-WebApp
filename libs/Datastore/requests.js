@@ -223,3 +223,19 @@ export async function removeSharee(id, shareeEmail, abortController) {
 		.delete(`id=${id}&email=${shareeEmail}`)
 		.makeRequest(abortController);
 }
+
+export async function getLabels(abortController) {
+	const { data } = await BorumJotRequest.initialize(`label`)
+		.authorize()
+		.makeRequest(abortController);
+
+	return data;
+}
+
+export async function getLabel(name, abortController) {
+	const { data } = await BorumJotRequest.initialize(`jottings?label=${name}`)
+		.authorize()
+		.makeRequest(abortController);
+
+	return data;
+}

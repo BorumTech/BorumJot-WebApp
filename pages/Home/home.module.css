@@ -1,7 +1,7 @@
 .main {
 	display: grid;
 	grid-template-rows: auto 100px repeat(2, 200px) 30px;
-	grid-template-columns: 200px 3fr 200px repeat(3, 1fr) 1fr 2fr;
+	grid-template-columns: 255px repeat(6, 175px);
 }
 
 @media only screen and (max-width: 830px) {
