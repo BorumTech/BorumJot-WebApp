@@ -1,15 +1,13 @@
-import NoteControl from "./noteControl";
-import TaskControl from "./taskControl";
-import LabelControl from "./labelControl";
-import NotesControl from "./notesControl";
-import TasksControl from "./tasksControl";
-import LabelsControl from "./labelsControl";
 import { useEffect, useState } from "react";
-import { getJottings, getSharedJottings, getLabels, getLabel } from "../../libs/Datastore/requests";
-import { useInterval } from "../../libs/delay";
 import { compareArrays } from "../../libs/arrayExtensions";
-import UrlService from "../../libs/UrlService";
-import { useRouter } from "next/router";
+import { getJottings, getLabels, getSharedJottings } from "../../libs/Datastore/requests";
+import { useInterval } from "../../libs/delay";
+import LabelControl from "./labelControl";
+import LabelsControl from "./labelsControl";
+import NoteControl from "./noteControl";
+import NotesControl from "./notesControl";
+import TaskControl from "./taskControl";
+import TasksControl from "./tasksControl";
 
 export default function JottingsControl(props) {
 	const [notes, setNotes] = useState(null);
@@ -20,10 +18,10 @@ export default function JottingsControl(props) {
 		if (
 			response[1].status === "rejected" &&
 			response[0].status === "fulfilled"
-			)
+		)
 			return response[0].value[jotType];
-			else if (
-				response[1].status === "fulfilled" &&
+		else if (
+			response[1].status === "fulfilled" &&
 			response[0].status === "fulfilled"
 		)
 			return [...response[0].value[jotType], ...response[1].value[jotType]];
@@ -41,31 +39,23 @@ export default function JottingsControl(props) {
 		const sharedAbortController = new AbortController();
 
 		if (notes === -1 || tasks === -1) {
-			console.info("Interval cleared due to errors");
+			console.log("Interval cleared due to errors");
 			clearInterval(interval);
 		}
 
 		try {
 			let promisesToSettle = [getJottings(ownAbortController), getSharedJottings(sharedAbortController)];
-			
-			const response = Promise.allSettled(promisesToSettle);
 
-			console.info("Requests to owned and shared jottings started");
-			console.debug("Response", await response);
+			const response = Promise.allSettled(promisesToSettle);
 
 			const notesToShow = getJotsToShow(await response, "notes");
 			const tasksToShow = getJotsToShow(await response, "tasks");
-
-			console.log("Response received, data computed");
-			console.info("notesToShow", notesToShow);
-			console.info("tasksToShow", tasksToShow);
 
 			const notesToShowIsNewData =
 				notes == null || compareArrays(notes, notesToShow);
 
 			if (notesToShowIsNewData) {
 				setNotes(notesToShow);
-				console.log("UI updated");
 			}
 			if (tasksToShow != tasks) {
 				setTasks(tasksToShow);
@@ -79,21 +69,17 @@ export default function JottingsControl(props) {
 		const abortController = new AbortController();
 
 		if (labels === -1) {
-			console.error("[makeLabelsRequest] Interval cleared due to errors");
+			console.log("[makeLabelsRequest] Interval cleared due to errors");
 			clearInterval(interval);
 		}
 
 		try {
 			const response = await getLabels(abortController);
-			console.log("Requests to labels started");
-			console.log("labels", response);
-			
+
 			const labelsToShowIsNewData = labels == null || compareArrays(labels, response);
 
 			if (labelsToShowIsNewData) {
 				setLabels(response);
-				console.info("labels", labels);
-				console.log("UI updated");
 			}
 		} catch (e) {
 			console.error("Request Error:", e);
@@ -101,24 +87,20 @@ export default function JottingsControl(props) {
 		}
 	};
 
-	// componentDidMount() - Load the jottings and recurringly update them with requests
-	const updateData = useInterval(() => {
-		console.group("Interval Cycle");
-		Promise.all([
-			makeJottingsRequests(updateData), 
-			makeLabelsRequest(updateData)
-		]).then(() => console.groupEnd("Interval Cycle"))
-	}, 10000);
+	useEffect(() => {
+		makeLabelsRequest();
+		makeJottingsRequests();
+	}, []);
 
-	return (
-		<>
-			<LabelsControl labelsState={[labels, setLabels]} />
-			<NotesControl notesState={[notes, setNotes]} />
-			<TasksControl tasksState={[tasks, setTasks]} />
-			
-			<NoteControl notes={notes} />
-			<TaskControl tasks={tasks} />
-			<LabelControl labels={labels} />
-		</>
-	);
+return (
+	<>
+		<LabelsControl labelsState={[labels, setLabels]} />
+		<NotesControl notesState={[notes, setNotes]} />
+		<TasksControl tasksState={[tasks, setTasks]} />
+
+		<NoteControl notes={notes} />
+		<TaskControl tasks={tasks} />
+		<LabelControl labels={labels} />
+	</>
+);
 }
