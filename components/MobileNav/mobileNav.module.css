@@ -1,0 +1,16 @@
+.mobileNav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    grid-column: 1;
+}
+
+.mobileNav > * {
+    padding: 1em;
+}
+
+@media screen and (min-width: 830px) {
+    .mobileNav {
+        display: none;
+    }
+}

@@ -11,11 +11,11 @@ import TaskList from "../JottingList/taskList";
  * @param { [tasks, setTasks] } props.tasksState
  * @param { {id: number}[] } props.tasksState[0]
  */
-export default function TasksControl({ tasksState }) {
+export default function TasksControl({ tasksState, active }) {
 	const [tasks, setTasks] = tasksState;
 
 	return (
-		<article className={jottingsControl.ownTaskList}>
+		<article style={{display: active ? 'block' : 'none'}} className={jottingsControl.ownTaskList}>
 			<h1>Tasks</h1>
 			{tasks ? <TaskList tasks={tasks} /> : <ProgressSpinner />}
 			<CreateTaskButton jots={tasks} />

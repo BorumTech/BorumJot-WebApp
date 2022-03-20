@@ -1,18 +1,18 @@
 .main {
 	display: grid;
-	grid-template-rows: auto 100px repeat(2, 200px) 30px;
-	grid-template-columns: 255px repeat(6, 175px);
+	grid-template-columns: 200px 3fr auto;
 }
 
-@media only screen and (max-width: 830px) {
+@media only screen and (min-width: 600px) {
 	.main {
 		grid-template-columns: 200px 3fr 200px 3fr; 
 	}
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (min-width: 830px) {
 	.main {
-		grid-template-columns: 200px 3fr auto;
+		grid-template-rows: auto 100px repeat(2, 200px) 30px;
+		grid-template-columns: 255px repeat(6, 175px);
 	}
 }
 

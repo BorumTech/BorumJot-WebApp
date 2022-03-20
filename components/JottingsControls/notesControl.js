@@ -12,11 +12,11 @@ import jottingsControl from "./jottingsControl.module.css";
  * @param props.notesState[0] The value of notes
  * @param props.notesState[1] The Dispatch to set a new value to the notes state
  */
-export default function NotesControl({notesState}) {
+export default function NotesControl({notesState, active=true}) {
     const [notes, setNotes] = notesState;
 
 	return (
-		<article className={jottingsControl.ownNoteList}>
+		<article style={{display: active ? 'block' : 'none'}} className={jottingsControl.ownNoteList}>
 			<h1>Notes</h1>
 			{notes ? <NoteList notes={notes} /> : <ProgressSpinner />}
 			<CreateNoteButton jots={notes} />
