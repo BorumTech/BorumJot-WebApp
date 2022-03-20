@@ -27,7 +27,7 @@ export default function JottingsControl(props) {
 			setActiveList(window.location.hash.substring(1));
 
 		return () => { isCancelled = true };
-	}, [window.location.hash]);
+	}, [window?.location?.hash]);
 
 	const getJotsToShow = (response, jotType) => {
 		if (
