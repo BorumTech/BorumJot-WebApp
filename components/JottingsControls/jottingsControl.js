@@ -16,9 +16,17 @@ export default function JottingsControl(props) {
 	const [labels, setLabels] = useState(null);
 
 	const { width } = useWindowSize();
-	const [activeList, setActiveList] = useState(typeof width === 'undefined' || width < 800 ? 'labels' : 'all');
+	const [activeList, setActiveList] = useState('labels');
 
 	const router = useRouter();
+
+	useEffect(() => {
+		if (width >= 800) {
+			setActiveList('all');
+		} else {
+			setActiveList('labels');
+		}
+	}, [width]);
 
     useEffect(() => {
         const onHashChangeStart = (url) => {
