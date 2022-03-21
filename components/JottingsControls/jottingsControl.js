@@ -29,18 +29,9 @@ export default function JottingsControl(props) {
 	}, [width]);
 
     useEffect(() => {
-        const onHashChangeStart = (url) => {
-			const newHash = url.split('#')[1];
-            console.log(`Path changing to ${newHash}`);
-			setActiveList(newHash || 'labels');
-        };
+        setActiveList(router.query.list || 'labels');
 
-        router.events.on("hashChangeStart", onHashChangeStart);
-
-        return () => {
-            router.events.off("hashChangeStart", onHashChangeStart);
-        };
-    }, [router.events]);
+    }, [router.query]);
 
 	const getJotsToShow = (response, jotType) => {
 		if (
