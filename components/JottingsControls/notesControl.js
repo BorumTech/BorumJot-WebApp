@@ -12,7 +12,7 @@ import jottingsControl from "./jottingsControl.module.css";
  * @param props.notesState[0] The value of notes
  * @param props.notesState[1] The Dispatch to set a new value to the notes state
  */
-export default function NotesControl({notesState, active=true}) {
+export default function NotesControl({notesState, active}) {
     const [notes, setNotes] = notesState;
 
 	return (

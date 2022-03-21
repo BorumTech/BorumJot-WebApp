@@ -13,7 +13,7 @@ import { useWindowSize } from "../../libs/view";
  * @param props.notesState[0] The value of notes
  * @param props.notesState[1] The Dispatch to set a new value to the notes state
  */
-export default function LabelsControl({labelsState, active=true}) {
+export default function LabelsControl({labelsState, active}) {
     const [labels, setLabels] = labelsState;
 
 	return (

@@ -1,8 +1,7 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { compareArrays } from "../../libs/arrayExtensions";
 import { getJottings, getLabels, getSharedJottings } from "../../libs/Datastore/requests";
-import { useInterval } from "../../libs/delay";
-import UrlService from "../../libs/UrlService";
 import { useWindowSize } from "../../libs/view";
 import LabelControl from "./labelControl";
 import LabelsControl from "./labelsControl";
@@ -16,18 +15,24 @@ export default function JottingsControl(props) {
 	const [tasks, setTasks] = useState(null);
 	const [labels, setLabels] = useState(null);
 
-	const { windowWidth } = useWindowSize();
-	const [activeList, setActiveList] = useState(windowWidth < 600 ? 'labels' : 'all');
+	const { width } = useWindowSize();
+	const [activeList, setActiveList] = useState(typeof width === 'undefined' || width < 800 ? 'labels' : 'all');
 
-	useEffect(() => {
-		let isCancelled = false;
-		console.log(window.location.hash.substring(1));
-		
-		if (!isCancelled)
-			setActiveList(window.location.hash.substring(1));
+	const router = useRouter();
 
-		return () => { isCancelled = true };
-	}, [window?.location?.hash]);
+    useEffect(() => {
+        const onHashChangeStart = (url) => {
+			const newHash = url.split('#')[1];
+            console.log(`Path changing to ${newHash}`);
+			setActiveList(newHash || 'labels');
+        };
+
+        router.events.on("hashChangeStart", onHashChangeStart);
+
+        return () => {
+            router.events.off("hashChangeStart", onHashChangeStart);
+        };
+    }, [router.events]);
 
 	const getJotsToShow = (response, jotType) => {
 		if (
