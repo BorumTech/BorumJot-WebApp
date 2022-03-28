@@ -1,6 +1,6 @@
 .jottingList {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-content: flex-start;
     border: 2px double indianred;
     padding: 0;
@@ -15,4 +15,11 @@ ul.jottingList > li {
 ul.jottingList > li:hover {
     background-color: lightgray;
     cursor: pointer;
+}
+
+@media screen and (min-width: 800px) {
+    .jottingList {
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
 }

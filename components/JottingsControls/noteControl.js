@@ -28,7 +28,7 @@ export default function NoteControl({ notes }) {
 		urlService.setQueryToJottingInfo("note");
 	}, [notes]);
 
-	if (showNote && router.query.type == "note") {
+	if (showNote) {
 		return (
 			<article ref={showShareMenu ? ref : null} className={`${jottingsControl.fullJotting} ${jottingsControl.noteControl}`}>
 				<div

@@ -2,6 +2,7 @@ import AccountBanner from "../../components/AccountBanner/accountBanner";
 import BrandHeader from "../../components/BrandHeader/brandHeader";
 import BrowserCompatibilityInfo from "../../components/BrowserCompatibilityInfo/browserCompatibilityInfo";
 import JottingsControl from "../../components/JottingsControls/jottingsControl";
+import MobileNav from "../../components/MobileNav/MobileNav";
 import SearchBar from "../../components/SearchBar/searchBar";
 import {
 	CONTENT_STATE
@@ -36,6 +37,7 @@ export default function Home({ fade, onFadeInLogin, setFade }) {
 
 			<AccountBanner setFade={setFade} />
 
+			<MobileNav />
 			<JottingsControl />
 		</main>
 	);

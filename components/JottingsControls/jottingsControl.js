@@ -1,7 +1,8 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { compareArrays } from "../../libs/arrayExtensions";
 import { getJottings, getLabels, getSharedJottings } from "../../libs/Datastore/requests";
-import { useInterval } from "../../libs/delay";
+import { useWindowSize } from "../../libs/view";
 import LabelControl from "./labelControl";
 import LabelsControl from "./labelsControl";
 import NoteControl from "./noteControl";
@@ -13,6 +14,24 @@ export default function JottingsControl(props) {
 	const [notes, setNotes] = useState(null);
 	const [tasks, setTasks] = useState(null);
 	const [labels, setLabels] = useState(null);
+
+	const { width } = useWindowSize();
+	const [activeList, setActiveList] = useState('labels');
+
+	const router = useRouter();
+
+	useEffect(() => {
+		if (width >= 800) {
+			setActiveList('all');
+		} else {
+			setActiveList('labels');
+		}
+	}, [width]);
+
+    useEffect(() => {
+        setActiveList(router.query.list || 'labels');
+
+    }, [router.query]);
 
 	const getJotsToShow = (response, jotType) => {
 		if (
@@ -92,15 +111,15 @@ export default function JottingsControl(props) {
 		makeJottingsRequests();
 	}, []);
 
-return (
-	<>
-		<LabelsControl labelsState={[labels, setLabels]} />
-		<NotesControl notesState={[notes, setNotes]} />
-		<TasksControl tasksState={[tasks, setTasks]} />
+	return (
+		<>
+			<LabelsControl active={['labels', 'all'].includes(activeList)} labelsState={[labels, setLabels]} />
+			<NotesControl active={['notes', 'all'].includes(activeList)} notesState={[notes, setNotes]} />
+			<TasksControl active={['tasks', 'all'].includes(activeList)} tasksState={[tasks, setTasks]} />
 
-		<NoteControl notes={notes} />
-		<TaskControl tasks={tasks} />
-		<LabelControl labels={labels} />
-	</>
-);
+			<NoteControl notes={notes} />
+			<TaskControl tasks={tasks} />
+			<LabelControl labels={labels} />
+		</>
+	);
 }

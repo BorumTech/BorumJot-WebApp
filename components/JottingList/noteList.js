@@ -12,10 +12,6 @@ export default function NoteList({ notes }) {
 				
 				const labelIsNotRelevant = !urlParser.has("label") || item.owner === "shared" || !item.labels;
 
-				if (item.labels) {
-					console.info("[NoteList] Labels", Object.values(item.labels));
-				}
-
 				const jotHasLabel = labelIsNotRelevant || Array.isArray(Object.values(item.labels)) && Object.values(item.labels).some(item => item.name.toLocaleLowerCase() === urlParser.get("label").toLocaleLowerCase());
 
 				return (
