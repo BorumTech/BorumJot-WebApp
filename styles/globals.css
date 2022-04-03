@@ -59,3 +59,7 @@ button:hover {
     opacity: 0;
   }
 }
+
+article.active {
+  display: block;
+}

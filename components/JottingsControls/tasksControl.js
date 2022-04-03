@@ -15,7 +15,7 @@ export default function TasksControl({ tasksState, active }) {
 	const [tasks, setTasks] = tasksState;
 
 	return (
-		<article style={{display: active ? 'block' : 'none'}} className={jottingsControl.ownTaskList}>
+		<article className={`${active ? "active" : ""} ${jottingsControl.ownTaskList}`}>
 			<h1>Tasks</h1>
 			{tasks ? <TaskList tasks={tasks} /> : <ProgressSpinner />}
 			<CreateTaskButton jots={tasks} />
