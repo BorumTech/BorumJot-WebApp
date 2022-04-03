@@ -17,7 +17,7 @@ export default function LabelsControl({labelsState, active}) {
     const [labels, setLabels] = labelsState;
 
 	return (
-		<article style={{display: active ? "block" : "none"}} className={jottingsControl.labelList}>
+		<article className={`${active ? "active" : ""} ${jottingsControl.labelList}`}>
 			<h1>Labels</h1>
 			{labels ? <LabelList labels={labels} /> : <ProgressSpinner />}
 			{/* <CreateNoteButton jots={notes} /> */}

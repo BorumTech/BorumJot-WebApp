@@ -16,7 +16,7 @@ export default function NotesControl({notesState, active}) {
     const [notes, setNotes] = notesState;
 
 	return (
-		<article style={{display: active ? 'block' : 'none'}} className={jottingsControl.ownNoteList}>
+		<article className={`${active ? "active" : ""} ${jottingsControl.ownNoteList}`}>
 			<h1>Notes</h1>
 			{notes ? <NoteList notes={notes} /> : <ProgressSpinner />}
 			<CreateNoteButton jots={notes} />

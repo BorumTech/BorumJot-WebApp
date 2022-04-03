@@ -15,23 +15,23 @@ export default function JottingsControl(props) {
 	const [tasks, setTasks] = useState(null);
 	const [labels, setLabels] = useState(null);
 
-	const { width } = useWindowSize();
-	const [activeList, setActiveList] = useState('labels');
-
 	const router = useRouter();
+	const [matches, setMatches] = useState(
+		window.matchMedia("(min-width: 800px)").matches
+	  )
 
-	useEffect(() => {
-		if (width >= 800) {
-			setActiveList('all');
-		} else {
-			setActiveList('labels');
-		}
-	}, [width]);
+	  useEffect(() => {
 
-    useEffect(() => {
-        setActiveList(router.query.list || 'labels');
+		const handleResize = e => {
+			setMatches(e.matches);
+		};
 
-    }, [router.query]);
+		window
+		.matchMedia("(min-width: 800px)")
+		.addEventListener('change', handleResize);
+
+		return () => { removeEventListener('change', handleResize); };
+	  }, []);
 
 	const getJotsToShow = (response, jotType) => {
 		if (
@@ -109,13 +109,16 @@ export default function JottingsControl(props) {
 	useEffect(() => {
 		makeLabelsRequest();
 		makeJottingsRequests();
+		console.log(router.asPath);
 	}, []);
+
+	const showList = list => router.asPath.includes(`list=${list}`)
 
 	return (
 		<>
-			<LabelsControl active={['labels', 'all'].includes(activeList)} labelsState={[labels, setLabels]} />
-			<NotesControl active={['notes', 'all'].includes(activeList)} notesState={[notes, setNotes]} />
-			<TasksControl active={['tasks', 'all'].includes(activeList)} tasksState={[tasks, setTasks]} />
+			<LabelsControl active={router.asPath.includes(`list=labels`) || !router.asPath.includes('list=')} labelsState={[labels, setLabels]} />
+			<NotesControl active={showList('notes')} notesState={[notes, setNotes]} />
+			<TasksControl active={showList('tasks')} tasksState={[tasks, setTasks]} />
 
 			<NoteControl notes={notes} />
 			<TaskControl tasks={tasks} />
