@@ -22,7 +22,7 @@ export default function Layout(props) {
           Powered by{" "}
           <img src="/vercel.svg" alt="Vercel Logo" className={layout.logo} />
         </a>
-        <p>&copy; 2020-2021 Borum Tech</p>
+        <p>&copy; 2022 Borum Tech</p>
         <div className={layout.platformList}>
           <PlatformButton
             downloadLink="https://play.google.com/store/apps/details?id=com.boruminc.borumjot.android"
