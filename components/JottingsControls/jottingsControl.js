@@ -16,22 +16,6 @@ export default function JottingsControl(props) {
 	const [labels, setLabels] = useState(null);
 
 	const router = useRouter();
-	const [matches, setMatches] = useState(
-		window.matchMedia("(min-width: 800px)").matches
-	  )
-
-	  useEffect(() => {
-
-		const handleResize = e => {
-			setMatches(e.matches);
-		};
-
-		window
-		.matchMedia("(min-width: 800px)")
-		.addEventListener('change', handleResize);
-
-		return () => { removeEventListener('change', handleResize); };
-	  }, []);
 
 	const getJotsToShow = (response, jotType) => {
 		if (
