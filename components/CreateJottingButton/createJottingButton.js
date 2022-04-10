@@ -11,6 +11,7 @@ export default function CreateJottingButton({
 	jotType,
 	requestFunc = "createJotting",
 	requestArg1 = jotType,
+	setJots
 }) {
 	const [newJotInputCls, setNewJotInputCls] = useState("invisible");
 	const [createJotBtnCls, setCreateJotBtnCls] = useState(
@@ -54,16 +55,21 @@ export default function CreateJottingButton({
 		if (e.key == "Enter") {
 			const jotName = e.target.value;
 			try {
-				await Requests[requestFunc](
+				const newJotResponseData = await Requests[requestFunc](
 					requestArg1,
 					jotName
 				);
+				setJots((prevJots, props) => {
+					console.info("New Jots State", [...prevJots, newJotResponseData]);
+					return [...prevJots, newJotResponseData];
+				});
 			} catch (e) {
 				console.error(e);
 				window.alert("A system error occurred");
 			} finally {
 				clearInput();
 				showBtn();
+				
 			}
 		} else if (e.key == "Escape") {
 			clearInput();

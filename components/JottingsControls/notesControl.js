@@ -19,7 +19,7 @@ export default function NotesControl({notesState, active}) {
 		<article className={`${active ? "active" : ""} ${jottingsControl.ownNoteList}`}>
 			<h1>Notes</h1>
 			{notes ? <NoteList notes={notes} /> : <ProgressSpinner />}
-			<CreateNoteButton jots={notes} />
+			<CreateNoteButton setJots={setNotes} />
 		</article>
 	);
 }

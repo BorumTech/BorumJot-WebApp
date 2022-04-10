@@ -2,7 +2,7 @@ import FetchError from "../FetchError/fetchError";
 import NotePreview from "../Jotting/notePreview";
 import jottingList from "./jottingList.module.css";
 
-export default function NoteList({ notes }) {
+export default function 	NoteList({ notes }) {
 	let noteList = <FetchError itemName="notes" />;
 
 	if (notes instanceof Array) {

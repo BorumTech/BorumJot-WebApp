@@ -161,7 +161,7 @@ export async function updateTaskStatus(id, completed) {
  */
 export async function createJotting(jotType, jotName) {
 	const queryString = `${jotType.toLowerCase()}`;
-	const response = BorumJotRequest.initialize(queryString)
+	const response = await BorumJotRequest.initialize(queryString)
 		.authorize()
 		.post(`name=${jotName}`)
 		.makeRequest();
