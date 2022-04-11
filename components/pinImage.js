@@ -1,8 +1,7 @@
-import Image from "next/image";
 
 export default function PinImage(props) {
 	return (
-		<Image
+		<img
             className={props.className ?? ""}
 			height={25}
 			width={25}

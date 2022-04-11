@@ -12,7 +12,7 @@
 @media only screen and (min-width: 800px) {
 	.main {
 		grid-template-rows: auto 100px repeat(2, 200px) 30px;
-		grid-template-columns: 255px repeat(6, 175px);
+		grid-template-columns: 255px 15% 15%;
 	}
 }
 

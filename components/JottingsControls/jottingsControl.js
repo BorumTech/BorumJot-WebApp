@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { compareArrays } from "../../libs/arrayExtensions";
 import { getJottings, getLabels, getSharedJottings } from "../../libs/Datastore/requests";
-import { useWindowSize } from "../../libs/view";
 import LabelControl from "./labelControl";
 import LabelsControl from "./labelsControl";
 import NoteControl from "./noteControl";

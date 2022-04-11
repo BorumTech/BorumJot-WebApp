@@ -2,6 +2,7 @@ import ProgressSpinner from "../ProgressSpinner/progressSpinner";
 import CreateNoteButton from "../CreateJottingButton/createNoteButton";
 import NoteList from "../JottingList/noteList";
 import jottingsControl from "./jottingsControl.module.css";
+import CreateJottingButton from "../CreateJottingButton/createJottingButton";
 
 /**
  * Control for Notes heading,
@@ -19,7 +20,7 @@ export default function NotesControl({notesState, active}) {
 		<article className={`${active ? "active" : ""} ${jottingsControl.ownNoteList}`}>
 			<h1>Notes</h1>
 			{notes ? <NoteList notes={notes} /> : <ProgressSpinner />}
-			<CreateNoteButton setJots={setNotes} />
+			<CreateJottingButton jotType="Note" setJots={setNotes} />
 		</article>
 	);
 }

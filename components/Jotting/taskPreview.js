@@ -9,7 +9,7 @@ export default function TaskPreview(props) {
 	return (
 		<data className={jotting.jotting} value={"T" + props.id}>
 			<button className={jotting.previewButton} onClick={() => Jotting.openJotting(router, "task", props)}>
-				<span className={`${jotting.previewTitle} ${props.completed == "1" && jotting.completed}`}>{props.title}</span>
+				<span className={`${jotting.previewTitle} ${props.completed == "1" ? jotting.completed : ''}`}>{props.title}</span>
 				{props.priority == 1 ? <PinImage className={jotting.previewPin} /> : ""}
 			</button>
 		</data>

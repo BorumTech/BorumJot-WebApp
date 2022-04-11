@@ -27,7 +27,7 @@
 	}
 
 	.ownTaskList {
-		grid-column: 5 / 9;
+		grid-column: 5 / 8;
 	}
 
 	.ownNoteList,
@@ -47,7 +47,7 @@
 		grid-column-end: -1;
 		justify-self: flex-start;
 		overflow: auto;
-		grid-template-columns: subgrid;
+		grid-template-columns: 255px repeat(6, 175px);
 	}
 
 	.taskControl {

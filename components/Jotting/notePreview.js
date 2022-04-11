@@ -12,7 +12,7 @@ export default function NotePreview(props) {
 
 	return (
 		<data className={jotting.jotting} value={"N" + props.id}>
-			<button onClick={handleNoteBtnClick}>
+			<button className={jotting.previewButton} onClick={handleNoteBtnClick}>
 				<span className={jotting.previewTitle}>{props.title}</span>
 				{props.priority == 1 ? <PinImage className={jotting.previewPin} /> : ""}
 			</button>
