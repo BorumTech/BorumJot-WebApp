@@ -1,5 +1,5 @@
 export default class BorumRequest extends Request {
-    private commonHeaders: HeadersInit = {};
+    commonHeaders: HeadersInit = {};
     private init: RequestInit = {};
 
     constructor(input: RequestInfo, init?: RequestInit) {

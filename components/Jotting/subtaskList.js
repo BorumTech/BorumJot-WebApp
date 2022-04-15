@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
-import { useRecurringRequest } from "../../libs/Datastore/requestHelpers";
-import { deleteTask, getSubtasks } from "../../libs/Datastore/requests";
-import ProgressSpinner from "../ProgressSpinner/progressSpinner";
+import useSWR from "swr";
+import { deleteTask, getSubtasksRequest } from "../../libs/Datastore/requests";
 import FetchError from "../FetchError/fetchError";
+import ProgressSpinner from "../ProgressSpinner/progressSpinner";
 import RemoveableListItem from "../RemoveableListItem/removeableListItem";
 import StyledCheckbox from "../StyledCheckbox/styledCheckbox";
 import jotting from "./jotting.module.css";
+import Link from "next/link";
+import Jotting from "../../libs/Jotting";
+import { useRouter } from "next/router";
+
+const fetcher = (id) => getSubtasksRequest(id).makeRequest(new AbortController());
 
 /**
  * @param { {id : number } } props The info about the task
@@ -13,16 +17,12 @@ import jotting from "./jotting.module.css";
  */
 export default function SubtaskList({ id, subtasksState }) {
 	const [subtasks, setSubtasks] = subtasksState;
+	const { data, error } = useSWR(id, fetcher);
+	const router = useRouter();
 
-	// componentDidUpdate() - recur subtasks
-	useRecurringRequest(() => {
-		getSubtasks(id)
-			.then((response) => {
-				if (response != subtasks)
-					setSubtasks(response);
-			})
-			.catch(() => {});
-	});
+	if (error) return <FetchError itemName="subtasks" />;
+	if (!data)
+		return <ProgressSpinner />;
 
 	const handleRemoveClick = (e) => {
 		const itemId = e.target.parentElement.id.substring(2);
@@ -41,28 +41,45 @@ export default function SubtaskList({ id, subtasksState }) {
 			.catch(alert);
 	};
 
-	if (subtasks instanceof Array)
-		return (
-			<ul className={jotting.subtasks}>
-				{subtasks.map((item) => {
-					return (
-						<RemoveableListItem
-							key={item.id}
-							handleRemoveClick={handleRemoveClick}
-							removeText="X"
-							id={"s-" + item.id}
-							content={item.title}
+	return (
+		<ul className={jotting.subtasks}>
+			{data.data.map((item) => {
+				return (
+					<li key={item.id} className="removeableListItem">
+						<StyledCheckbox
+							id={item.id}
+							prefix="subtask-completion-box-"
+							completed={item.completed == 1}
+						/>
+						<button className={jotting.subtaskTitle} onClick={() => Jotting.openJotting(router, "task", item)}>{item.title}</button>
+						<button
+							onClick={handleRemoveClick}
+							className="removeItemButton"
 						>
-							<StyledCheckbox
-								id={item.id}
-								prefix="subtask-completion-box-"
-								completed={item.completed == 1}
-							/>
-						</RemoveableListItem>
-					);
-				})}
-			</ul>
-		);
-	else if (subtasks != null) return <FetchError itemName="subtasks" />;
-	else return <ProgressSpinner />;
+							X
+						</button>
+						<ul className={jotting.subsubtasks}>
+							{item.subtasks.map(grandchild => (
+								<li key={grandchild.id}>
+									<StyledCheckbox
+										id={grandchild.id}
+										prefix="subtask-completion-box-"
+										completed={grandchild.completed == 1}
+									/>
+									<button className={jotting.subtaskTitle} onClick={() => Jotting.openJotting(router, "task", grandchild)}>{grandchild.title}</button>
+									<button
+										className="removeItemButton"
+									>X</button>
+								</li>
+							))}
+						</ul>
+					</li>
+
+				);
+			})}
+		</ul>
+	);
+
+
+
 }

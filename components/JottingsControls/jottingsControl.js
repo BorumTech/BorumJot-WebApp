@@ -92,7 +92,6 @@ export default function JottingsControl(props) {
 	useEffect(() => {
 		makeLabelsRequest();
 		makeJottingsRequests();
-		console.log(router.asPath);
 	}, []);
 
 	const showList = list => router.asPath.includes(`list=${list}`)

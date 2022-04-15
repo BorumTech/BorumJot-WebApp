@@ -92,6 +92,14 @@
 	flex-direction: column;
 }
 
+.subtaskTitle {
+	background: none;
+	border: none;
+	font-size: 1em;
+	font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	text-align: left;
+}
+
 .subtaskHeading {
 	margin: 0 0 3px 0;
 }

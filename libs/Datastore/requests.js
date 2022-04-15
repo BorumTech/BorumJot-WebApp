@@ -66,6 +66,13 @@ export async function getSharedJottings(abortController = null) {
 	return response;
 }
 
+export async function getTask(id, abortController = null) {
+	const queryString = `id=${id}`;
+	return await BorumJotRequest.initialize(`task?${queryString}`)
+		.authorize()
+		.makeRequest(abortController);
+}
+
 /**
  * Makes GET request to API to get body of the note
  * @param {number} id The id of the note whose body is getting fetched
@@ -179,12 +186,14 @@ export async function createSubtask(id, jotName) {
 }
 
 export async function getSubtasks(id) {
-	const queryString = `id=${id}`;
-	const { data } = await BorumJotRequest.initialize(`subtasks?${queryString}`)
-		.authorize()
-		.makeRequest();
+	const { data } = await getSubtasksRequest(id).makeRequest();
 
 	return data;
+}
+
+export function getSubtasksRequest(id) {
+	const queryString = `id=${id}&subsubtasks`;
+	return BorumJotRequest.initialize(`subtasks?${queryString}`).authorize();
 }
 
 /**

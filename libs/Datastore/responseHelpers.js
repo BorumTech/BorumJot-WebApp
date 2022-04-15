@@ -29,7 +29,6 @@ export function useCancelableRequest(
 	props,
 	dependencyList = []
 ) {
-	// componentDidMount(), componentDidUpdate(), componentWillUmmount()
 	useEffect(() => {
 		const abortController = new AbortController();
 

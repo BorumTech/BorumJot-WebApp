@@ -61,8 +61,7 @@ export default class UrlService {
 		if (!this.queryHasJottingInfo(jotType)) return;
 
 		this.router.query = {
-			type: jotType,
-			jotType: jotType,
+			type: jotType, jotType,
 			id: parseInt(query[1]),
 			title: query[2],
 		};

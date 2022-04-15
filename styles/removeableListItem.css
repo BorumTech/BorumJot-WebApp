@@ -1,0 +1,10 @@
+.removeableListItem > span {
+	display: inline-block;
+}
+
+.removeItemButton {
+	margin: 1em;
+	background: none;
+	border: none;
+	color: red;
+}

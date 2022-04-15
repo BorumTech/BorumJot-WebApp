@@ -24,14 +24,12 @@ export default function JottingDetails({ jottingInfo, jotType }) {
 	};
 
 	// Request the body if not passed by parent component
-	if (jottingInfo.body == null) {
-		useCancelableRequest(
-			getBody, // Request function
-			setBody, // State dispatcher
-			[jottingInfo.id, jotType], // Parameters of request function
-			[jottingInfo.id] // Dependency list
-		);
-	}
+	useCancelableRequest(
+		getBody, // Request function
+		setBody, // State dispatcher
+		[jottingInfo.id, jotType], // Parameters of request function
+		[jottingInfo.id] // Dependency list
+	);
 
 	// Display body if the body was successfully received
 	if (typeof body == "string") {
