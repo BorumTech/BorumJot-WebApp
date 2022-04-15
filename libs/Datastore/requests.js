@@ -66,11 +66,10 @@ export async function getSharedJottings(abortController = null) {
 	return response;
 }
 
-export async function getTask(id, abortController = null) {
+export function getTask(id) {
 	const queryString = `id=${id}`;
-	return await BorumJotRequest.initialize(`task?${queryString}`)
-		.authorize()
-		.makeRequest(abortController);
+	return BorumJotRequest.initialize(`task?${queryString}`)
+		.authorize();
 }
 
 /**

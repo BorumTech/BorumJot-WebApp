@@ -1,15 +1,16 @@
+import { useRouter } from "next/router";
 import useSWR from "swr";
 import { deleteTask, getSubtasksRequest } from "../../libs/Datastore/requests";
+import Jotting from "../../libs/Jotting";
 import FetchError from "../FetchError/fetchError";
 import ProgressSpinner from "../ProgressSpinner/progressSpinner";
-import RemoveableListItem from "../RemoveableListItem/removeableListItem";
 import StyledCheckbox from "../StyledCheckbox/styledCheckbox";
 import jotting from "./jotting.module.css";
-import Link from "next/link";
-import Jotting from "../../libs/Jotting";
-import { useRouter } from "next/router";
 
-const fetcher = (id) => getSubtasksRequest(id).makeRequest(new AbortController());
+const fetcher = (id) => {
+	console.log(getSubtasksRequest(id));
+	return getSubtasksRequest(id.substring(2)).makeRequest(new AbortController());
+}
 
 /**
  * @param { {id : number } } props The info about the task
@@ -17,12 +18,11 @@ const fetcher = (id) => getSubtasksRequest(id).makeRequest(new AbortController()
  */
 export default function SubtaskList({ id, subtasksState }) {
 	const [subtasks, setSubtasks] = subtasksState;
-	const { data, error } = useSWR(id, fetcher);
+	const { data, error } = useSWR("ST" + id, fetcher);
 	const router = useRouter();
 
+	if (!data) return <ProgressSpinner />;
 	if (error) return <FetchError itemName="subtasks" />;
-	if (!data)
-		return <ProgressSpinner />;
 
 	const handleRemoveClick = (e) => {
 		const itemId = e.target.parentElement.id.substring(2);

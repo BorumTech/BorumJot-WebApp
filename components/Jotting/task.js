@@ -7,6 +7,7 @@ import CreateJottingButton from "../CreateJottingButton/createJottingButton";
 import { useState } from "react";
 import StyledCheckbox from "../StyledCheckbox/styledCheckbox";
 import ShareButton from "../ShareButton/shareButton";
+import SubtasksControl from "./subtasksControl";
 
 export default function Task(task) {
 	return (
@@ -24,22 +25,5 @@ export default function Task(task) {
 			<JottingDetails jotType="task" jottingInfo={task} />
 			<SubtasksControl task={task} />
 		</Jotting>
-	);
-}
-
-function SubtasksControl({ task }) {
-	const [subtasks, setSubtasks] = useState(null);
-	return (
-		<div className={jotting.subtasksControl}>
-			<h3 className={jotting.subtaskHeading}>Subtasks</h3>
-			<SubtaskList id={task.id} subtasksState={[subtasks, setSubtasks]} />
-			<CreateJottingButton
-				requestFunc="createSubtask"
-				jotType="subtask"
-				jots={subtasks}
-				setJots={setSubtasks}
-				requestArg1={task.id}
-			/>
-		</div>
 	);
 }
