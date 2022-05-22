@@ -29,7 +29,6 @@ export default function TaskControl({ tasks }) {
 			ref={ref}
 			className={`${jottingsControl.fullJotting} ${jottingsControl.taskControl}`}
 		>
-			{console.log("Searching for task with given id...", urlInfo[1])}
 			<div
 				ref={showShareMenu ? null : ref}
 				className={jottingsControl.jottingContent}

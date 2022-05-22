@@ -7,10 +7,7 @@ import ProgressSpinner from "../ProgressSpinner/progressSpinner";
 import StyledCheckbox from "../StyledCheckbox/styledCheckbox";
 import jotting from "./jotting.module.css";
 
-const fetcher = (id) => {
-	console.log(getSubtasksRequest(id));
-	return getSubtasksRequest(id.substring(2)).makeRequest(new AbortController());
-}
+const fetcher = (id) => getSubtasksRequest(id.substring(2)).makeRequest(new AbortController());
 
 /**
  * @param { {id : number } } props The info about the task
@@ -18,6 +15,7 @@ const fetcher = (id) => {
  */
 export default function SubtaskList({ id, subtasksState }) {
 	const [subtasks, setSubtasks] = subtasksState;
+	// Use SWR for performance and conservation of resources (cache), use ST to separate from other useSWR requests
 	const { data, error } = useSWR("ST" + id, fetcher);
 	const router = useRouter();
 
@@ -43,6 +41,7 @@ export default function SubtaskList({ id, subtasksState }) {
 
 	return (
 		<ul className={jotting.subtasks}>
+			{console.info("Subtask Data", data)}
 			{data.data.map((item) => {
 				return (
 					<li key={item.id} className="removeableListItem">

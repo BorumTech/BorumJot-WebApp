@@ -1,6 +1,7 @@
 .main {
 	display: grid;
-	grid-template-columns: 200px 3fr auto;
+	grid-template-columns: 125px 75px repeat(3, 1fr) 1em;
+	grid-template-rows: 80px 100px 20% 1fr 2fr 1em
 }
 
 @media only screen and (min-width: 600px) {

@@ -3,6 +3,7 @@ import ProgressSpinner from "../ProgressSpinner/progressSpinner";
 import LabelList from "../LabelList/labelList";
 import jottingsControl from "./jottingsControl.module.css";
 import { useWindowSize } from "../../libs/view";
+import CreateLabelButton from "../CreateJottingButton/CreateLabelButton";
 
 /**
  * Control for Labels heading,
@@ -20,7 +21,7 @@ export default function LabelsControl({labelsState, active}) {
 		<article className={`${active ? "active" : ""} ${jottingsControl.labelList}`}>
 			<h1>Labels</h1>
 			{labels ? <LabelList labels={labels} /> : <ProgressSpinner />}
-			{/* <CreateNoteButton jots={notes} /> */}
+			<CreateLabelButton labels={labels} />
 		</article>
 	);
 }

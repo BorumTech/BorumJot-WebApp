@@ -28,3 +28,7 @@ input.taskCompletionCheckbox {
 	padding: 0;
 	border: 0;
 }
+
+.taskCompletionCheckbox:checked ~ button:first-of-type {
+	text-decoration: line-through;
+}

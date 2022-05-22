@@ -1,17 +1,23 @@
-import searchBar from "./searchBar.module.css";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UrlService from "../../libs/UrlService";
-import { useEscapeAlerter} from "../../libs/view";
+import searchBar from "./searchBar.module.css";
 
 export default function SearchBar() {
 	const [active, setActive] = useState(false);
 
 	const router = useRouter();
 	const urlService = new UrlService(router);
+	let urlSearchParams;
+
+	useEffect(() => {
+		urlSearchParams = new URLSearchParams(window.location.search);
+	}, []);
+
+	const searchInput = useRef(null);
 
 	const handleSearch = e => {
-		urlService.changeQuery({ q: e.target.value });
+		urlService.changeQuery({ q: e.target.value, list: urlSearchParams.get("list") || "labels" });
 	};
 
 	useEffect(() => {
@@ -36,7 +42,10 @@ export default function SearchBar() {
 		const searchQuery = e.target.parentElement.nextElementSibling.value || "";
 		if (searchQuery.length > 0 && active) urlService.changeQuery({q : searchQuery});
 		else if (active) setActive(false);
-		else setActive(true);
+		else { 
+			setActive(true);
+			searchInput.current.focus(); 
+		}
 	};
 
 	return (
@@ -49,6 +58,7 @@ export default function SearchBar() {
 				/>
 			</button>
 			<input
+				ref={searchInput}
 				className={`${searchBar.searchBar} ${active ? searchBar.active : ''}`}
 				type="text"
 				onChange={handleSearch}

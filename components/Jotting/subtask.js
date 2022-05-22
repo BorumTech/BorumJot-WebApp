@@ -10,12 +10,11 @@ import SubtasksControl from "./subtasksControl";
 
 export default function Subtask({ id }) {
 
-    const { data, error } = useSWR(id, id => getTask(id).makeRequest());
+    // Use 'T' prefix to prevent from using cache for subtasks list (ST) and because a task with a unique id is getting fetched
+    const { data, error } = useSWR("T" + id, id => getTask(id.substring(1)).makeRequest());
 
     if (!data) return <ProgressSpinner /> ;
     if (error) return <FetchError itemName="task" />
-
-    console.debug("Subtask: ", data.data);
 
     return (
         <Jotting jotType="task" {...data.data}>

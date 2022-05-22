@@ -67,7 +67,7 @@ ul.accountMenu {
 
 @media only screen and (max-width: 600px) {
 	.accountBanner {
-		grid-column: 2 / 4;
+		grid-column: 4 / 6;
 		justify-self: flex-end;
 		width: clamp(10%, 300px, 80%);
 		margin-right: -7px;

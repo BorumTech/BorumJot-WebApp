@@ -175,6 +175,15 @@ export async function createJotting(jotType, jotName) {
 	return response.data ?? response;
 }
 
+export async function createLabel(labelName) {
+	const response = await BorumJotRequest.initialize(`label`)
+		.authorize()
+		.post(`name=${labelName}`)
+		.makeRequest();
+
+	return response.data ?? response;
+}
+
 export async function createSubtask(id, jotName) {
 	const response = await BorumJotRequest.initialize(`subtask`)
 		.authorize()

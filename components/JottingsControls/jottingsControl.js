@@ -98,7 +98,7 @@ export default function JottingsControl(props) {
 
 	return (
 		<>
-			<LabelsControl active={router.asPath.includes(`list=labels`) || !router.asPath.includes('list=')} labelsState={[labels, setLabels]} />
+			<LabelsControl active={router.asPath.includes(`list=labels`) || !router.asPath.includes('?')} labelsState={[labels, setLabels]} />
 			<NotesControl active={showList('notes')} notesState={[notes, setNotes]} />
 			<TasksControl active={showList('tasks')} tasksState={[tasks, setTasks]} />
 

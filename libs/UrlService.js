@@ -17,7 +17,7 @@ export default class UrlService {
         let url = this.router.asPath.split("?")[0] + "?";
 
 		for (const param in newQuery) {
-			url += `${param}=${newQuery[param]}`;
+			url += `${param}=${newQuery[param]}&`;
 		}
 
 		this.router.replace(url, decoratedUrl ?? url, { shallow: true });

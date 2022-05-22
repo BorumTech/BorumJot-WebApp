@@ -15,7 +15,6 @@ export default function Settings(props) {
 	 */
 	const handleExportDataClick = (e) => {
 		Promise.all([getJottingsRaw(), getSharedJottings()]).then((values) => {
-			console.log(values);
 			let downloadData = [].concat(values[0].data, values[1].data);
 
 			const jsonData = JSON.stringify(downloadData);
