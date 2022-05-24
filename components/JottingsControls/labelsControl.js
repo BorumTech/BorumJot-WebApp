@@ -3,7 +3,7 @@ import ProgressSpinner from "../ProgressSpinner/progressSpinner";
 import LabelList from "../LabelList/labelList";
 import jottingsControl from "./jottingsControl.module.css";
 import { useWindowSize } from "../../libs/view";
-import CreateLabelButton from "../CreateJottingButton/CreateLabelButton";
+import CreateLabelButton from "../CreateJottingButton/createLabelButton";
 
 /**
  * Control for Labels heading,
