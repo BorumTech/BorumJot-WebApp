@@ -7,6 +7,7 @@ import { CONTENT_STATE } from "../../libs/view";
 export default function AccountBanner({ setFade }) {
 	const [accountMenuClass, setAccountMenuClass] = useState(accountBanner.inactive);
 	const [dropdownSrc, setDropdownSrc] = useState("down");
+	const [cookies, setCookie, removeCookie] = useCookies(["id", "email", "apiKey"]);
 
 	const handleLogOut = () => {
 		setFade(CONTENT_STATE.FADE_OUT);
@@ -27,8 +28,8 @@ export default function AccountBanner({ setFade }) {
 	 * @returns {string} The value or an empty string
 	 */
 	const getParamFromLocalStorage = name => {
-		if (typeof window !== "undefined" && localStorage.getItem(name))
-			return localStorage.getItem(name)
+		if (typeof window !== "undefined" && cookies[name])
+			return cookies[name]
 		else
 			return "";
 	}
