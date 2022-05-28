@@ -15,7 +15,7 @@ export default class BorumRequest extends Request {
 
     authorize(): BorumRequest {
         Object.assign(this.commonHeaders, {
-            "authorization": `Basic ${localStorage.getItem("userApiKey")}`
+            "authorization": `Basic ${getCookie("apiKey")}`
         })
 
         return this;
@@ -77,3 +77,19 @@ export default class BorumRequest extends Request {
         throw new Error(error.message);
     }
 }
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }

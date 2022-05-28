@@ -4,31 +4,17 @@ import Login from "./Login/login";
 import Home from "./Home/home";
 import {useEffect, useState} from 'react';
 import { CONTENT_STATE } from "../libs/view";
+import { useCookies } from "react-cookie";
 
 export default function Index() {
-  const [loginFade, setLoginFade] = useState(CONTENT_STATE.INVISIBLE);
-  const [homeFade, setHomeFade] = useState(CONTENT_STATE.INVISIBLE);
-  
-  const handleHomeFadeIn = () => {
-    setHomeFade(CONTENT_STATE.FADE_IN);
-  };
-
-  const handleLoginFadeIn = () => {
-    setLoginFade(CONTENT_STATE.FADE_IN);
-  };
+  const [cookies, setCookie, removeCookie] = useCookies(['id', 'email', 'apiKey']);
 
   useEffect(() => {
     // If the user is logged in
-    if (localStorage.getItem("userApiKey")) {
-      if (homeFade != CONTENT_STATE.FADE_IN && loginFade != CONTENT_STATE.FADE_OUT) {
-        setHomeFade(CONTENT_STATE.VISIBLE);
-      }
-    } else { // If the user is logged out
-      if (loginFade != CONTENT_STATE.FADE_IN && homeFade != CONTENT_STATE.FADE_IN && homeFade != CONTENT_STATE.FADE_OUT) {
-        setLoginFade(CONTENT_STATE.VISIBLE);
-      }
+    if (!(cookies.id && cookies.email && cookies.apiKey)) {
+      window.location.href = "https://accounts.borumtech.com/login?redirect=Jot";
     }
-  }, [loginFade, homeFade]);
+  }, [cookies.id, cookies.email]);
 
   return (
     <Layout>
@@ -36,8 +22,7 @@ export default function Index() {
         <title>Borum Jot | Note and task management</title>
       </Head>
 
-      <Login fade={loginFade} onFadeInHome={handleHomeFadeIn} setFade={setLoginFade} />
-      {homeFade != CONTENT_STATE.INVISIBLE ? <Home fade={homeFade} onFadeInLogin={handleLoginFadeIn} setFade={setHomeFade} /> : ""}
+      <Home />
     </Layout>
   );
 }
