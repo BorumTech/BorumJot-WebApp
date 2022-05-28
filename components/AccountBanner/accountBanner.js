@@ -1,10 +1,10 @@
-import accountBanner from "./accountBanner.module.css";
-import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { CONTENT_STATE } from "../../libs/view";
+import Link from "next/link";
+import { useState } from "react";
+import { useCookies } from "react-cookie";
+import accountBanner from "./accountBanner.module.css";
 
-export default function AccountBanner({ setFade }) {
+export default function AccountBanner() {
 	const [accountMenuClass, setAccountMenuClass] = useState(accountBanner.inactive);
 	const [dropdownSrc, setDropdownSrc] = useState("down");
 	const [cookies, setCookie, removeCookie] = useCookies(["id", "email", "apiKey"]);
