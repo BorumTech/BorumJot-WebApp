@@ -10,8 +10,7 @@ export default function AccountBanner({ setFade }) {
 	const [cookies, setCookie, removeCookie] = useCookies(["id", "email", "apiKey"]);
 
 	const handleLogOut = () => {
-		setFade(CONTENT_STATE.FADE_OUT);
-		localStorage.clear();
+		window.location.href = "https://accounts.borumtech.com/logout"
 	};
 
 	const openAccountMenu = () => {
