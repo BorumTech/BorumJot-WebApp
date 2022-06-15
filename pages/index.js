@@ -11,7 +11,7 @@ export default function Index() {
 
   useEffect(() => {
     // If the user is logged in
-    if (!(cookies.id && cookies.email && cookies.apiKey)) {
+    if (!(cookies.id && cookies.email && cookies.apiKey) && !process.env.NODE_ENV === 'development') {
       window.location.href = "https://accounts.borumtech.com/login?redirect=Jot";
     }
   }, [cookies.id, cookies.email]);
