@@ -12,7 +12,7 @@ export default class Browser {
     } 
     
     get isFirefox() {
-        return typeof InstallTrigger !== 'undefined'
+        return navigator.userAgent.includes("Mozilla") && navigator.userAgent.includes("Firefox");
     }
 
     get isSafari() {
